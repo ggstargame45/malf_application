@@ -1,7 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import './write_screen_util.dart';
+import 'write_screen_util.dart';
+import 'write_screen2.dart';
 import './page_animation.dart';
 
 import '../../../../config/routes/app_route.dart';
@@ -387,10 +388,10 @@ class WriteScreen1 extends ConsumerWidget {
                   WritingPagesNextbutton(
                     pressNextButton: _isButtonEnabled
                         ? () {
-                            // PageRouteWithAnimation pageRouteWithAnimation =
-                            //     PageRouteWithAnimation(const WriteScreen2());
-                            // Navigator.push(context,
-                            //     pageRouteWithAnimation.slideRitghtToLeft());
+                            PageRouteWithAnimation pageRouteWithAnimation =
+                                PageRouteWithAnimation(const WriteScreen2());
+                            Navigator.push(context,
+                                pageRouteWithAnimation.slideRitghtToLeft());
                           }
                         : null,
                   ),
