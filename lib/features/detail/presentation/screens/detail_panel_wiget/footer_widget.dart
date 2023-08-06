@@ -41,12 +41,16 @@ class FooterWigdget extends ConsumerWidget {
               isLikedRead.toggleIsLiked();
               logger.d("tap");
             },
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(isLiked == 1 ? Icons.favorite : Icons.favorite_border),
-                  const Text("123")
-                ]),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              isLiked == 1
+                  ? Icon(
+                      Icons.favorite,
+                      color: Colors.red[400],
+                    )
+                  : const Icon(Icons.favorite_border),
+              const Text("123")
+            ]),
           ),
         ),
         Row(
@@ -85,8 +89,8 @@ class FooterWigdget extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.blue)),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      const Color(0xFF61C3FF))),
               child: const Text(
                 "참여요청",
                 style: TextStyle(color: Colors.white, fontSize: 15),

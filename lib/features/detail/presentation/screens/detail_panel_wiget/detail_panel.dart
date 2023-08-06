@@ -7,7 +7,6 @@ import 'user_container.dart';
 //판넬위의 미팅 정보들
 class DetailPanel extends ConsumerWidget {
   final ScrollController controller;
-
   const DetailPanel({super.key, required this.controller});
 
   @override
@@ -35,7 +34,7 @@ class DetailPanel extends ConsumerWidget {
                       const Text("투어", style: TextStyle(color: Colors.white)),
                 ),
                 const Text(
-                  "오늘 저녁 경복궁 같이 가요",
+                  "오늘 그냥 너죽고 나죽자",
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 ),
                 const Padding(
