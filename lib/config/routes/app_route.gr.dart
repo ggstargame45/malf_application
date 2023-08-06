@@ -32,7 +32,7 @@ abstract class _$AppRouter extends RootStackRouter {
     WriteRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const WriteScreen(),
+        child: WriteScreen1(),
       );
     },
   };
