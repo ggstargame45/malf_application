@@ -38,6 +38,7 @@ class DetailScreen extends ConsumerWidget {
   }
 }
 
+//판넬 미팅 장소 사진,미팅 정보, footer
 class MeetingDetailPanel extends StatefulWidget {
   const MeetingDetailPanel({super.key});
 
@@ -50,6 +51,7 @@ class _MeetingDetailPanelState extends State<MeetingDetailPanel> {
   @override
   Widget build(BuildContext context) {
     return SlidingUpPanel(
+      //장소사진
       body: const Center(
           child: Column(
         children: [SlidingMeetingImg()],
@@ -59,6 +61,7 @@ class _MeetingDetailPanelState extends State<MeetingDetailPanel> {
       borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
       minHeight: MediaQuery.of(context).size.height / 1.8,
       maxHeight: MediaQuery.of(context).size.height,
+      //미팅 정보
       panelBuilder: (sc) => DetailPanel(
         controller: sc,
       ),
@@ -67,6 +70,7 @@ class _MeetingDetailPanelState extends State<MeetingDetailPanel> {
           color: Colors.transparent,
         ),
       ),
+      //footer
       footer: Container(
         height: 80,
         width: MediaQuery.of(context).size.width,

@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../config/routes/app_route.dart';
 
-
 @RoutePage()
 class WriteScreen extends ConsumerWidget {
   const WriteScreen({Key? key}) : super(key: key);

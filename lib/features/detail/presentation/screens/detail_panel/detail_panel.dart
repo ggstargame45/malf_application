@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'meeting_detail_info.dart';
 import 'user_container.dart';
 
+//판넬위의 미팅 정보들
 class DetailPanel extends ConsumerWidget {
   final ScrollController controller;
 
@@ -47,12 +48,15 @@ class DetailPanel extends ConsumerWidget {
               height: 1,
               width: 343,
               color: const Color.fromARGB(255, 215, 213, 213)),
+          //유저 정보
           const UserContainer(),
+          //미팅 내용
           const Text(
               "안녕하세요! 한국 여행 5일차입니다. 지금은 왕십리 게스트하우스에서 머물고있어요. 이번주에 경복궁 가보려고 하는데 같이 갈 친구가 있으면 좋겠어요. 안녕하세요! 한국 여행 5일차입니다. 지금은 왕십리 게스트하우스에서 머물고있어요. 이번주에 경복궁 가보려고 하는데 같이 갈 친구가 있으면 좋겠어요."),
           const SizedBox(
             height: 16,
           ),
+          //googleMap
           const GoogleMapContainer(),
           const SizedBox(
             height: 200,
