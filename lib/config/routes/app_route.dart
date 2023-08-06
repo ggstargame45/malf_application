@@ -3,16 +3,14 @@ import 'package:flutter/material.dart';
 
 import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/detail/presentation/screens/detail_screen.dart';
-import '../../features/write/presentation/screens/write_screen.dart';
+import '../../features/write/presentation/screens/write_screen1.dart';
 
 part 'app_route.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Screen,Route')
 class AppRouter extends _$AppRouter {
-
   @override
-  RouteType get defaultRouteType =>
-      const RouteType.material();
+  RouteType get defaultRouteType => const RouteType.material();
 
   @override
   List<AutoRoute> get routes => [
