@@ -127,6 +127,7 @@ void closeWritingPages(BuildContext context) {
 }
 
 class WritingPagesBlackText extends StatelessWidget {
+  // 큰 검정 글씨
   const WritingPagesBlackText({
     Key? key,
     required this.text,
@@ -149,6 +150,7 @@ class WritingPagesBlackText extends StatelessWidget {
 }
 
 class WritingPagesGrayText extends StatelessWidget {
+  // 작은 회색 글씨
   const WritingPagesGrayText({
     Key? key,
     required this.text,
