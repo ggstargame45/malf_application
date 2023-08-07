@@ -34,7 +34,7 @@ class DetailPanel extends ConsumerWidget {
                       const Text("투어", style: TextStyle(color: Colors.white)),
                 ),
                 const Text(
-                  "오늘 그냥 너죽고 나죽자",
+                  "초전도체 가즈아~~~~",
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 ),
                 const Padding(

@@ -1,13 +1,24 @@
 import 'package:auto_route/auto_route.dart';
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import 'package:malf_application/features/detail/data/data_parsing.dart';
+import 'package:malf_application/features/detail/data/network.dart';
 import 'package:malf_application/shared/theme/app_colors.dart';
 import "package:sliding_up_panel/sliding_up_panel.dart";
 
-import 'detail_panel/detail_panel.dart';
-import 'detail_panel/footer_widget.dart';
-import 'detail_panel/sliding_meeting_img.dart';
+import 'detail_panel_wiget/detail_panel.dart';
+import 'detail_panel_wiget/footer_widget.dart';
+import 'detail_panel_wiget/sliding_meeting_img.dart';
 
+Future jsonString = Network(
+        baseUrl: "http://3.36.185.179:8000/bulletin-board/posts/", userId: "0")
+    .request();
+
+final jsonData = jsonDataFromJson(jsonString.toString());
+
+final jsonDataProvider = FutureProvider<Datum>((ref) => jsonData.data[0]);
+
+@RoutePage()
 class DetailScreen extends ConsumerWidget {
   const DetailScreen({super.key});
 
