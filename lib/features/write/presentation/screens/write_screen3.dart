@@ -7,8 +7,23 @@ import 'write_screen_util.dart';
 import 'write_screen1.dart';
 import 'write_screen4.dart';
 
+final writeScreenPlaceProvider =
+    StateNotifierProvider<PlaceNotifier, String>((ref) {
+  return PlaceNotifier();
+});
+
+class PlaceNotifier extends StateNotifier<String> {
+  PlaceNotifier() : super('');
+
+  void setText(String text) {
+    state = text;
+  }
+}
+
 class WriteScreen3 extends ConsumerWidget {
-  const WriteScreen3({super.key});
+  WriteScreen3({super.key});
+
+  bool _isButtonEnabled = false;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -46,80 +61,66 @@ class WriteScreen3 extends ConsumerWidget {
 
             WhiteBox(boxWidth: 0, boxHeight: 2), // 앱바 <-> 모임장소와 인원을 입력해주세요 공백
 
-            const Row(
-              // 모임장소와 인원을 입력해주세요.
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            const WritingPagesBlackText(text: '모임장소와 인원을 입력해주세요.'),
+            WhiteBox(boxWidth: 0, boxHeight: 3),
+
+            const WritingPagesGrayText(text: '장소'),
+            WhiteBox(boxWidth: 0, boxHeight: 1),
+            Row(
+              // 제목을 입력해주세요.
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(left: 20.0),
-                  child: Text(
-                    '모임장소와 인원을 입력해주세요.',
-                    style: TextStyle(
-                      color: Color(0xFF292524),
-                      fontSize: 24,
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w700,
+                Container(
+                  width: getWidthByPercentOfScreen(90, context),
+                  height: getHeightByPercentOfScreen(6.5, context),
+                  padding: const EdgeInsets.only(left: 16, right: 16),
+                  decoration: ShapeDecoration(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      side: const BorderSide(
+                          width: 0.50, color: Color(0xFFD3D3D3)),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                )
-              ],
-            ),
-            Row(
-              // 날짜 입력
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0, top: 10.0),
-                  child: Container(
-                    width: 376,
-                    height: 74,
-                    padding: const EdgeInsets.only(left: 16),
-                    decoration: ShapeDecoration(
-                      color: const Color(0xFFF7F7F7),
-                      shape: RoundedRectangleBorder(
-                        side: const BorderSide(
-                            width: 0.50, color: Color(0xFFD3D3D3)),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(Icons.calendar_month_outlined, size: 35),
-                        Padding(
-                            padding: EdgeInsets.only(left: 20),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Test: ${ref.watch(writeScreenTitleProvider)}',
-                                  style: const TextStyle(
-                                    color: Color(0xFF808080),
-                                    fontSize: 14,
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const Text(
-                                  '2023.07.01 (월)',
-                                  style: TextStyle(
-                                    color: Color(0xFF1A1A1A),
-                                    fontSize: 18,
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ))
-                      ],
-                    ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: TextField(
+                            decoration: const InputDecoration(
+                              hintText: '모임장소에서 가장 가까운 역을 선택해주세요.',
+                              hintStyle: TextStyle(
+                                color: Color(0xFFBEBEBE),
+                                fontSize: 16,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w500,
+                              ),
+                              border: InputBorder.none,
+                            ),
+                            onChanged: (text) {
+                              ref
+                                  .read(writeScreenPlaceProvider.notifier)
+                                  .setText(text);
+                              _checkBlankCondition(text);
+                            }),
+                      )
+                    ],
                   ),
                 ),
               ],
             ),
+            WhiteBox(boxWidth: 0, boxHeight: 10),
+            WritingPagesGrayText(
+                text:
+                    '현지인 인원: ${ref.watch(writeScreenLocalPeopleProvider).toInt()} 명'),
+            LocalPeopleSlider(),
+            WhiteBox(boxWidth: 0, boxHeight: 3),
+            WritingPagesGrayText(
+                text:
+                    '외국인 인원: ${ref.watch(writeScreenForeignPeopleProvider).toInt()} 명'),
+            ForeignPeopleSlider(),
             const Spacer(),
             WritingPagesNextbutton(
               pressNextButton: true
@@ -136,5 +137,9 @@ class WriteScreen3 extends ConsumerWidget {
         )),
       ),
     );
+  }
+
+  void _checkBlankCondition(String s) {
+    _isButtonEnabled = s.isNotEmpty && (s.length <= 40);
   }
 }

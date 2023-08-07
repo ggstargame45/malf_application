@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// 공통
 double getWidthByPercentOfScreen(double percent, BuildContext context) {
   return MediaQuery.of(context).size.width * percent / 100;
 }
@@ -8,16 +10,66 @@ double getHeightByPercentOfScreen(double percent, BuildContext context) {
   return MediaQuery.of(context).size.height * percent / 100;
 }
 
-class MyBehavior extends ScrollBehavior {
+// 큰 검정 글씨
+class WritingPagesBlackText extends StatelessWidget {
+  const WritingPagesBlackText({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+
+  final String text;
+
   @override
-  Widget buildOverscrollIndicator(
-      BuildContext context, Widget child, ScrollableDetails details) {
-    return child;
+  Widget build(BuildContext context) {
+    return Row(
+        // 내용
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          WhiteBox(boxWidth: 5, boxHeight: 1),
+          Text(
+            text,
+            style: const TextStyle(
+              color: Color(0xFF292524),
+              fontSize: 24,
+              fontFamily: 'Pretendard',
+              fontWeight: FontWeight.w700,
+            ),
+          )
+        ]);
   }
 }
 
+// 작은 회색 글씨
+class WritingPagesGrayText extends StatelessWidget {
+  const WritingPagesGrayText({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+        // 내용
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          WhiteBox(boxWidth: 5, boxHeight: 1),
+          Text(
+            text,
+            style: const TextStyle(
+              color: Color(0xFF808080),
+              fontSize: 18,
+              fontFamily: 'Pretendard',
+              fontWeight: FontWeight.w600,
+            ),
+          )
+        ]);
+  }
+}
+
+// 공백 컨테이너
 class WhiteBox extends StatelessWidget {
-  // 글쓰기 화면의 '다음' 버튼
   WhiteBox({
     Key? key,
     required this.boxWidth,
@@ -36,8 +88,8 @@ class WhiteBox extends StatelessWidget {
   }
 }
 
+// 닫기 버튼 누를 때 띄우는 창
 void closeWritingPages(BuildContext context) {
-  // 닫기 버튼 누를 때 띄우는 창
   showDialog(
     context: context,
     barrierDismissible: false, //바깥 영역 터치시 닫을지 여부 결정
@@ -126,81 +178,8 @@ void closeWritingPages(BuildContext context) {
   );
 }
 
-class WritingPagesBlackText extends StatelessWidget {
-  // 큰 검정 글씨
-  const WritingPagesBlackText({
-    Key? key,
-    required this.text,
-  }) : super(key: key);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: const TextStyle(
-        color: Color(0xFF292524),
-        fontSize: 24,
-        fontFamily: 'Pretendard',
-        fontWeight: FontWeight.w700,
-      ),
-    );
-  }
-}
-
-class WritingPagesGrayText extends StatelessWidget {
-  // 작은 회색 글씨
-  const WritingPagesGrayText({
-    Key? key,
-    required this.text,
-  }) : super(key: key);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: const TextStyle(
-        color: Color(0xFF808080),
-        fontSize: 18,
-        fontFamily: 'Pretendard',
-        fontWeight: FontWeight.w600,
-      ),
-    );
-  }
-}
-
-// class WritingPagesShortTextField extends StatelessWidget {
-//   const WritingPagesShortTextField({
-//     Key? key,
-//     required this.hint,
-//   }) : super(key: key);
-
-//   final String hint;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return TextField(
-//         decoration: InputDecoration(
-//           hintText: hint,
-//           hintStyle: const TextStyle(
-//             color: Color(0xFFBEBEBE),
-//             fontSize: 16,
-//             fontFamily: 'Pretendard',
-//             fontWeight: FontWeight.w500,
-//           ),
-//           border: InputBorder.none,
-//         ),
-//         onChanged: (text) {
-//           provideContent(text);
-//         });
-//   }
-// }
-
+// 글쓰기 화면의 '다음' 버튼
 class WritingPagesNextbutton extends StatelessWidget {
-  // 글쓰기 화면의 '다음' 버튼
   const WritingPagesNextbutton({
     Key? key,
     required this.pressNextButton,
@@ -237,5 +216,105 @@ class WritingPagesNextbutton extends StatelessWidget {
             ))
       ],
     );
+  }
+}
+
+// class WritingPagesShortTextField extends StatelessWidget {
+//   const WritingPagesShortTextField({
+//     Key? key,
+//     required this.hint,
+//   }) : super(key: key);
+
+//   final String hint;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return TextField(
+//         decoration: InputDecoration(
+//           hintText: hint,
+//           hintStyle: const TextStyle(
+//             color: Color(0xFFBEBEBE),
+//             fontSize: 16,
+//             fontFamily: 'Pretendard',
+//             fontWeight: FontWeight.w500,
+//           ),
+//           border: InputBorder.none,
+//         ),
+//         onChanged: (text) {
+//           provideContent(text);
+//         });
+//   }
+// }
+
+// write_screen1
+
+// 스크롤 가능하게 해주는 Behavior
+class MyBehavior extends ScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
+  }
+}
+
+// write_screen4
+
+//slider
+
+final writeScreenLocalPeopleProvider = StateProvider<double>((ref) => 0);
+
+class LocalPeopleSlider extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final sliderValue = ref.watch(writeScreenLocalPeopleProvider);
+
+    return SliderTheme(
+        data: SliderThemeData(
+          thumbColor: Colors.blue, // 슬라이더 버튼(Thumb)의 색상
+          tickMarkShape: SliderTickMarkShape.noTickMark,
+          // activeTickMarkColor: Colors.blue,
+          // inactiveTickMarkColor: const Color(0xFFB2BDCF),
+          valueIndicatorColor: const Color(0xFFB2BDCF),
+        ), // 오버레이 색상 (터치 영역의 표시))
+        child: Slider(
+          value: ref.watch(writeScreenLocalPeopleProvider),
+          min: 0,
+          max: 20,
+          divisions: 20,
+          label: '${ref.watch(writeScreenLocalPeopleProvider).toInt()}',
+          onChanged: (newValue) {
+            ref.read(writeScreenLocalPeopleProvider.notifier).state =
+                newValue; // 상태 업데이트
+          },
+        ));
+  }
+}
+
+final writeScreenForeignPeopleProvider = StateProvider<double>((ref) => 0);
+
+class ForeignPeopleSlider extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final sliderValue = ref.watch(writeScreenForeignPeopleProvider);
+
+    return SliderTheme(
+        data: SliderThemeData(
+          thumbColor: Colors.blue, // 슬라이더 버튼(Thumb)의 색상
+          tickMarkShape: SliderTickMarkShape.noTickMark,
+          // activeTickMarkColor: Colors.blue,
+          // inactiveTickMarkColor: const Color(0xFFB2BDCF),
+          valueIndicatorColor: const Color(0xFFB2BDCF),
+        ), // 오버레이 색상 (터치 영역의 표시))
+        child: Slider(
+          value: ref.watch(writeScreenForeignPeopleProvider),
+          min: 0,
+          max: 20,
+          divisions: 20,
+          label: '${ref.watch(writeScreenForeignPeopleProvider).toInt()}',
+          onChanged: (newValue) {
+            ref.read(writeScreenForeignPeopleProvider.notifier).state =
+                newValue; // 상태 업데이트
+          },
+        ));
   }
 }

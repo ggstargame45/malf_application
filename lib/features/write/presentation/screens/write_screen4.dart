@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'page_animation.dart';
 import 'write_screen_util.dart';
 import 'write_screen1.dart';
+import 'write_screen3.dart';
 
 class WriteScreen4 extends ConsumerWidget {
   const WriteScreen4({super.key});
@@ -77,6 +78,31 @@ class WriteScreen4 extends ConsumerWidget {
                   ),
                 )
               ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: Text(
+                    'Place: ${ref.watch(writeScreenPlaceProvider)}',
+                    style: const TextStyle(
+                      color: Color(0xFF292524),
+                      fontSize: 24,
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            WritingPagesBlackText(
+              text: 'LocalPeople: ${ref.watch(writeScreenLocalPeopleProvider)}',
+            ),
+            WritingPagesBlackText(
+              text:
+                  'ForeignPeople: ${ref.watch(writeScreenForeignPeopleProvider)}',
             ),
 
             const Spacer(),
