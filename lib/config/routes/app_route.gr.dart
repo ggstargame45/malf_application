@@ -15,6 +15,12 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    DetailRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const DetailScreen(),
+      );
+    },
     HomeRoute.name: (routeData) {
       final args =
           routeData.argsAs<HomeRouteArgs>(orElse: () => const HomeRouteArgs());
@@ -23,13 +29,29 @@ abstract class _$AppRouter extends RootStackRouter {
         child: HomeScreen(key: args.key),
       );
     },
-    WriteRoute.name: (routeData) {
+    WriteRoute1.name: (routeData) {
+      final args = routeData.argsAs<WriteRoute1Args>(
+          orElse: () => const WriteRoute1Args());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: WriteScreen1(),
+        child: WriteScreen1(key: args.key),
       );
     },
   };
+}
+
+/// generated route for
+/// [DetailScreen]
+class DetailRoute extends PageRouteInfo<void> {
+  const DetailRoute({List<PageRouteInfo>? children})
+      : super(
+          DetailRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DetailRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -61,15 +83,29 @@ class HomeRouteArgs {
 }
 
 /// generated route for
-/// [WriteScreen]
-class WriteRoute extends PageRouteInfo<void> {
-  const WriteRoute({List<PageRouteInfo>? children})
-      : super(
-          WriteRoute.name,
+/// [WriteScreen1]
+class WriteRoute1 extends PageRouteInfo<WriteRoute1Args> {
+  WriteRoute1({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          WriteRoute1.name,
+          args: WriteRoute1Args(key: key),
           initialChildren: children,
         );
 
-  static const String name = 'WriteRoute';
+  static const String name = 'WriteRoute1';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<WriteRoute1Args> page = PageInfo<WriteRoute1Args>(name);
+}
+
+class WriteRoute1Args {
+  const WriteRoute1Args({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'WriteRoute1Args{key: $key}';
+  }
 }

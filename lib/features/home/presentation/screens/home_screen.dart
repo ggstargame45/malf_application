@@ -23,7 +23,7 @@ class HomeScreen extends ConsumerWidget {
               child: const Text('Detail Screen'),
             ),
             ElevatedButton(
-              onPressed: () => context.router.push(const WriteRoute()),
+              onPressed: () => context.router.push(WriteRoute1()),
               child: const Text('Write Screen'),
             ),
           ],
