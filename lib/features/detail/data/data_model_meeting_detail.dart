@@ -1,97 +1,101 @@
-// To parse this JSON data, do
-//
-//     final jsonData = jsonDataFromJson(jsonString);
+/* 
+// Example Usage
+Map<String, dynamic> map = jsonDecode(<myJSONString>);
+var myJsonDataNode = Root.fromJson(map);
+*/
+class Datum {
+  int? postid;
+  String? title;
+  String? content;
+  String? authornickname;
+  int? authornation;
+  String? authorpicture;
+  int? usertype;
+  int? meetingcapacity;
+  String? meetingpic;
+  String? meetinglocation;
+  String? meetingstarttime;
+  int? category;
+  int? likecount;
+  int? likecheck;
+  int? participationstatus;
 
-import 'dart:convert';
+  Datum(
+      {this.postid,
+      this.title,
+      this.content,
+      this.authornickname,
+      this.authornation,
+      this.authorpicture,
+      this.usertype,
+      this.meetingcapacity,
+      this.meetingpic,
+      this.meetinglocation,
+      this.meetingstarttime,
+      this.category,
+      this.likecount,
+      this.likecheck,
+      this.participationstatus});
 
-JsonData jsonDataFromJson(String str) => JsonData.fromJson(json.decode(str));
+  Datum.fromJson(Map<String, dynamic> json) {
+    postid = json['post_id'];
+    title = json['title'];
+    content = json['content'];
+    authornickname = json['author_nickname'];
+    authornation = json['author_nation'];
+    authorpicture = json['author_picture'];
+    usertype = json['user_type'];
+    meetingcapacity = json['meeting_capacity'];
+    meetingpic = json['meeting_pic'];
+    meetinglocation = json['meeting_location'];
+    meetingstarttime = json['meeting_start_time'];
+    category = json['category'];
+    likecount = json['like_count'];
+    likecheck = json['like_check'];
+    participationstatus = json['participation_status'];
+  }
 
-String jsonDataToJson(JsonData data) => json.encode(data.toJson());
-
-class JsonData {
-  String status;
-  List<Datum> data;
-
-  JsonData({
-    required this.status,
-    required this.data,
-  });
-
-  factory JsonData.fromJson(Map<String, dynamic> json) => JsonData(
-        status: json["status"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "status": status,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['post_id'] = postid;
+    data['title'] = title;
+    data['content'] = content;
+    data['author_nickname'] = authornickname;
+    data['author_nation'] = authornation;
+    data['author_picture'] = authorpicture;
+    data['user_type'] = usertype;
+    data['meeting_capacity'] = meetingcapacity;
+    data['meeting_pic'] = meetingpic;
+    data['meeting_location'] = meetinglocation;
+    data['meeting_start_time'] = meetingstarttime;
+    data['category'] = category;
+    data['like_count'] = likecount;
+    data['like_check'] = likecheck;
+    data['participation_status'] = participationstatus;
+    return data;
+  }
 }
 
-class Datum {
-  int postId;
-  String title;
-  String content;
-  String authorNickname;
-  int authorNation;
-  String authorPicture;
-  int userType;
-  int meetingCapacity;
-  String meetingPic;
-  String meetingLocation;
-  DateTime meetingStartTime;
-  int likeCount;
-  int likeCheck;
-  int participantionStatus;
+class JsonData {
+  int? status;
+  List<Datum?>? data;
 
-  Datum({
-    required this.postId,
-    required this.title,
-    required this.content,
-    required this.authorNickname,
-    required this.authorNation,
-    required this.authorPicture,
-    required this.userType,
-    required this.meetingCapacity,
-    required this.meetingPic,
-    required this.meetingLocation,
-    required this.meetingStartTime,
-    required this.likeCount,
-    required this.likeCheck,
-    required this.participantionStatus,
-  });
+  JsonData({this.status, this.data});
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-        postId: json["post_id"],
-        title: json["title"],
-        content: json["content"],
-        authorNickname: json["author_nickname"],
-        authorNation: json["author_nation"],
-        authorPicture: json["author_picture"],
-        userType: json["user_type"],
-        meetingCapacity: json["meeting_capacity"],
-        meetingPic: json["meeting_pic"],
-        meetingLocation: json["meeting_location"],
-        meetingStartTime: DateTime.parse(json["meeting_start_time"]),
-        likeCount: json["like_count"],
-        likeCheck: json["like_check"],
-        participantionStatus: json["participantion_status"],
-      );
+  JsonData.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    if (json['data'] != null) {
+      data = <Datum>[];
+      json['data'].forEach((v) {
+        data!.add(Datum.fromJson(v));
+      });
+    }
+  }
 
-  Map<String, dynamic> toJson() => {
-        "post_id": postId,
-        "title": title,
-        "content": content,
-        "author_nickname": authorNickname,
-        "author_nation": authorNation,
-        "author_picture": authorPicture,
-        "user_type": userType,
-        "meeting_capacity": meetingCapacity,
-        "meeting_pic": meetingPic,
-        "meeting_location": meetingLocation,
-        "meeting_start_time": meetingStartTime.toIso8601String(),
-        "like_count": likeCount,
-        "like_check": likeCheck,
-        "participantion_status": participantionStatus,
-      };
+  // Map<String, dynamic> toJson() {
+  //   final Map<String, dynamic> data = <String, dynamic>{};
+  //   data['status'] = status;
+  //   data['data'] = data != null ? data.map((v) => v?.toJson()).toList() : null;
+  //   return data;
+  // }
 }
