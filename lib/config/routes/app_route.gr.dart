@@ -32,7 +32,15 @@ abstract class _$AppRouter extends RootStackRouter {
     WriteRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: WriteScreen1(),
+        child: const WriteScreen(),
+      );
+    },
+    WriteRoute1.name: (routeData) {
+      final args = routeData.argsAs<WriteRoute1Args>(
+          orElse: () => const WriteRoute1Args());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: WriteScreen1(key: args.key),
       );
     },
   };
@@ -92,4 +100,32 @@ class WriteRoute extends PageRouteInfo<void> {
   static const String name = 'WriteRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [WriteScreen1]
+class WriteRoute1 extends PageRouteInfo<WriteRoute1Args> {
+  WriteRoute1({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          WriteRoute1.name,
+          args: WriteRoute1Args(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'WriteRoute1';
+
+  static const PageInfo<WriteRoute1Args> page = PageInfo<WriteRoute1Args>(name);
+}
+
+class WriteRoute1Args {
+  const WriteRoute1Args({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'WriteRoute1Args{key: $key}';
+  }
 }

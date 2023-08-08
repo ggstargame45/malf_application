@@ -1,27 +1,33 @@
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
-final dio = Dio();
 var logger = Logger();
+BaseOptions options = BaseOptions(
+  baseUrl: "http://3.36.185.179:8000",
+  headers: {'Authorization': 'test_1'},
+);
+final dio = Dio(options);
 
 class Network {
-  String userId;
-  String baseUrl;
+  String postId;
+  static const String detailUrl = "/bulletin-board/posts/";
+  Network({
+    required this.postId,
+  });
 
-  Network({required this.baseUrl, required this.userId});
-
-  Future<void> request() async {
+  Future<dynamic> request() async {
     try {
-      final response = await dio.get("$baseUrl/$userId");
+      final response = await dio.get("$detailUrl$postId");
       return response.data;
     } catch (error) {
-      logger.d('오류: $error');
+      logger.e('오류: $error,$detailUrl$postId');
     }
   }
 
-  Future<void> post(int like, int participantionStatus) async {
+  Future<dynamic> post(
+      String userId, int like, int participantionStatus) async {
     try {
-      final response = await dio.post("$baseUrl/$userId", data: [
+      final response = await dio.post("$detailUrl$postId/like", data: [
         {
           'id': userId,
           'like_check': like,

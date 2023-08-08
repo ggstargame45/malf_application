@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/data_model_meeting_detail.dart';
+import '../../../data/detail_data_provider.dart';
 import 'meeting_detail_info.dart';
 import 'user_container.dart';
 
@@ -11,6 +13,8 @@ class DetailPanel extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final JsonData jsonData = ref.watch(jsonDataProvider).jsonData;
+    final Datum meetingInfo = jsonData.data[0];
     return Padding(
       padding: const EdgeInsets.all(16),
       child: ListView(
@@ -30,11 +34,10 @@ class DetailPanel extends ConsumerWidget {
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                     color: Color(0xB0000000),
                   ),
-                  child:
-                      const Text("투어", style: TextStyle(color: Colors.white)),
+                  child: Text("투어", style: TextStyle(color: Colors.white)),
                 ),
-                const Text(
-                  "초전도체 가즈아~~~~",
+                Text(
+                  meetingInfo.content,
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 ),
                 const Padding(

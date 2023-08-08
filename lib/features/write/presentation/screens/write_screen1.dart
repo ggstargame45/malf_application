@@ -1,11 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'write_screen_util.dart';
-import 'write_screen2.dart';
-import './page_animation.dart';
 
-import '../../../../config/routes/app_route.dart';
+import './page_animation.dart';
+import 'write_screen2.dart';
+import 'write_screen_util.dart';
 
 final writeScreenTitleProvider =
     StateNotifierProvider<TitleNotifier, String>((ref) {
@@ -408,6 +407,5 @@ class WriteScreen1 extends ConsumerWidget {
     } else {
       _titleOver40TextColor = Colors.white;
     }
-    ;
   }
 }

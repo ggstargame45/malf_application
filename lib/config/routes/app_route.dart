@@ -1,8 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/detail/presentation/screens/detail_screen.dart';
+import '../../features/home/presentation/screens/home_screen.dart';
+import '../../features/write/presentation/screens/write_screen.dart';
 import '../../features/write/presentation/screens/write_screen1.dart';
 
 part 'app_route.gr.dart';
