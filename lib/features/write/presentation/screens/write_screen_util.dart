@@ -219,7 +219,7 @@ class WritingPagesNextbutton extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12)),
-                  backgroundColor: Color(0xFF61C3FF),
+                  backgroundColor: const Color(0xFF61C3FF),
                   minimumSize: Size(
                     getWidthByPercentOfScreen(90, context),
                     getHeightByPercentOfScreen(7, context),

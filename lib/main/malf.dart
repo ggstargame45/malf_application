@@ -4,7 +4,6 @@ import 'package:malf_application/shared/theme/app_theme.dart';
 
 import 'package:malf_application/config/routes/app_route.dart';
 
-
 class MalfApp extends ConsumerWidget {
   MalfApp({super.key});
 

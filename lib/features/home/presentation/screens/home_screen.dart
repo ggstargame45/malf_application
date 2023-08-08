@@ -6,13 +6,29 @@ import '../../../../config/routes/app_route.dart';
 
 @RoutePage()
 class HomeScreen extends ConsumerWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Screen'),
+        backgroundColor: Colors.white,
+        title: Image.asset(
+          'assets/logos/malf_logo.png',
+          height: 30,
+        ),
+        actions: [
+          IconButton(
+            onPressed: () => {},
+            icon:
+                const Icon(Icons.search_rounded, color: Colors.black, size: 30),
+          ),
+          IconButton(
+            onPressed: () => {},
+            icon: const Icon(Icons.calendar_month_rounded,
+                color: Colors.black, size: 30),
+          ),
+        ],
       ),
       body: Center(
         child: Column(
@@ -20,7 +36,12 @@ class HomeScreen extends ConsumerWidget {
           children: [
             ElevatedButton(
               onPressed: () => context.router.push(const DetailRoute()),
-              child: const Text('Detail Screen'),
+              child: const Text(
+                'Detail Screen',
+                locale: Locale(
+                  'kr',
+                ),
+              ),
             ),
             ElevatedButton(
               onPressed: () => context.router.push(WriteRoute1()),
