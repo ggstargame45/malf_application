@@ -1,16 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
+import 'constants.dart';
+
 var logger = Logger();
 
 class Network {
   final _dio = Dio(BaseOptions(
-      baseUrl: "http://3.36.185.179:8000",
+      baseUrl: Url.baseUrl,
       headers: {'Authorization': 'test_1'},
       responseType: ResponseType.json));
 
   String postId;
-  static const String detailUrl = "/bulletin-board/posts/";
+  static const String detailUrl = Url.detailUrl;
   Network({
     required this.postId,
   });

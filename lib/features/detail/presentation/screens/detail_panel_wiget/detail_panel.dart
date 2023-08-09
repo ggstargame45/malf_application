@@ -54,8 +54,7 @@ class DetailPanel extends ConsumerWidget {
           //유저 정보
           const UserContainer(),
           //미팅 내용
-          const Text(
-              "안녕하세요! 한국 여행 5일차입니다. 지금은 왕십리 게스트하우스에서 머물고있어요. 이번주에 경복궁 가보려고 하는데 같이 갈 친구가 있으면 좋겠어요. 안녕하세요! 한국 여행 5일차입니다. 지금은 왕십리 게스트하우스에서 머물고있어요. 이번주에 경복궁 가보려고 하는데 같이 갈 친구가 있으면 좋겠어요."),
+          Text("${jsonData?.content!}"),
           const SizedBox(
             height: 16,
           ),

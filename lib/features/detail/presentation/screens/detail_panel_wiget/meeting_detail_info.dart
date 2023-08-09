@@ -1,30 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MeetingdetailInfo extends StatelessWidget {
+import '../../../data/detail_data_provider.dart';
+
+class MeetingdetailInfo extends ConsumerWidget {
   const MeetingdetailInfo({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final jsonData = ref.watch(jsonDataProvider).jsonData.data!.first;
+    DateTime dateTime = DateTime.parse(jsonData!.meetingstarttime!);
+    String formattedDate =
+        "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
+    String formattedTime =
+        "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}";
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Row(
+        Row(
           children: [
-            Icon(
+            const Icon(
               Icons.location_on_outlined,
               color: Colors.grey,
             ),
-            SizedBox(
+            const SizedBox(
               width: 3,
             ),
-            Text(
+            const Text(
               "장소",
               style: TextStyle(color: Colors.grey),
             ),
-            SizedBox(
+            const SizedBox(
               width: 6,
             ),
-            Text("종로3가 2번출구 앞"),
+            Text(jsonData.meetinglocation!),
           ],
         ),
         const SizedBox(
@@ -46,7 +56,7 @@ class MeetingdetailInfo extends StatelessWidget {
             const SizedBox(
               width: 6,
             ),
-            const Text("2023.07.20"),
+            Text(formattedDate),
             const SizedBox(
               width: 6,
             ),
@@ -58,40 +68,39 @@ class MeetingdetailInfo extends StatelessWidget {
             const SizedBox(
               width: 6,
             ),
-            const Text("오후 6시 30분")
+            Text(formattedTime)
           ],
         ),
         const SizedBox(
           height: 4,
         ),
-        const Row(
+        Row(
           children: [
-            Icon(
+            const Icon(
               Icons.people_alt_rounded,
               color: Colors.grey,
             ),
-            SizedBox(
+            const SizedBox(
               width: 3,
             ),
-            Text(
+            const Text(
               "인원",
               style: TextStyle(color: Colors.grey),
             ),
-            SizedBox(
+            const SizedBox(
               width: 6,
             ),
             Text.rich(TextSpan(children: <TextSpan>[
               TextSpan(
-                text: "4/",
+                text: "${jsonData.participationstatus}/",
               ),
-              TextSpan(text: "10", style: TextStyle(color: Colors.grey))
+              TextSpan(
+                  text: "${jsonData.meetingcapacity}",
+                  style: const TextStyle(color: Colors.grey))
             ])),
-            SizedBox(
-              width: 2,
-            ),
-            Icon(
+            const Icon(
               Icons.arrow_forward_ios,
-              size: 9,
+              size: 16,
             )
           ],
         )
