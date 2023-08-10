@@ -1,34 +1,41 @@
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
-final dio = Dio();
+import 'constants.dart';
+
 var logger = Logger();
 
 class Network {
-  String userId;
-  String baseUrl;
+  final _dio = Dio(BaseOptions(
+      baseUrl: Url.baseUrl,
+      headers: {'Authorization': 'test_1'},
+      responseType: ResponseType.json));
 
-  Network({required this.baseUrl, required this.userId});
+  String postId;
+  static const String detailUrl = Url.detailUrl;
+  Network({
+    required this.postId,
+  });
 
-  Future<void> request() async {
+  Future<dynamic> request() async {
     try {
-      final response = await dio.get("$baseUrl/$userId");
+      final response = await _dio.get("$detailUrl$postId");
+      Logger().d(response.data);
       return response.data;
     } catch (error) {
-      logger.d('오류: $error');
+      logger.e('오류: $error,$detailUrl$postId');
     }
   }
 
-  Future<void> post(int like, int participantionStatus) async {
+  Future<dynamic> post(
+      String userId, int like, int participantionStatus) async {
     try {
-      final response = await dio.post("$baseUrl/$userId", data: [
-        {
-          'id': userId,
-          'like_check': like,
-          'participantion_status': participantionStatus
-        }
-      ]);
-      return response.data["data"][0];
+      final response = await _dio.post("$detailUrl$postId/like", data: {
+        'id': userId,
+        'like_check': like,
+        'participantion_status': participantionStatus
+      });
+      return response.data;
     } catch (error) {
       logger.d('오류: $error');
     }

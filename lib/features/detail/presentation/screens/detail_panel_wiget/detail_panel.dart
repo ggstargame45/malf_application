@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/detail_data_provider.dart';
 import 'meeting_detail_info.dart';
 import 'user_container.dart';
 
@@ -11,6 +12,8 @@ class DetailPanel extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final jsonData = ref.watch(jsonDataProvider).jsonData.data!.first;
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: ListView(
@@ -33,9 +36,10 @@ class DetailPanel extends ConsumerWidget {
                   child:
                       const Text("투어", style: TextStyle(color: Colors.white)),
                 ),
-                const Text(
-                  "초전도체 가즈아~~~~",
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                Text(
+                  "${jsonData?.title!}",
+                  style: const TextStyle(
+                      fontSize: 25, fontWeight: FontWeight.bold),
                 ),
                 const Padding(
                     padding: EdgeInsets.only(top: 8, bottom: 8),
@@ -50,8 +54,7 @@ class DetailPanel extends ConsumerWidget {
           //유저 정보
           const UserContainer(),
           //미팅 내용
-          const Text(
-              "안녕하세요! 한국 여행 5일차입니다. 지금은 왕십리 게스트하우스에서 머물고있어요. 이번주에 경복궁 가보려고 하는데 같이 갈 친구가 있으면 좋겠어요. 안녕하세요! 한국 여행 5일차입니다. 지금은 왕십리 게스트하우스에서 머물고있어요. 이번주에 경복궁 가보려고 하는데 같이 갈 친구가 있으면 좋겠어요."),
+          Text("${jsonData?.content!}"),
           const SizedBox(
             height: 16,
           ),
