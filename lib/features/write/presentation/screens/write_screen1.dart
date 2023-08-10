@@ -5,8 +5,6 @@ import 'write_screen_util.dart';
 import 'write_screen2.dart';
 import './page_animation.dart';
 
-import '../../../../config/routes/app_route.dart';
-
 final writeScreenTitleProvider =
     StateNotifierProvider<TitleNotifier, String>((ref) {
   return TitleNotifier();
@@ -408,6 +406,5 @@ class WriteScreen1 extends ConsumerWidget {
     } else {
       _titleOver40TextColor = Colors.white;
     }
-    ;
   }
 }
