@@ -123,7 +123,7 @@ class WriteScreen2 extends ConsumerWidget {
               pressNextButton: true
                   ? () {
                       PageRouteWithAnimation pageRouteWithAnimation =
-                          PageRouteWithAnimation(const WriteScreen3());
+                          PageRouteWithAnimation(WriteScreen3());
                       Navigator.push(
                           context, pageRouteWithAnimation.slideRitghtToLeft());
                     }

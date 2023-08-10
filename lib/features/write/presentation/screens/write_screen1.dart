@@ -90,26 +90,14 @@ class WriteScreen1 extends ConsumerWidget {
                         behavior: MyBehavior(),
                         child: SingleChildScrollView(
                           child: Column(children: [
-                            Row(
-                              // 모임을 소개해주세요
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                WhiteBox(boxWidth: 5, boxHeight: 0),
-                                const WritingPagesBlackText(
-                                    text: '모임을 소개해주세요.'),
-                              ],
-                            ),
+                            const WritingPagesBlackText(text: '모임을 소개해주세요.'),
+
                             WhiteBox(
                                 boxWidth: 0,
                                 boxHeight: 3), // 모임을 소개해주세요 <-> 사진 공백
-                            Row(
-                                // 사진
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  WhiteBox(boxWidth: 5, boxHeight: 0),
-                                  const WritingPagesGrayText(text: '사진')
-                                ]),
+
+                            const WritingPagesGrayText(text: '사진'),
+
                             WhiteBox(
                                 boxWidth: 0, boxHeight: 1), // 사진 <-> 사진첨부 공백
                             Row(
@@ -226,21 +214,8 @@ class WriteScreen1 extends ConsumerWidget {
                             ),
                             WhiteBox(
                                 boxWidth: 0, boxHeight: 4.5), // 사진첨부 <-> 제목 공백
-                            Row(
-                                // 제목
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  WhiteBox(boxWidth: 5, boxHeight: 0),
-                                  const Text(
-                                    '제목',
-                                    style: TextStyle(
-                                      color: Color(0xFF808080),
-                                      fontSize: 18,
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  )
-                                ]),
+
+                            const WritingPagesGrayText(text: '제목'),
                             WhiteBox(
                                 boxWidth: 0,
                                 boxHeight: 1), // 제목 <-> 제목을 입력해주세요 공백
@@ -286,7 +261,7 @@ class WriteScreen1 extends ConsumerWidget {
                                                   .read(writeScreenTitleProvider
                                                       .notifier)
                                                   .setText(text);
-                                              _checkTitleCondition(text);
+                                              _checkBlankCondition(text);
                                             }),
                                       )
                                     ],
@@ -315,13 +290,9 @@ class WriteScreen1 extends ConsumerWidget {
                             ),
                             WhiteBox(
                                 boxWidth: 0, boxHeight: 1.5), // 40자이하 <-> 내용 공백
-                            Row(
-                                // 내용
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  WhiteBox(boxWidth: 5, boxHeight: 1),
-                                  const WritingPagesGrayText(text: '내용')
-                                ]),
+
+                            const WritingPagesGrayText(text: '내용'),
+
                             WhiteBox(
                                 boxWidth: 0,
                                 boxHeight: 1.5), // 내용 <-> 소개글을 입력해주세요 공백
@@ -369,7 +340,7 @@ class WriteScreen1 extends ConsumerWidget {
                                                 .read(writeScreenContentProvider
                                                     .notifier)
                                                 .setText(text);
-                                            _checkTitleCondition(text);
+                                            _checkBlankCondition(text);
                                           },
                                         ),
                                       ),
@@ -399,7 +370,7 @@ class WriteScreen1 extends ConsumerWidget {
             )));
   }
 
-  void _checkTitleCondition(String s) {
+  void _checkBlankCondition(String s) {
     _isButtonEnabled = s.isNotEmpty && (s.length <= 40);
     if (s.length > 40) {
       _titleOver40TextColor = const Color(0xFFFF6060);
