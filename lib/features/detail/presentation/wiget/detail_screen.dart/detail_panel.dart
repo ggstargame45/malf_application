@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/detail_data_provider.dart';
+import '../../../data/provider/detail_data_provider.dart';
 import 'meeting_detail_info.dart';
 import 'user_container.dart';
 

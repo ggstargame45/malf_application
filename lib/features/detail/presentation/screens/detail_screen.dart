@@ -1,13 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import 'package:malf_application/features/detail/data/detail_data_provider.dart';
+import 'package:malf_application/features/detail/data/provider/detail_data_provider.dart';
 import 'package:malf_application/shared/theme/app_colors.dart';
 import "package:sliding_up_panel/sliding_up_panel.dart";
 
-import 'detail_panel_wiget/detail_panel.dart';
-import 'detail_panel_wiget/footer_widget.dart';
-import 'detail_panel_wiget/sliding_meeting_img.dart';
+import '../wiget/detail_screen.dart/detail_panel.dart';
+import '../wiget/detail_screen.dart/footer_widget.dart';
+import '../wiget/detail_screen.dart/sliding_meeting_img.dart';
 
 @RoutePage()
 class DetailScreen extends ConsumerWidget {

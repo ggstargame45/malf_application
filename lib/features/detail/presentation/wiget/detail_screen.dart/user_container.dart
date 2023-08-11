@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:malf_application/features/detail/data/constants.dart';
+import 'package:malf_application/features/detail/constants/url_const.dart';
 
-import '../../../data/detail_data_provider.dart';
+import '../../../data/provider/detail_data_provider.dart';
 
 class UserContainer extends ConsumerWidget {
   const UserContainer({super.key});

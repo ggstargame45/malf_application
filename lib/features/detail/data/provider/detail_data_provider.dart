@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
-import 'package:malf_application/features/detail/data/network.dart';
+import 'package:malf_application/features/detail/data/network/jsondata_network.dart';
 
-import './data_model_meeting_detail.dart';
+import '../model/json_data_model.dart';
 
-part 'detail_data_provider.freezed.dart';
+part '../model/detail_data_provider.freezed.dart';
 
 @freezed
 class JsonDataState with _$JsonDataState {
@@ -26,7 +26,7 @@ class JsonDataNotifier extends StateNotifier<JsonDataState> {
 
   void loadJsonData() async {
     state = state.copyWith(isLoading: true);
-    final jsonDataResponse = await Network(postId: "16").request();
+    final jsonDataResponse = await Network(postId: "20").request();
     final jsonData = JsonData.fromJson(jsonDataResponse);
     Logger().d(jsonData);
     state = state.copyWith(isLoading: false, jsonData: jsonData);
