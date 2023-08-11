@@ -140,6 +140,7 @@ class HomeScreen extends ConsumerWidget {
           ),
           IconButton(
             onPressed: () => {
+              context.router.push(const DetailRoute())
               //logger.e(fetchDatas)
             },
             icon: const Icon(Icons.calendar_month_rounded,
@@ -148,9 +149,6 @@ class HomeScreen extends ConsumerWidget {
         ],
       ),
       /*
-
-
-
 
 
       */
@@ -315,7 +313,6 @@ class HomeScreen extends ConsumerWidget {
                                 ],
                               ),
                             ));
-
                         //... your item builder here
                       }),
                     ),
