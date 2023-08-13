@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 공통
+
+// 화면의 가로, 세로 길이에 맞춰 비율을 계산해주는 함수
 double getWidthByPercentOfScreen(double percent, BuildContext context) {
   return MediaQuery.of(context).size.width * percent / 100;
 }
@@ -87,6 +89,11 @@ class WhiteBox extends StatelessWidget {
     );
   }
 }
+
+// 공백 상수
+final double LARGEBLANK = 5.0;
+final double MEDIUMBLANK = 3.0;
+final double SMALLBLANK = 1.5;
 
 // 닫기 버튼 누를 때 띄우는 창
 void closeWritingPages(BuildContext context) {
@@ -219,36 +226,9 @@ class WritingPagesNextbutton extends StatelessWidget {
   }
 }
 
-// class WritingPagesShortTextField extends StatelessWidget {
-//   const WritingPagesShortTextField({
-//     Key? key,
-//     required this.hint,
-//   }) : super(key: key);
-
-//   final String hint;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return TextField(
-//         decoration: InputDecoration(
-//           hintText: hint,
-//           hintStyle: const TextStyle(
-//             color: Color(0xFFBEBEBE),
-//             fontSize: 16,
-//             fontFamily: 'Pretendard',
-//             fontWeight: FontWeight.w500,
-//           ),
-//           border: InputBorder.none,
-//         ),
-//         onChanged: (text) {
-//           provideContent(text);
-//         });
-//   }
-// }
-
 // write_screen1
 
-// 스크롤 가능하게 해주는 Behavior
+// ScrollConfiguration에서 Behavior를 MyBehavior로 설정하면 스크롤이 가능해짐(키보드가 올라오는 경우 등)
 class MyBehavior extends ScrollBehavior {
   @override
   Widget buildOverscrollIndicator(
@@ -259,8 +239,7 @@ class MyBehavior extends ScrollBehavior {
 
 // write_screen3
 
-//slider
-
+// 슬라이더로 SliderThemeData의 child를 Slider로 구성하면 여러가지 커스텀이 가능
 final writeScreenLocalPeopleProvider = StateProvider<double>((ref) => 0);
 
 class LocalPeopleSlider extends ConsumerWidget {

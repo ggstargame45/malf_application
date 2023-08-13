@@ -67,7 +67,7 @@ class WriteScreen3 extends ConsumerWidget {
             const WritingPagesGrayText(text: '장소'),
             WhiteBox(boxWidth: 0, boxHeight: 1),
             Row(
-              // 제목을 입력해주세요.
+              // 모임장소와 인원을 입력해주세요.
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
