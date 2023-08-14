@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
-import 'constants.dart';
+import '../../constants/url_const.dart';
 
 var logger = Logger();
 

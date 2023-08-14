@@ -4,9 +4,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
-import 'package:malf_application/features/detail/data/constants.dart';
+import 'package:malf_application/features/detail/constants/url_const.dart';
 
-import '../../../data/detail_data_provider.dart';
+import '../../../data/provider/detail_data_provider.dart';
 
 class SlidingMeetingImg extends ConsumerWidget {
   const SlidingMeetingImg({super.key});
