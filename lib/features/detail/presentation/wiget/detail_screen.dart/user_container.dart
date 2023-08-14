@@ -18,45 +18,49 @@ class UserContainer extends ConsumerWidget {
       child: Row(
         children: [
           CircleAvatar(
+            minRadius: 25,
             backgroundImage: NetworkImage(
                 "${Url.baseUrl}/${jsonDecode(jsonData!.authorpicture!)[0]}"),
           ),
           const SizedBox(
             width: 8,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                padding: const EdgeInsets.fromLTRB(6, 2, 6, 2),
-                decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 68, 176, 253),
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                child: Text(
-                  jsonData.usertype == 0 ? "현지인" : "여행객",
-                  style: const TextStyle(color: Colors.white, fontSize: 10),
+          SizedBox(
+            height: 40,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  padding: const EdgeInsets.fromLTRB(6, 2, 6, 2),
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 68, 176, 253),
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  child: Text(
+                    jsonData.usertype == 0 ? "현지인" : "여행객",
+                    style: const TextStyle(color: Colors.white, fontSize: 10),
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Row(
-                children: [
-                  Text(
-                    "${jsonData.authornickname}",
-                    style: const TextStyle(fontSize: 15),
-                  ),
-                  const SizedBox(
-                    width: 6,
-                  ),
-                  const Icon(
-                    Icons.adobe_outlined,
-                    size: 16,
-                  )
-                ],
-              )
-            ],
+                const SizedBox(
+                  height: 4,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      "${jsonData.authornickname}",
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                    const SizedBox(
+                      width: 6,
+                    ),
+                    const Icon(
+                      Icons.adobe_outlined,
+                      size: 16,
+                    )
+                  ],
+                )
+              ],
+            ),
           )
         ],
       ),

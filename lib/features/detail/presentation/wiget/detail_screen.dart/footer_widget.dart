@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
+import 'package:malf_application/config/routes/app_route.dart';
 
 var logger = Logger();
 
@@ -58,6 +60,7 @@ class FooterWigdget extends ConsumerWidget {
             TextButton(
               onPressed: () {
                 logger.d("tap");
+                context.router.push(const ParticipationRoute());
               },
               style: ButtonStyle(
                 padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
