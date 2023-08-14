@@ -237,6 +237,41 @@ class MyBehavior extends ScrollBehavior {
   }
 }
 
+class CategoryButton extends StatefulWidget {
+  @override
+  _CategoryButtonState createState() => _CategoryButtonState();
+}
+
+class _CategoryButtonState extends State<CategoryButton> {
+  bool isTravel = false;
+  bool isSports = false;
+  late List<bool> isSelected;
+  @override
+  Widget build(BuildContext context) {
+    return ToggleButtons(children: [
+      Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Text('여행', style: TextStyle(fontSize: 10))),
+      Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Text('스포츠', style: TextStyle(fontSize: 10))),
+    ], isSelected: isSelected);
+  }
+
+  void categorySelect(value) {
+    if (value == 0) {
+      isTravel = true;
+      isSports = false;
+    } else {
+      isTravel = false;
+      isSports = true;
+    }
+    setState(() {
+      isSelected = [isTravel, isSports];
+    });
+  }
+}
+
 // write_screen3
 
 // 슬라이더로 SliderThemeData의 child를 Slider로 구성하면 여러가지 커스텀이 가능

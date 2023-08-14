@@ -395,7 +395,23 @@ class WriteScreen1 extends ConsumerWidget {
                                             topRight: Radius.circular(20),
                                           ),
                                         ),
-                                        child: const Text("TEST"), //TODO: 구현해야함
+                                        child: Column(
+                                          children: [
+                                            const WritingPagesBlackText(
+                                                text: "카테고리를 입력해주세요"),
+                                            WhiteBox(
+                                                boxWidth: 0,
+                                                boxHeight: MEDIUMBLANK),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                // CategoryButton() TODO: 토글버튼 구현
+                                              ],
+                                            )
+                                          ],
+                                        ),
                                       );
                                     },
                                     backgroundColor: Colors.transparent);
@@ -462,5 +478,40 @@ class WriteScreen1 extends ConsumerWidget {
       _titleOver40TextColor = Colors.white; // 이외의 경우 하얀색으로 변경 (안보이게끔)
     }
     ;
+  }
+}
+
+class CategoryButton extends StatefulWidget {
+  @override
+  _CategoryButtonState createState() => _CategoryButtonState();
+}
+
+class _CategoryButtonState extends State<CategoryButton> {
+  bool isTravel = false;
+  bool isSports = false;
+  late List<bool> isSelected;
+  @override
+  Widget build(BuildContext context) {
+    return ToggleButtons(children: [
+      Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Text('여행', style: TextStyle(fontSize: 10))),
+      Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Text('스포츠', style: TextStyle(fontSize: 10))),
+    ], isSelected: isSelected);
+  }
+
+  void categorySelect(value) {
+    if (value == 0) {
+      isTravel = true;
+      isSports = false;
+    } else {
+      isTravel = false;
+      isSports = true;
+    }
+    setState(() {
+      isSelected = [isTravel, isSports];
+    });
   }
 }
