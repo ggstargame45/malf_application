@@ -33,6 +33,19 @@ class ContentNotifier extends StateNotifier<String> {
   }
 }
 
+final writeScreenCategoryProvider =
+    StateNotifierProvider<CategoryNotifier, String>((ref) {
+  return CategoryNotifier();
+});
+
+class CategoryNotifier extends StateNotifier<String> {
+  CategoryNotifier() : super("카테고리를 선택해주세요.");
+
+  void setText(String text) {
+    state = text;
+  }
+}
+
 @RoutePage()
 class WriteScreen1 extends ConsumerWidget {
   WriteScreen1({Key? key}) : super(key: key);
@@ -87,16 +100,18 @@ class WriteScreen1 extends ConsumerWidget {
                   WhiteBox(
                       boxWidth: 0,
                       boxHeight: SMALLBLANK), // 앱바 <-> 모임을소개해주세요 공백
-                  const WritingPagesBlackText(text: '모임을 소개해주세요.'),
-                  WhiteBox(boxWidth: 0, boxHeight: 3), // 모임을 소개해주세요 <-> 사진 공백
 
                   SizedBox(
                     height: getHeightByPercentOfScreen(
-                        60 - isKeyboardDetected(), context),
+                        70 - isKeyboardDetected(), context),
                     child: ScrollConfiguration(
                         behavior: MyBehavior(),
                         child: SingleChildScrollView(
                           child: Column(children: [
+                            const WritingPagesBlackText(text: '모임을 소개해주세요.'),
+                            WhiteBox(
+                                boxWidth: 0,
+                                boxHeight: 3), // 모임을 소개해주세요 <-> 사진 공백
                             const WritingPagesGrayText(text: '사진'),
 
                             WhiteBox(
@@ -363,6 +378,59 @@ class WriteScreen1 extends ConsumerWidget {
 
                             WhiteBox(boxWidth: 0, boxHeight: MEDIUMBLANK),
                             const WritingPagesGrayText(text: "카테고리"),
+                            WhiteBox(boxWidth: 0, boxHeight: SMALLBLANK),
+                            // 카테고리 설정하는 창
+                            GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        height: getHeightByPercentOfScreen(
+                                            50, context),
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20),
+                                          ),
+                                        ),
+                                        child: const Text("TEST"), //TODO: 구현해야함
+                                      );
+                                    },
+                                    backgroundColor: Colors.transparent);
+                              },
+                              child: Container(
+                                  width: getWidthByPercentOfScreen(90, context),
+                                  height:
+                                      getHeightByPercentOfScreen(6.5, context),
+                                  padding: const EdgeInsets.only(
+                                      left: 16, right: 16),
+                                  decoration: ShapeDecoration(
+                                    color: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      side: const BorderSide(
+                                          width: 0.50,
+                                          color: Color(0xFFD3D3D3)),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                  ),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                            ref.watch(
+                                                writeScreenCategoryProvider),
+                                            style: const TextStyle(
+                                              color: Color(0xFFBEBEBE),
+                                              fontSize: 16,
+                                              fontFamily: 'Pretendard',
+                                              fontWeight: FontWeight.w500,
+                                            ))
+                                      ])),
+                            ),
+
                             WhiteBox(boxWidth: 0, boxHeight: MEDIUMBLANK),
                           ]),
                         )),
