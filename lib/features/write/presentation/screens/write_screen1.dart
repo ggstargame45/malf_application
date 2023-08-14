@@ -32,12 +32,26 @@ class ContentNotifier extends StateNotifier<String> {
   }
 }
 
+final writeScreenCategoryProvider =
+    StateNotifierProvider<CategoryNotifier, String>((ref) {
+  return CategoryNotifier();
+});
+
+class CategoryNotifier extends StateNotifier<String> {
+  CategoryNotifier() : super("카테고리를 선택해주세요.");
+
+  void setText(String text) {
+    state = text;
+  }
+}
+
 @RoutePage()
 class WriteScreen1 extends ConsumerWidget {
   WriteScreen1({Key? key}) : super(key: key);
 
   bool _isButtonEnabled = false;
   Color _titleOver40TextColor = Colors.white;
+  final int TITLELIMIT = 40;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -82,7 +96,9 @@ class WriteScreen1 extends ConsumerWidget {
                       )
                     ],
                   ),
-                  WhiteBox(boxWidth: 0, boxHeight: 2), // 앱바 <-> 모임을소개해주세요 공백
+                  WhiteBox(
+                      boxWidth: 0,
+                      boxHeight: SMALLBLANK), // 앱바 <-> 모임을소개해주세요 공백
 
                   SizedBox(
                     height: getHeightByPercentOfScreen(
@@ -92,11 +108,9 @@ class WriteScreen1 extends ConsumerWidget {
                         child: SingleChildScrollView(
                           child: Column(children: [
                             const WritingPagesBlackText(text: '모임을 소개해주세요.'),
-
                             WhiteBox(
                                 boxWidth: 0,
                                 boxHeight: 3), // 모임을 소개해주세요 <-> 사진 공백
-
                             const WritingPagesGrayText(text: '사진'),
 
                             WhiteBox(
@@ -105,7 +119,7 @@ class WriteScreen1 extends ConsumerWidget {
                               // 사진 첨부
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
-                                WhiteBox(boxWidth: 5, boxHeight: 0),
+                                WhiteBox(boxWidth: LARGEBLANK, boxHeight: 0),
                                 SizedBox(
                                   width:
                                       getHeightByPercentOfScreen(10, context),
@@ -247,6 +261,11 @@ class WriteScreen1 extends ConsumerWidget {
                                     children: [
                                       Expanded(
                                         child: TextField(
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontFamily: 'Pretendard',
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                             decoration: const InputDecoration(
                                               hintText: '제목을 입력해주세요.',
                                               hintStyle: TextStyle(
@@ -276,7 +295,7 @@ class WriteScreen1 extends ConsumerWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                WhiteBox(boxWidth: 5, boxHeight: 0),
+                                WhiteBox(boxWidth: LARGEBLANK, boxHeight: 0),
                                 Text(
                                   '40자 이하로 입력해주세요.',
                                   style: TextStyle(
@@ -290,13 +309,14 @@ class WriteScreen1 extends ConsumerWidget {
                               ],
                             ),
                             WhiteBox(
-                                boxWidth: 0, boxHeight: 1.5), // 40자이하 <-> 내용 공백
+                                boxWidth: 0,
+                                boxHeight: SMALLBLANK), // 40자이하 <-> 내용 공백
 
                             const WritingPagesGrayText(text: '내용'),
 
                             WhiteBox(
                                 boxWidth: 0,
-                                boxHeight: 1.5), // 내용 <-> 소개글을 입력해주세요 공백
+                                boxHeight: SMALLBLANK), // 내용 <-> 소개글을 입력해주세요 공백
                             Row(
                               // 소개글을 입력해주세요.(선택)
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -305,7 +325,7 @@ class WriteScreen1 extends ConsumerWidget {
                                 Container(
                                   width: getWidthByPercentOfScreen(90, context),
                                   height:
-                                      getHeightByPercentOfScreen(20, context),
+                                      getHeightByPercentOfScreen(15, context),
                                   padding: const EdgeInsets.only(
                                       left: 16, right: 16),
                                   decoration: ShapeDecoration(
@@ -325,6 +345,11 @@ class WriteScreen1 extends ConsumerWidget {
                                     children: [
                                       Flexible(
                                         child: TextField(
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontFamily: 'Pretendard',
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                           maxLines: null,
                                           decoration: const InputDecoration(
                                             hintText: '소개글을 입력해주세요.(선택)',
@@ -341,7 +366,6 @@ class WriteScreen1 extends ConsumerWidget {
                                                 .read(writeScreenContentProvider
                                                     .notifier)
                                                 .setText(text);
-                                            _checkBlankCondition(text);
                                           },
                                         ),
                                       ),
@@ -350,6 +374,79 @@ class WriteScreen1 extends ConsumerWidget {
                                 ),
                               ],
                             ),
+
+                            WhiteBox(boxWidth: 0, boxHeight: MEDIUMBLANK),
+                            const WritingPagesGrayText(text: "카테고리"),
+                            WhiteBox(boxWidth: 0, boxHeight: SMALLBLANK),
+                            // 카테고리 설정하는 창
+                            GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        height: getHeightByPercentOfScreen(
+                                            50, context),
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20),
+                                          ),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            const WritingPagesBlackText(
+                                                text: "카테고리를 입력해주세요"),
+                                            WhiteBox(
+                                                boxWidth: 0,
+                                                boxHeight: MEDIUMBLANK),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                // CategoryButton() TODO: 토글버튼 구현
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    backgroundColor: Colors.transparent);
+                              },
+                              child: Container(
+                                  width: getWidthByPercentOfScreen(90, context),
+                                  height:
+                                      getHeightByPercentOfScreen(6.5, context),
+                                  padding: const EdgeInsets.only(
+                                      left: 16, right: 16),
+                                  decoration: ShapeDecoration(
+                                    color: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      side: const BorderSide(
+                                          width: 0.50,
+                                          color: Color(0xFFD3D3D3)),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                  ),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                            ref.watch(
+                                                writeScreenCategoryProvider),
+                                            style: const TextStyle(
+                                              color: Color(0xFFBEBEBE),
+                                              fontSize: 16,
+                                              fontFamily: 'Pretendard',
+                                              fontWeight: FontWeight.w500,
+                                            ))
+                                      ])),
+                            ),
+
+                            WhiteBox(boxWidth: 0, boxHeight: MEDIUMBLANK),
                           ]),
                         )),
                   ),
@@ -365,18 +462,54 @@ class WriteScreen1 extends ConsumerWidget {
                           }
                         : null,
                   ),
-                  WhiteBox(boxWidth: 0, boxHeight: 3)
+                  WhiteBox(boxWidth: 0, boxHeight: MEDIUMBLANK)
                 ],
               ),
             )));
   }
 
   void _checkBlankCondition(String s) {
-    _isButtonEnabled = s.isNotEmpty && (s.length <= 40);
-    if (s.length > 40) {
-      _titleOver40TextColor = const Color(0xFFFF6060);
+    _isButtonEnabled = s.isNotEmpty && (s.length <= TITLELIMIT);
+    if (s.length > TITLELIMIT) {
+      _titleOver40TextColor =
+          const Color(0xFFFF6060); // 40자 이상인 경우 글씨를 빨간색으로 변경
     } else {
-      _titleOver40TextColor = Colors.white;
+      _titleOver40TextColor = Colors.white; // 이외의 경우 하얀색으로 변경 (안보이게끔)
     }
+  }
+}
+
+class CategoryButton extends StatefulWidget {
+  @override
+  _CategoryButtonState createState() => _CategoryButtonState();
+}
+
+class _CategoryButtonState extends State<CategoryButton> {
+  bool isTravel = false;
+  bool isSports = false;
+  late List<bool> isSelected;
+  @override
+  Widget build(BuildContext context) {
+    return ToggleButtons(children: [
+      Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Text('여행', style: TextStyle(fontSize: 10))),
+      Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Text('스포츠', style: TextStyle(fontSize: 10))),
+    ], isSelected: isSelected);
+  }
+
+  void categorySelect(value) {
+    if (value == 0) {
+      isTravel = true;
+      isSports = false;
+    } else {
+      isTravel = false;
+      isSports = true;
+    }
+    setState(() {
+      isSelected = [isTravel, isSports];
+    });
   }
 }
