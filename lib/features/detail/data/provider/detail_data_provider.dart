@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
-import 'package:malf_application/features/detail/data/network/jsondata_network.dart';
+import 'package:malf_application/features/detail/data/network/network.dart';
 
 import '../model/json_data_model.dart';
 

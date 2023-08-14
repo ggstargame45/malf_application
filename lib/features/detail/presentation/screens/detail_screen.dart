@@ -5,9 +5,12 @@ import 'package:malf_application/features/detail/data/provider/detail_data_provi
 import 'package:malf_application/shared/theme/app_colors.dart';
 import "package:sliding_up_panel/sliding_up_panel.dart";
 
+import '../wiget/detail_screen.dart/detail_more_sheet.dart';
 import '../wiget/detail_screen.dart/detail_panel.dart';
 import '../wiget/detail_screen.dart/footer_widget.dart';
 import '../wiget/detail_screen.dart/sliding_meeting_img.dart';
+
+final scaffoldKey = GlobalKey<ScaffoldState>();
 
 @RoutePage()
 class DetailScreen extends ConsumerWidget {
@@ -17,6 +20,7 @@ class DetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     bool isLoading = ref.watch(jsonDataProvider).isLoading;
     return Scaffold(
+        key: scaffoldKey,
         appBar: AppBar(
           backgroundColor: AppColors.white,
           leading: IconButton(
@@ -28,12 +32,16 @@ class DetailScreen extends ConsumerWidget {
               context.router.pop();
             },
           ),
-          actions: const [
-            Icon(
-              Icons.more_horiz_outlined,
-              color: AppColors.black,
-            ),
-            SizedBox(
+          actions: [
+            IconButton(
+                icon: const Icon(
+                  Icons.more_horiz_outlined,
+                  color: AppColors.black,
+                ),
+                onPressed: () {
+                  detailMoreSheet(context);
+                }),
+            const SizedBox(
               width: 10,
             )
           ],

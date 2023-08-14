@@ -18,7 +18,7 @@ abstract class _$AppRouter extends RootStackRouter {
     DetailRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const DetailScreen(),
+        child: DetailScreen(),
       );
     },
     HomeRoute.name: (routeData) {
@@ -27,6 +27,12 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: HomeScreen(key: args.key),
+      );
+    },
+    ParticipationRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ParticipationScreen(),
       );
     },
     WriteRoute.name: (routeData) {
@@ -86,6 +92,20 @@ class HomeRouteArgs {
   String toString() {
     return 'HomeRouteArgs{key: $key}';
   }
+}
+
+/// generated route for
+/// [ParticipationScreen]
+class ParticipationRoute extends PageRouteInfo<void> {
+  const ParticipationRoute({List<PageRouteInfo>? children})
+      : super(
+          ParticipationRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ParticipationRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
