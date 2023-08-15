@@ -35,12 +35,6 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const ParticipationScreen(),
       );
     },
-    WriteRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const WriteScreen(),
-      );
-    },
     WriteRoute1.name: (routeData) {
       final args = routeData.argsAs<WriteRoute1Args>(
           orElse: () => const WriteRoute1Args());
@@ -104,20 +98,6 @@ class ParticipationRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ParticipationRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [WriteScreen]
-class WriteRoute extends PageRouteInfo<void> {
-  const WriteRoute({List<PageRouteInfo>? children})
-      : super(
-          WriteRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'WriteRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

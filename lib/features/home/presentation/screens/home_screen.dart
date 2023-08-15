@@ -348,7 +348,7 @@ class HomeScreen extends ConsumerWidget {
       // ),
       //
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.router.push(const WriteRoute()),
+        onPressed: () => context.router.push(WriteRoute1()),
         child: const Icon(Icons.add),
       ),
       //

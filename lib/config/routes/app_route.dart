@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../features/detail/presentation/screens/detail_screen.dart';
 import '../../features/detail/presentation/screens/participation_sreen.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
-import '../../features/write/presentation/screens/write_screen.dart';
 import '../../features/write/presentation/screens/write_screen1.dart';
 
 part 'app_route.gr.dart';
@@ -19,7 +18,7 @@ class AppRouter extends _$AppRouter {
         /// routes go here
         AutoRoute(page: HomeRoute.page, initial: true),
         AutoRoute(page: DetailRoute.page),
-        AutoRoute(page: WriteRoute.page),
+        AutoRoute(page: WriteRoute1.page),
         AutoRoute(page: ParticipationRoute.page)
       ];
 }
