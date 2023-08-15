@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -9,7 +10,12 @@ import 'write_screen3.dart';
 
 final writeScreenDateProvider = StateProvider<String>((ref) => "");
 DateTime date = DateTime.now();
-String dateKr = DateFormat('yy.MM.dd (EEEE)').format(date);
+String hour = '06';
+String minute = '00';
+String ampm = '오후';
+
+bool calendarExpanded = false;
+bool pickerExpanded = false;
 
 class WriteScreen2 extends ConsumerWidget {
   const WriteScreen2({super.key});
@@ -17,6 +23,10 @@ class WriteScreen2 extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     initializeDateFormatting();
+    date = DateTime.now();
+    hour = '06';
+    minute = '00';
+    ampm = '오후';
 
     return MaterialApp(
       home: Scaffold(
@@ -73,18 +83,41 @@ class WriteScreen2 extends ConsumerWidget {
             ),
 
             WhiteBox(boxWidth: 0, boxHeight: MEDIUMBLANK),
-            Container(
-                width: getWidthByPercentOfScreen(90, context),
-                decoration: ShapeDecoration(
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    side:
-                        const BorderSide(width: 0.50, color: Color(0x00000000)),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                clipBehavior: Clip.antiAlias, // 안티앨리어싱
-                child: const DateCalendar()),
+            SizedBox(
+              height: getHeightByPercentOfScreen(60, context),
+              child: ScrollConfiguration(
+                  behavior: MyBehavior(),
+                  child: SingleChildScrollView(
+                      child: Column(
+                    children: [
+                      Container(
+                          width: getWidthByPercentOfScreen(90, context),
+                          decoration: ShapeDecoration(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                  width: 0.50, color: Color(0x00000000)),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          clipBehavior: Clip.antiAlias, // 안티앨리어싱
+                          child: const DateCalendar()),
+                      WhiteBox(boxWidth: 0, boxHeight: SMALLBLANK),
+                      Container(
+                          width: getWidthByPercentOfScreen(90, context),
+                          decoration: ShapeDecoration(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                  width: 0.50, color: Color(0x00000000)),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          clipBehavior: Clip.antiAlias, // 안티앨리어싱
+                          child: const DatePicker()),
+                    ],
+                  ))),
+            ),
 
             const Spacer(),
             WritingPagesNextbutton(
@@ -106,6 +139,8 @@ class WriteScreen2 extends ConsumerWidget {
 }
 
 // ExpansionPanelList - 'v'모양 버튼 클릭에 따라 화면 아래로 확장 및 축소 가능한 위젯
+
+// DateCalendar
 class DateCalendar extends StatefulWidget {
   const DateCalendar({Key? key}) : super(key: key);
 
@@ -114,7 +149,6 @@ class DateCalendar extends StatefulWidget {
 }
 
 class _DateCalendarState extends State<DateCalendar> {
-  bool _expanded = false;
   DateTime selectedDay = DateTime(
     DateTime.now().year,
     DateTime.now().month,
@@ -203,15 +237,149 @@ class _DateCalendarState extends State<DateCalendar> {
                     }),
               ],
             ),
-            isExpanded: _expanded,
+            isExpanded: calendarExpanded,
             canTapOnHeader: true,
             backgroundColor: const Color(0xF7F7F7F7)),
       ],
       expandedHeaderPadding: const EdgeInsets.all(0),
       expansionCallback: (panelIndex, isExpanded) {
-        _expanded = !_expanded;
-        setState(() {});
+        setState(() {
+          calendarExpanded = !calendarExpanded;
+          // pickerExpanded = false;
+        });
       },
     );
   }
 }
+
+// DatePicker
+class DatePicker extends StatefulWidget {
+  const DatePicker({Key? key}) : super(key: key);
+
+  @override
+  State<DatePicker> createState() => _DatePickerState();
+}
+
+class _DatePickerState extends State<DatePicker> {
+  @override
+  Widget build(BuildContext context) {
+    DateTime time = DateTime(2023, 8, 15, 18, 0);
+    return ExpansionPanelList(
+      animationDuration: const Duration(milliseconds: 500),
+      children: [
+        ExpansionPanel(
+            headerBuilder: (context, isExpanded) {
+              return Row(
+                children: [
+                  const SizedBox(
+                      width: 20, height: 70), // 위 SizedBox의 height로 높이 조절
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.access_time, size: 35),
+                      Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                '모임 시간',
+                                style: TextStyle(
+                                  color: Color(0xFF808080),
+                                  fontSize: 14,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Text(
+                                '$ampm $hour:$minute',
+                                style: const TextStyle(
+                                  color: Color(0xFF1A1A1A),
+                                  fontSize: 18,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ))
+                    ],
+                  ),
+                ],
+              );
+            },
+            body: Column(
+              children: [
+                const Divider(),
+                SizedBox(
+                    height: getHeightByPercentOfScreen(25, context),
+                    child: CupertinoDatePicker(
+                      mode: CupertinoDatePickerMode.time,
+                      initialDateTime: DateTime(2023, 08, 15, 18, 0),
+                      onDateTimeChanged: (DateTime newTime) {
+                        setState(() {
+                          time = newTime;
+                          if (time.hour < 10) {
+                            hour = '0${(time.hour % 12).toString()}';
+                          } else {
+                            hour = (time.hour % 12).toString();
+                          }
+                          if (time.minute < 10) {
+                            minute = '0${minute = time.minute.toString()}';
+                          } else {
+                            minute = time.minute.toString();
+                          }
+                          if (time.hour >= 12) {
+                            ampm = '오후';
+                          } else {
+                            ampm = '오전';
+                          }
+                        });
+                      },
+                    ))
+              ],
+            ),
+            isExpanded: pickerExpanded,
+            canTapOnHeader: true,
+            backgroundColor: const Color(0xF7F7F7F7)),
+      ],
+      expandedHeaderPadding: const EdgeInsets.all(0),
+      expansionCallback: (panelIndex, isExpanded) {
+        setState(() {
+          pickerExpanded = !pickerExpanded;
+          // calendarExpanded = false;
+        });
+      },
+    );
+  }
+}
+
+// class CupertinoPickerWidget extends StatefulWidget {
+//   final List<String> items;
+//   String item;
+
+//   CupertinoPickerWidget({super.key, required this.items, required this.item});
+
+//   @override
+//   _CupertinoPickerWidgetState createState() => _CupertinoPickerWidgetState();
+// }
+
+// class _CupertinoPickerWidgetState extends State<CupertinoPickerWidget> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return CupertinoPicker(
+//       itemExtent: 50,
+//       onSelectedItemChanged: (i) {
+//         setState(() {
+//           widget.item = widget.items[i];
+//         });
+//       },
+//       children: widget.items.map<Widget>((i) {
+//         return Center(
+//           child: Text(i),
+//         );
+//       }).toList(),
+//     );
+//   }
+// }
