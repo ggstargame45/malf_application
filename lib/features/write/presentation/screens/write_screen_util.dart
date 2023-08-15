@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -91,9 +92,9 @@ class WhiteBox extends StatelessWidget {
 }
 
 // 공백 상수
-final double LARGEBLANK = 5.0;
-final double MEDIUMBLANK = 3.0;
-final double SMALLBLANK = 1.5;
+const double LARGEBLANK = 5.0;
+const double MEDIUMBLANK = 3.0;
+const double SMALLBLANK = 1.5;
 
 // 닫기 버튼 누를 때 띄우는 창
 void closeWritingPages(BuildContext context) {
@@ -141,7 +142,7 @@ void closeWritingPages(BuildContext context) {
                       minimumSize:
                           MaterialStateProperty.all(const Size(120, 40))),
                   onPressed: () {
-                    Navigator.of(context).pop(); //창 닫기
+                    Navigator.of(context).pop();
                   },
                   child: const Text(
                     '취소',
@@ -163,8 +164,7 @@ void closeWritingPages(BuildContext context) {
                       minimumSize:
                           MaterialStateProperty.all(const Size(120, 40))),
                   onPressed: () {
-                    Navigator.popUntil(
-                        context, ModalRoute.withName("/")); //초기 화면으로 이동
+                    context.router.popUntilRouteWithName('HomeRoute'); //창 닫기
                   },
                   child: const Text(
                     '나가기',
@@ -205,7 +205,7 @@ class WritingPagesNextbutton extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12)),
-                  backgroundColor: Color(0xFF61C3FF),
+                  backgroundColor: const Color(0xFF61C3FF),
                   minimumSize: Size(
                     getWidthByPercentOfScreen(90, context),
                     getHeightByPercentOfScreen(7, context),
@@ -238,6 +238,8 @@ class MyBehavior extends ScrollBehavior {
 }
 
 class CategoryButton extends StatefulWidget {
+  const CategoryButton({super.key});
+
   @override
   _CategoryButtonState createState() => _CategoryButtonState();
 }
@@ -248,14 +250,14 @@ class _CategoryButtonState extends State<CategoryButton> {
   late List<bool> isSelected;
   @override
   Widget build(BuildContext context) {
-    return ToggleButtons(children: [
+    return ToggleButtons(isSelected: isSelected, children: const [
       Padding(
           padding: EdgeInsets.symmetric(horizontal: 5),
           child: Text('여행', style: TextStyle(fontSize: 10))),
       Padding(
           padding: EdgeInsets.symmetric(horizontal: 5),
           child: Text('스포츠', style: TextStyle(fontSize: 10))),
-    ], isSelected: isSelected);
+    ]);
   }
 
   void categorySelect(value) {
@@ -278,6 +280,8 @@ class _CategoryButtonState extends State<CategoryButton> {
 final writeScreenLocalPeopleProvider = StateProvider<double>((ref) => 0);
 
 class LocalPeopleSlider extends ConsumerWidget {
+  const LocalPeopleSlider({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sliderValue = ref.watch(writeScreenLocalPeopleProvider);
@@ -307,6 +311,8 @@ class LocalPeopleSlider extends ConsumerWidget {
 final writeScreenForeignPeopleProvider = StateProvider<double>((ref) => 0);
 
 class ForeignPeopleSlider extends ConsumerWidget {
+  const ForeignPeopleSlider({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sliderValue = ref.watch(writeScreenForeignPeopleProvider);

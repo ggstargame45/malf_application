@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:malf_application/shared/theme/app_theme.dart';
-
 import 'package:malf_application/config/routes/app_route.dart';
+import 'package:malf_application/shared/theme/app_theme.dart';
 
 class MalfApp extends ConsumerWidget {
   MalfApp({super.key});
