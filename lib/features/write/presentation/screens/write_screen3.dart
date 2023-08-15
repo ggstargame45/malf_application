@@ -115,12 +115,12 @@ class WriteScreen3 extends ConsumerWidget {
             WritingPagesGrayText(
                 text:
                     '현지인 인원: ${ref.watch(writeScreenLocalPeopleProvider).toInt()} 명'),
-            LocalPeopleSlider(),
+            const LocalPeopleSlider(),
             WhiteBox(boxWidth: 0, boxHeight: 3),
             WritingPagesGrayText(
                 text:
                     '외국인 인원: ${ref.watch(writeScreenForeignPeopleProvider).toInt()} 명'),
-            ForeignPeopleSlider(),
+            const ForeignPeopleSlider(),
             const Spacer(),
             WritingPagesNextbutton(
               pressNextButton: true
