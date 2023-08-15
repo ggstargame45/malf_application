@@ -91,9 +91,9 @@ class WhiteBox extends StatelessWidget {
 }
 
 // 공백 상수
-final double LARGEBLANK = 5.0;
-final double MEDIUMBLANK = 3.0;
-final double SMALLBLANK = 1.5;
+const double LARGEBLANK = 5.0;
+const double MEDIUMBLANK = 3.0;
+const double SMALLBLANK = 1.5;
 
 // 닫기 버튼 누를 때 띄우는 창
 void closeWritingPages(BuildContext context) {
@@ -205,7 +205,7 @@ class WritingPagesNextbutton extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12)),
-                  backgroundColor: Color(0xFF61C3FF),
+                  backgroundColor: const Color(0xFF61C3FF),
                   minimumSize: Size(
                     getWidthByPercentOfScreen(90, context),
                     getHeightByPercentOfScreen(7, context),
@@ -237,38 +237,46 @@ class MyBehavior extends ScrollBehavior {
   }
 }
 
-class CategoryButton extends StatefulWidget {
+// write_screen3
+
+// ExpansionPanelList - 'v'모양 버튼 클릭에 따라 화면 아래로 확장 및 축소 가능한 위젯
+class FirstRoute extends StatefulWidget {
+  const FirstRoute({Key? key}) : super(key: key);
+
   @override
-  _CategoryButtonState createState() => _CategoryButtonState();
+  State<FirstRoute> createState() => _FirstRouteState();
 }
 
-class _CategoryButtonState extends State<CategoryButton> {
-  bool isTravel = false;
-  bool isSports = false;
-  late List<bool> isSelected;
+class _FirstRouteState extends State<FirstRoute> {
+  bool _expanded = false;
+
   @override
   Widget build(BuildContext context) {
-    return ToggleButtons(children: [
-      Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          child: Text('여행', style: TextStyle(fontSize: 10))),
-      Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          child: Text('스포츠', style: TextStyle(fontSize: 10))),
-    ], isSelected: isSelected);
-  }
-
-  void categorySelect(value) {
-    if (value == 0) {
-      isTravel = true;
-      isSports = false;
-    } else {
-      isTravel = false;
-      isSports = true;
-    }
-    setState(() {
-      isSelected = [isTravel, isSports];
-    });
+    return SingleChildScrollView(
+      child: ExpansionPanelList(
+        children: [
+          ExpansionPanel(
+            headerBuilder: (context, isExpanded) {
+              return const Text("확장패널 헤더");
+            },
+            body: const Text("확장패널 바디"),
+            isExpanded: _expanded,
+          ),
+          ExpansionPanel(
+            headerBuilder: (context, isExpanded) {
+              return const Text("확장패널 헤더");
+            },
+            body: const Text("확장패널 바디"),
+            isExpanded: _expanded,
+          ),
+        ],
+        expansionCallback: (panelIndex, isExpanded) {
+          setState(() {
+            _expanded = !_expanded;
+          });
+        },
+      ),
+    );
   }
 }
 
@@ -278,6 +286,8 @@ class _CategoryButtonState extends State<CategoryButton> {
 final writeScreenLocalPeopleProvider = StateProvider<double>((ref) => 0);
 
 class LocalPeopleSlider extends ConsumerWidget {
+  const LocalPeopleSlider({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sliderValue = ref.watch(writeScreenLocalPeopleProvider);
@@ -307,6 +317,8 @@ class LocalPeopleSlider extends ConsumerWidget {
 final writeScreenForeignPeopleProvider = StateProvider<double>((ref) => 0);
 
 class ForeignPeopleSlider extends ConsumerWidget {
+  const ForeignPeopleSlider({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sliderValue = ref.watch(writeScreenForeignPeopleProvider);
