@@ -239,47 +239,6 @@ class MyBehavior extends ScrollBehavior {
 
 // write_screen3
 
-// ExpansionPanelList - 'v'모양 버튼 클릭에 따라 화면 아래로 확장 및 축소 가능한 위젯
-class FirstRoute extends StatefulWidget {
-  const FirstRoute({Key? key}) : super(key: key);
-
-  @override
-  State<FirstRoute> createState() => _FirstRouteState();
-}
-
-class _FirstRouteState extends State<FirstRoute> {
-  bool _expanded = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: ExpansionPanelList(
-        children: [
-          ExpansionPanel(
-            headerBuilder: (context, isExpanded) {
-              return const Text("확장패널 헤더");
-            },
-            body: const Text("확장패널 바디"),
-            isExpanded: _expanded,
-          ),
-          ExpansionPanel(
-            headerBuilder: (context, isExpanded) {
-              return const Text("확장패널 헤더");
-            },
-            body: const Text("확장패널 바디"),
-            isExpanded: _expanded,
-          ),
-        ],
-        expansionCallback: (panelIndex, isExpanded) {
-          setState(() {
-            _expanded = !_expanded;
-          });
-        },
-      ),
-    );
-  }
-}
-
 // write_screen3
 
 // 슬라이더로 SliderThemeData의 child를 Slider로 구성하면 여러가지 커스텀이 가능
