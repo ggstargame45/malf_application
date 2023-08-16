@@ -88,21 +88,53 @@ final logger = Logger();
 @freezed
 class ListItemData with _$ListItemData {
   const factory ListItemData({
-    required int post_id,
-    required String title,
-    required String author_nickname,
-    required int author_nation,
-    required int user_type,
-    required int meeting_capacity,
+    @JsonKey(name: 'post_id') required int postId,
+    @JsonKey(name: 'title') required String title,
+    @JsonKey(name: 'author_nickname') required String authorNickname,
+    @JsonKey(name: 'author_nation') required int authorNation,
+    @JsonKey(name: 'user_type') required int userType,
+    @JsonKey(name: 'meeting_capacity') required int meetingCapacity,
+    @JsonKey(name: 'meeting_pic')
+    @PicListConverter()
+    required List<String> meetingPic,
     //@TODO : meetingPic과 meetingStartTime은 String으로 받아서 앞쪽에서 한번 더 파싱 해야함
-    required String meeting_pic,
-    required String meeting_location,
+    @JsonKey(name: 'meeting_location') required String meetingLocation,
     //@TODO : meetingPic과 meetingStartTime은 String으로 받아서 앞에서 한번 더 파싱 해야함
-    required String meeting_start_time,
+    @JsonKey(name: 'meeting_start_time')
+    @DateTimeConverter()
+    required DateTime meetingStartTime,
   }) = _ListItemData;
 
   factory ListItemData.fromJson(Map<String, dynamic> json) =>
       _$ListItemDataFromJson(json);
+}
+
+class PicListConverter implements JsonConverter<List<String>, String> {
+  const PicListConverter();
+
+  @override
+  List<String> fromJson(String json) {
+    return List<String>.from(jsonDecode(json));
+  }
+
+  @override
+  String toJson(List<String> object) {
+    return jsonEncode(json);
+  }
+}
+
+class DateTimeConverter implements JsonConverter<DateTime, String> {
+  const DateTimeConverter();
+
+  @override
+  DateTime fromJson(String json) {
+    return DateTime.parse(json);
+  }
+
+  @override
+  String toJson(DateTime object) {
+    return object.toIso8601String();
+  }
 }
 
 @RoutePage()
@@ -213,8 +245,7 @@ class HomeScreen extends ConsumerWidget {
                                             borderRadius:
                                                 BorderRadius.circular(12),
                                             child: Image.network(
-                                              jsonDecode(
-                                                  data[index].meeting_pic)[0],
+                                              data[index].meetingPic[0],
                                               errorBuilder:
                                                   (BuildContext context,
                                                       Object error,
@@ -271,30 +302,30 @@ class HomeScreen extends ConsumerWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             _content(
-                                                url: (jsonDecode(data[index]
-                                                    .meeting_pic))[0],
+                                                url:
+                                                    (data[index].meetingPic)[0],
                                                 title: "ID : ",
-                                                content: (jsonDecode(data[index]
-                                                        .meeting_pic))[0]
+                                                content: data[index]
+                                                    .meetingStartTime
                                                     .toString()),
                                             _content(
-                                                url: (jsonDecode(data[index]
-                                                    .meeting_pic))[0],
+                                                url:
+                                                    (data[index].meetingPic)[0],
                                                 title: "Author : ",
-                                                content: data[index]
-                                                    .author_nickname),
+                                                content:
+                                                    data[index].authorNickname),
                                             _content(
-                                                url: (jsonDecode(data[index]
-                                                    .meeting_pic))[0],
+                                                url:
+                                                    (data[index].meetingPic)[0],
                                                 title: "장소 : ",
                                                 content: data[index]
-                                                    .meeting_location),
+                                                    .meetingLocation),
                                             _content(
-                                                url: (jsonDecode(data[index]
-                                                    .meeting_pic))[0],
+                                                url:
+                                                    (data[index].meetingPic)[0],
                                                 title: " : ",
                                                 content:
-                                                    "${data[index].author_nation}"),
+                                                    "${data[index].authorNation}"),
                                           ],
                                         )
                                       ],

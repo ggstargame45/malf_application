@@ -20,17 +20,28 @@ ListItemData _$ListItemDataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ListItemData {
-  int get post_id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'post_id')
+  int get postId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'title')
   String get title => throw _privateConstructorUsedError;
-  String get author_nickname => throw _privateConstructorUsedError;
-  int get author_nation => throw _privateConstructorUsedError;
-  int get user_type => throw _privateConstructorUsedError;
-  int get meeting_capacity =>
+  @JsonKey(name: 'author_nickname')
+  String get authorNickname => throw _privateConstructorUsedError;
+  @JsonKey(name: 'author_nation')
+  int get authorNation => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_type')
+  int get userType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'meeting_capacity')
+  int get meetingCapacity => throw _privateConstructorUsedError;
+  @JsonKey(name: 'meeting_pic')
+  @PicListConverter()
+  List<String> get meetingPic =>
       throw _privateConstructorUsedError; //@TODO : meetingPic과 meetingStartTime은 String으로 받아서 앞쪽에서 한번 더 파싱 해야함
-  String get meeting_pic => throw _privateConstructorUsedError;
-  String get meeting_location =>
+  @JsonKey(name: 'meeting_location')
+  String get meetingLocation =>
       throw _privateConstructorUsedError; //@TODO : meetingPic과 meetingStartTime은 String으로 받아서 앞에서 한번 더 파싱 해야함
-  String get meeting_start_time => throw _privateConstructorUsedError;
+  @JsonKey(name: 'meeting_start_time')
+  @DateTimeConverter()
+  DateTime get meetingStartTime => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,15 +56,17 @@ abstract class $ListItemDataCopyWith<$Res> {
       _$ListItemDataCopyWithImpl<$Res, ListItemData>;
   @useResult
   $Res call(
-      {int post_id,
-      String title,
-      String author_nickname,
-      int author_nation,
-      int user_type,
-      int meeting_capacity,
-      String meeting_pic,
-      String meeting_location,
-      String meeting_start_time});
+      {@JsonKey(name: 'post_id') int postId,
+      @JsonKey(name: 'title') String title,
+      @JsonKey(name: 'author_nickname') String authorNickname,
+      @JsonKey(name: 'author_nation') int authorNation,
+      @JsonKey(name: 'user_type') int userType,
+      @JsonKey(name: 'meeting_capacity') int meetingCapacity,
+      @JsonKey(name: 'meeting_pic') @PicListConverter() List<String> meetingPic,
+      @JsonKey(name: 'meeting_location') String meetingLocation,
+      @JsonKey(name: 'meeting_start_time')
+      @DateTimeConverter()
+      DateTime meetingStartTime});
 }
 
 /// @nodoc
@@ -69,53 +82,53 @@ class _$ListItemDataCopyWithImpl<$Res, $Val extends ListItemData>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? post_id = null,
+    Object? postId = null,
     Object? title = null,
-    Object? author_nickname = null,
-    Object? author_nation = null,
-    Object? user_type = null,
-    Object? meeting_capacity = null,
-    Object? meeting_pic = null,
-    Object? meeting_location = null,
-    Object? meeting_start_time = null,
+    Object? authorNickname = null,
+    Object? authorNation = null,
+    Object? userType = null,
+    Object? meetingCapacity = null,
+    Object? meetingPic = null,
+    Object? meetingLocation = null,
+    Object? meetingStartTime = null,
   }) {
     return _then(_value.copyWith(
-      post_id: null == post_id
-          ? _value.post_id
-          : post_id // ignore: cast_nullable_to_non_nullable
+      postId: null == postId
+          ? _value.postId
+          : postId // ignore: cast_nullable_to_non_nullable
               as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      author_nickname: null == author_nickname
-          ? _value.author_nickname
-          : author_nickname // ignore: cast_nullable_to_non_nullable
+      authorNickname: null == authorNickname
+          ? _value.authorNickname
+          : authorNickname // ignore: cast_nullable_to_non_nullable
               as String,
-      author_nation: null == author_nation
-          ? _value.author_nation
-          : author_nation // ignore: cast_nullable_to_non_nullable
+      authorNation: null == authorNation
+          ? _value.authorNation
+          : authorNation // ignore: cast_nullable_to_non_nullable
               as int,
-      user_type: null == user_type
-          ? _value.user_type
-          : user_type // ignore: cast_nullable_to_non_nullable
+      userType: null == userType
+          ? _value.userType
+          : userType // ignore: cast_nullable_to_non_nullable
               as int,
-      meeting_capacity: null == meeting_capacity
-          ? _value.meeting_capacity
-          : meeting_capacity // ignore: cast_nullable_to_non_nullable
+      meetingCapacity: null == meetingCapacity
+          ? _value.meetingCapacity
+          : meetingCapacity // ignore: cast_nullable_to_non_nullable
               as int,
-      meeting_pic: null == meeting_pic
-          ? _value.meeting_pic
-          : meeting_pic // ignore: cast_nullable_to_non_nullable
+      meetingPic: null == meetingPic
+          ? _value.meetingPic
+          : meetingPic // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      meetingLocation: null == meetingLocation
+          ? _value.meetingLocation
+          : meetingLocation // ignore: cast_nullable_to_non_nullable
               as String,
-      meeting_location: null == meeting_location
-          ? _value.meeting_location
-          : meeting_location // ignore: cast_nullable_to_non_nullable
-              as String,
-      meeting_start_time: null == meeting_start_time
-          ? _value.meeting_start_time
-          : meeting_start_time // ignore: cast_nullable_to_non_nullable
-              as String,
+      meetingStartTime: null == meetingStartTime
+          ? _value.meetingStartTime
+          : meetingStartTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ) as $Val);
   }
 }
@@ -129,15 +142,17 @@ abstract class _$$_ListItemDataCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int post_id,
-      String title,
-      String author_nickname,
-      int author_nation,
-      int user_type,
-      int meeting_capacity,
-      String meeting_pic,
-      String meeting_location,
-      String meeting_start_time});
+      {@JsonKey(name: 'post_id') int postId,
+      @JsonKey(name: 'title') String title,
+      @JsonKey(name: 'author_nickname') String authorNickname,
+      @JsonKey(name: 'author_nation') int authorNation,
+      @JsonKey(name: 'user_type') int userType,
+      @JsonKey(name: 'meeting_capacity') int meetingCapacity,
+      @JsonKey(name: 'meeting_pic') @PicListConverter() List<String> meetingPic,
+      @JsonKey(name: 'meeting_location') String meetingLocation,
+      @JsonKey(name: 'meeting_start_time')
+      @DateTimeConverter()
+      DateTime meetingStartTime});
 }
 
 /// @nodoc
@@ -151,53 +166,53 @@ class __$$_ListItemDataCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? post_id = null,
+    Object? postId = null,
     Object? title = null,
-    Object? author_nickname = null,
-    Object? author_nation = null,
-    Object? user_type = null,
-    Object? meeting_capacity = null,
-    Object? meeting_pic = null,
-    Object? meeting_location = null,
-    Object? meeting_start_time = null,
+    Object? authorNickname = null,
+    Object? authorNation = null,
+    Object? userType = null,
+    Object? meetingCapacity = null,
+    Object? meetingPic = null,
+    Object? meetingLocation = null,
+    Object? meetingStartTime = null,
   }) {
     return _then(_$_ListItemData(
-      post_id: null == post_id
-          ? _value.post_id
-          : post_id // ignore: cast_nullable_to_non_nullable
+      postId: null == postId
+          ? _value.postId
+          : postId // ignore: cast_nullable_to_non_nullable
               as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      author_nickname: null == author_nickname
-          ? _value.author_nickname
-          : author_nickname // ignore: cast_nullable_to_non_nullable
+      authorNickname: null == authorNickname
+          ? _value.authorNickname
+          : authorNickname // ignore: cast_nullable_to_non_nullable
               as String,
-      author_nation: null == author_nation
-          ? _value.author_nation
-          : author_nation // ignore: cast_nullable_to_non_nullable
+      authorNation: null == authorNation
+          ? _value.authorNation
+          : authorNation // ignore: cast_nullable_to_non_nullable
               as int,
-      user_type: null == user_type
-          ? _value.user_type
-          : user_type // ignore: cast_nullable_to_non_nullable
+      userType: null == userType
+          ? _value.userType
+          : userType // ignore: cast_nullable_to_non_nullable
               as int,
-      meeting_capacity: null == meeting_capacity
-          ? _value.meeting_capacity
-          : meeting_capacity // ignore: cast_nullable_to_non_nullable
+      meetingCapacity: null == meetingCapacity
+          ? _value.meetingCapacity
+          : meetingCapacity // ignore: cast_nullable_to_non_nullable
               as int,
-      meeting_pic: null == meeting_pic
-          ? _value.meeting_pic
-          : meeting_pic // ignore: cast_nullable_to_non_nullable
+      meetingPic: null == meetingPic
+          ? _value._meetingPic
+          : meetingPic // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      meetingLocation: null == meetingLocation
+          ? _value.meetingLocation
+          : meetingLocation // ignore: cast_nullable_to_non_nullable
               as String,
-      meeting_location: null == meeting_location
-          ? _value.meeting_location
-          : meeting_location // ignore: cast_nullable_to_non_nullable
-              as String,
-      meeting_start_time: null == meeting_start_time
-          ? _value.meeting_start_time
-          : meeting_start_time // ignore: cast_nullable_to_non_nullable
-              as String,
+      meetingStartTime: null == meetingStartTime
+          ? _value.meetingStartTime
+          : meetingStartTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -206,43 +221,65 @@ class __$$_ListItemDataCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ListItemData implements _ListItemData {
   const _$_ListItemData(
-      {required this.post_id,
-      required this.title,
-      required this.author_nickname,
-      required this.author_nation,
-      required this.user_type,
-      required this.meeting_capacity,
-      required this.meeting_pic,
-      required this.meeting_location,
-      required this.meeting_start_time});
+      {@JsonKey(name: 'post_id') required this.postId,
+      @JsonKey(name: 'title') required this.title,
+      @JsonKey(name: 'author_nickname') required this.authorNickname,
+      @JsonKey(name: 'author_nation') required this.authorNation,
+      @JsonKey(name: 'user_type') required this.userType,
+      @JsonKey(name: 'meeting_capacity') required this.meetingCapacity,
+      @JsonKey(name: 'meeting_pic')
+      @PicListConverter()
+      required final List<String> meetingPic,
+      @JsonKey(name: 'meeting_location') required this.meetingLocation,
+      @JsonKey(name: 'meeting_start_time')
+      @DateTimeConverter()
+      required this.meetingStartTime})
+      : _meetingPic = meetingPic;
 
   factory _$_ListItemData.fromJson(Map<String, dynamic> json) =>
       _$$_ListItemDataFromJson(json);
 
   @override
-  final int post_id;
+  @JsonKey(name: 'post_id')
+  final int postId;
   @override
+  @JsonKey(name: 'title')
   final String title;
   @override
-  final String author_nickname;
+  @JsonKey(name: 'author_nickname')
+  final String authorNickname;
   @override
-  final int author_nation;
+  @JsonKey(name: 'author_nation')
+  final int authorNation;
   @override
-  final int user_type;
+  @JsonKey(name: 'user_type')
+  final int userType;
   @override
-  final int meeting_capacity;
+  @JsonKey(name: 'meeting_capacity')
+  final int meetingCapacity;
+  final List<String> _meetingPic;
+  @override
+  @JsonKey(name: 'meeting_pic')
+  @PicListConverter()
+  List<String> get meetingPic {
+    if (_meetingPic is EqualUnmodifiableListView) return _meetingPic;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_meetingPic);
+  }
+
 //@TODO : meetingPic과 meetingStartTime은 String으로 받아서 앞쪽에서 한번 더 파싱 해야함
   @override
-  final String meeting_pic;
-  @override
-  final String meeting_location;
+  @JsonKey(name: 'meeting_location')
+  final String meetingLocation;
 //@TODO : meetingPic과 meetingStartTime은 String으로 받아서 앞에서 한번 더 파싱 해야함
   @override
-  final String meeting_start_time;
+  @JsonKey(name: 'meeting_start_time')
+  @DateTimeConverter()
+  final DateTime meetingStartTime;
 
   @override
   String toString() {
-    return 'ListItemData(post_id: $post_id, title: $title, author_nickname: $author_nickname, author_nation: $author_nation, user_type: $user_type, meeting_capacity: $meeting_capacity, meeting_pic: $meeting_pic, meeting_location: $meeting_location, meeting_start_time: $meeting_start_time)';
+    return 'ListItemData(postId: $postId, title: $title, authorNickname: $authorNickname, authorNation: $authorNation, userType: $userType, meetingCapacity: $meetingCapacity, meetingPic: $meetingPic, meetingLocation: $meetingLocation, meetingStartTime: $meetingStartTime)';
   }
 
   @override
@@ -250,37 +287,37 @@ class _$_ListItemData implements _ListItemData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ListItemData &&
-            (identical(other.post_id, post_id) || other.post_id == post_id) &&
+            (identical(other.postId, postId) || other.postId == postId) &&
             (identical(other.title, title) || other.title == title) &&
-            (identical(other.author_nickname, author_nickname) ||
-                other.author_nickname == author_nickname) &&
-            (identical(other.author_nation, author_nation) ||
-                other.author_nation == author_nation) &&
-            (identical(other.user_type, user_type) ||
-                other.user_type == user_type) &&
-            (identical(other.meeting_capacity, meeting_capacity) ||
-                other.meeting_capacity == meeting_capacity) &&
-            (identical(other.meeting_pic, meeting_pic) ||
-                other.meeting_pic == meeting_pic) &&
-            (identical(other.meeting_location, meeting_location) ||
-                other.meeting_location == meeting_location) &&
-            (identical(other.meeting_start_time, meeting_start_time) ||
-                other.meeting_start_time == meeting_start_time));
+            (identical(other.authorNickname, authorNickname) ||
+                other.authorNickname == authorNickname) &&
+            (identical(other.authorNation, authorNation) ||
+                other.authorNation == authorNation) &&
+            (identical(other.userType, userType) ||
+                other.userType == userType) &&
+            (identical(other.meetingCapacity, meetingCapacity) ||
+                other.meetingCapacity == meetingCapacity) &&
+            const DeepCollectionEquality()
+                .equals(other._meetingPic, _meetingPic) &&
+            (identical(other.meetingLocation, meetingLocation) ||
+                other.meetingLocation == meetingLocation) &&
+            (identical(other.meetingStartTime, meetingStartTime) ||
+                other.meetingStartTime == meetingStartTime));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      post_id,
+      postId,
       title,
-      author_nickname,
-      author_nation,
-      user_type,
-      meeting_capacity,
-      meeting_pic,
-      meeting_location,
-      meeting_start_time);
+      authorNickname,
+      authorNation,
+      userType,
+      meetingCapacity,
+      const DeepCollectionEquality().hash(_meetingPic),
+      meetingLocation,
+      meetingStartTime);
 
   @JsonKey(ignore: true)
   @override
@@ -298,37 +335,52 @@ class _$_ListItemData implements _ListItemData {
 
 abstract class _ListItemData implements ListItemData {
   const factory _ListItemData(
-      {required final int post_id,
-      required final String title,
-      required final String author_nickname,
-      required final int author_nation,
-      required final int user_type,
-      required final int meeting_capacity,
-      required final String meeting_pic,
-      required final String meeting_location,
-      required final String meeting_start_time}) = _$_ListItemData;
+      {@JsonKey(name: 'post_id') required final int postId,
+      @JsonKey(name: 'title') required final String title,
+      @JsonKey(name: 'author_nickname') required final String authorNickname,
+      @JsonKey(name: 'author_nation') required final int authorNation,
+      @JsonKey(name: 'user_type') required final int userType,
+      @JsonKey(name: 'meeting_capacity') required final int meetingCapacity,
+      @JsonKey(name: 'meeting_pic')
+      @PicListConverter()
+      required final List<String> meetingPic,
+      @JsonKey(name: 'meeting_location') required final String meetingLocation,
+      @JsonKey(name: 'meeting_start_time')
+      @DateTimeConverter()
+      required final DateTime meetingStartTime}) = _$_ListItemData;
 
   factory _ListItemData.fromJson(Map<String, dynamic> json) =
       _$_ListItemData.fromJson;
 
   @override
-  int get post_id;
+  @JsonKey(name: 'post_id')
+  int get postId;
   @override
+  @JsonKey(name: 'title')
   String get title;
   @override
-  String get author_nickname;
+  @JsonKey(name: 'author_nickname')
+  String get authorNickname;
   @override
-  int get author_nation;
+  @JsonKey(name: 'author_nation')
+  int get authorNation;
   @override
-  int get user_type;
+  @JsonKey(name: 'user_type')
+  int get userType;
   @override
-  int get meeting_capacity;
+  @JsonKey(name: 'meeting_capacity')
+  int get meetingCapacity;
+  @override
+  @JsonKey(name: 'meeting_pic')
+  @PicListConverter()
+  List<String> get meetingPic;
   @override //@TODO : meetingPic과 meetingStartTime은 String으로 받아서 앞쪽에서 한번 더 파싱 해야함
-  String get meeting_pic;
-  @override
-  String get meeting_location;
+  @JsonKey(name: 'meeting_location')
+  String get meetingLocation;
   @override //@TODO : meetingPic과 meetingStartTime은 String으로 받아서 앞에서 한번 더 파싱 해야함
-  String get meeting_start_time;
+  @JsonKey(name: 'meeting_start_time')
+  @DateTimeConverter()
+  DateTime get meetingStartTime;
   @override
   @JsonKey(ignore: true)
   _$$_ListItemDataCopyWith<_$_ListItemData> get copyWith =>
