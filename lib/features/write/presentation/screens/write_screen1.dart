@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 import './page_animation.dart';
 import 'write_screen2.dart';
@@ -45,6 +48,19 @@ class CategoryNotifier extends StateNotifier<String> {
   }
 }
 
+final writeScreenImageProvider =
+    StateNotifierProvider<ImageNotifier, List<File>>((ref) {
+  return ImageNotifier();
+});
+
+class ImageNotifier extends StateNotifier<List<File>> {
+  ImageNotifier() : super([]);
+
+  void refresh(List<File> newList) {
+    state = newList;
+  }
+}
+
 @RoutePage()
 class WriteScreen1 extends ConsumerWidget {
   WriteScreen1({Key? key}) : super(key: key);
@@ -52,6 +68,9 @@ class WriteScreen1 extends ConsumerWidget {
   bool _isButtonEnabled = false;
   Color _titleOver40TextColor = Colors.white;
   final int TITLELIMIT = 40;
+
+  final picker = ImagePicker();
+  List<File> imageList = [];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -115,120 +134,78 @@ class WriteScreen1 extends ConsumerWidget {
 
                             WhiteBox(
                                 boxWidth: 0, boxHeight: 1), // 사진 <-> 사진첨부 공백
-                            Row(
-                              // 사진 첨부
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                WhiteBox(boxWidth: LARGEBLANK, boxHeight: 0),
-                                SizedBox(
-                                  width:
-                                      getHeightByPercentOfScreen(10, context),
-                                  height:
-                                      getHeightByPercentOfScreen(10, context),
-                                  child: Stack(
-                                    children: [
-                                      Positioned(
-                                        left: 0,
-                                        top: 0,
-                                        child: Container(
-                                          width: getHeightByPercentOfScreen(
-                                              10, context),
-                                          height: getHeightByPercentOfScreen(
-                                              10, context),
-                                          decoration: ShapeDecoration(
-                                            color: const Color(0xFFF7F7F7),
-                                            shape: RoundedRectangleBorder(
-                                              side: const BorderSide(
-                                                  width: 0.50,
-                                                  color: Color(0xFFD3D3D3)),
-                                              borderRadius:
-                                                  BorderRadius.circular(14),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        left: 21,
-                                        top: 13,
-                                        child: SizedBox(
-                                          width: 43,
-                                          height: 38,
-                                          child: Stack(
-                                            children: [
-                                              Positioned(
-                                                left: 0,
-                                                top: 0,
-                                                child: Container(
-                                                  width: 38,
-                                                  height: 38,
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    top: 4.75,
-                                                    left: 3.56,
-                                                    right: 3.56,
-                                                    bottom: 5.94,
-                                                  ),
-                                                  clipBehavior: Clip.antiAlias,
-                                                  decoration:
-                                                      const BoxDecoration(),
-                                                  child: const Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [],
-                                                  ),
-                                                ),
-                                              ),
-                                              Positioned(
-                                                  left: 25,
-                                                  top: 19,
-                                                  child: Container(
-                                                    width: 18,
-                                                    height: 18,
-                                                    decoration:
-                                                        const ShapeDecoration(
-                                                      color: Color(0xFF61C3FF),
-                                                      shape: OvalBorder(
-                                                        side: BorderSide(
-                                                            width: 0.50,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                    ),
-                                                    child:
-                                                        const Icon(Icons.add),
-                                                  )),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      const Positioned(
-                                        left: 25,
-                                        top: 56,
-                                        child: Text(
-                                          '0 / 10',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 12,
-                                            fontFamily: 'Pretendard',
-                                            fontWeight: FontWeight.w400,
-                                            height: 12,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
+                            SizedBox(
+                              height: getHeightByPercentOfScreen(25, context),
+                              width: getWidthByPercentOfScreen(90, context),
+                              child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                itemCount:
+                                    ref.watch(writeScreenImageProvider).length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                      height: 30,
+                                      color: const Color.fromARGB(
+                                          255, 255, 228, 147),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Image.file(ref.watch(
+                                              writeScreenImageProvider)[index])
+                                        ],
+                                      ));
+                                },
+                                separatorBuilder:
+                                    (BuildContext context, int index) =>
+                                        WhiteBox(
+                                            boxWidth: MEDIUMBLANK,
+                                            boxHeight: 0),
+                              ),
                             ),
+
+                            SizedBox(
+                                width: getHeightByPercentOfScreen(10, context),
+                                height: getHeightByPercentOfScreen(10, context),
+                                child: ElevatedButton(
+                                    onPressed: () async {
+                                      final image = await picker.pickImage(
+                                          source: ImageSource
+                                              .gallery); // 갤러리에서 이미지 뽑아옴
+                                      imageList.add(File(image!.path));
+                                      ref
+                                          .read(
+                                              writeScreenImageProvider.notifier)
+                                          .refresh(imageList);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16)),
+                                      backgroundColor: const Color(0xFFF7F7F7),
+                                      side: const BorderSide(
+                                          width: 0.5, color: Color(0xFFD3D3D3)),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Icon(
+                                          Icons.photo_camera_rounded,
+                                          size: 38,
+                                          color: Color(0xFFBEBEBE),
+                                        ),
+                                        Text(
+                                            "${ref.watch(writeScreenImageProvider).length} / 10",
+                                            style: const TextStyle(
+                                                color: Color(0xFF808080),
+                                                fontFamily: 'Pretendard',
+                                                fontSize: 12))
+                                      ],
+                                    ))),
+
                             WhiteBox(
-                                boxWidth: 0, boxHeight: 4.5), // 사진첨부 <-> 제목 공백
+                                boxWidth: 0,
+                                boxHeight: MEDIUMBLANK), // 사진첨부 <-> 제목 공백
 
                             const WritingPagesGrayText(text: '제목'),
                             WhiteBox(
@@ -401,7 +378,7 @@ class WriteScreen1 extends ConsumerWidget {
                                             WhiteBox(
                                                 boxWidth: 0,
                                                 boxHeight: MEDIUMBLANK),
-                                            Row(
+                                            const Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
@@ -479,7 +456,58 @@ class WriteScreen1 extends ConsumerWidget {
   }
 }
 
+// 이미지 추가
+class AddImage extends StatefulWidget {
+  const AddImage({super.key});
+
+  @override
+  _AddImageState createState() => _AddImageState();
+}
+
+class _AddImageState extends State<AddImage> {
+  XFile? xfile;
+  final picker = ImagePicker();
+
+  Future getImage(ImageSource imageSource) async {
+    final image = await picker.pickImage(source: imageSource);
+    setState(() {
+      xfile = XFile(image!.path);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        width: getHeightByPercentOfScreen(10, context),
+        height: getHeightByPercentOfScreen(10, context),
+        decoration: ShapeDecoration(
+          color: const Color(0xFFF7F7F7),
+          shape: RoundedRectangleBorder(
+            side: const BorderSide(width: 0.5, color: Color(0xFFD3D3D3)),
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+        child: const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.photo_camera_rounded,
+              size: 38,
+              color: Color(0xFFBEBEBE),
+            ),
+            Text("0 / 10",
+                style: TextStyle(
+                    color: Color(0xFF808080),
+                    fontFamily: 'Pretendard',
+                    fontSize: 12))
+          ],
+        ));
+  }
+}
+
 class CategoryButton extends StatefulWidget {
+  const CategoryButton({super.key});
+
   @override
   _CategoryButtonState createState() => _CategoryButtonState();
 }
@@ -490,14 +518,14 @@ class _CategoryButtonState extends State<CategoryButton> {
   late List<bool> isSelected;
   @override
   Widget build(BuildContext context) {
-    return ToggleButtons(children: [
+    return ToggleButtons(isSelected: isSelected, children: const [
       Padding(
           padding: EdgeInsets.symmetric(horizontal: 5),
           child: Text('여행', style: TextStyle(fontSize: 10))),
       Padding(
           padding: EdgeInsets.symmetric(horizontal: 5),
           child: Text('스포츠', style: TextStyle(fontSize: 10))),
-    ], isSelected: isSelected);
+    ]);
   }
 
   void categorySelect(value) {

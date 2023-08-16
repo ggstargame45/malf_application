@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'page_animation.dart';
 import 'write_screen_util.dart';
-import 'write_screen1.dart';
 import 'write_screen4.dart';
 
 final writeScreenPlaceProvider =
@@ -111,7 +110,9 @@ class WriteScreen3 extends ConsumerWidget {
                 ),
               ],
             ),
-            WhiteBox(boxWidth: 0, boxHeight: 10),
+            WhiteBox(boxWidth: 0, boxHeight: MEDIUMBLANK),
+            // const Divider(),
+            WhiteBox(boxWidth: 0, boxHeight: MEDIUMBLANK),
             WritingPagesGrayText(
                 text:
                     '현지인 인원: ${ref.watch(writeScreenLocalPeopleProvider).toInt()} 명'),
@@ -141,5 +142,68 @@ class WriteScreen3 extends ConsumerWidget {
 
   void _checkBlankCondition(String s) {
     _isButtonEnabled = s.isNotEmpty && (s.length <= 40);
+  }
+}
+
+// 슬라이더로 SliderThemeData의 child를 Slider로 구성하면 여러가지 커스텀이 가능
+final writeScreenLocalPeopleProvider = StateProvider<double>((ref) => 0);
+
+class LocalPeopleSlider extends ConsumerWidget {
+  const LocalPeopleSlider({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final sliderValue = ref.watch(writeScreenLocalPeopleProvider);
+
+    return SliderTheme(
+        data: SliderThemeData(
+          thumbColor: Colors.blue, // 슬라이더 버튼(Thumb)의 색상
+          tickMarkShape: SliderTickMarkShape.noTickMark,
+          // activeTickMarkColor: Colors.blue,
+          // inactiveTickMarkColor: const Color(0xFFB2BDCF),
+          valueIndicatorColor: const Color(0xFFB2BDCF),
+        ), // 오버레이 색상 (터치 영역의 표시))
+        child: Slider(
+          value: ref.watch(writeScreenLocalPeopleProvider),
+          min: 0,
+          max: 20,
+          divisions: 20,
+          label: '${ref.watch(writeScreenLocalPeopleProvider).toInt()}',
+          onChanged: (newValue) {
+            ref.read(writeScreenLocalPeopleProvider.notifier).state =
+                newValue; // 상태 업데이트
+          },
+        ));
+  }
+}
+
+final writeScreenForeignPeopleProvider = StateProvider<double>((ref) => 0);
+
+class ForeignPeopleSlider extends ConsumerWidget {
+  const ForeignPeopleSlider({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final sliderValue = ref.watch(writeScreenForeignPeopleProvider);
+
+    return SliderTheme(
+        data: SliderThemeData(
+          thumbColor: Colors.blue, // 슬라이더 버튼(Thumb)의 색상
+          tickMarkShape: SliderTickMarkShape.noTickMark,
+          // activeTickMarkColor: Colors.blue,
+          // inactiveTickMarkColor: const Color(0xFFB2BDCF),
+          valueIndicatorColor: const Color(0xFFB2BDCF),
+        ), // 오버레이 색상 (터치 영역의 표시))
+        child: Slider(
+          value: ref.watch(writeScreenForeignPeopleProvider),
+          min: 0,
+          max: 20,
+          divisions: 20,
+          label: '${ref.watch(writeScreenForeignPeopleProvider).toInt()}',
+          onChanged: (newValue) {
+            ref.read(writeScreenForeignPeopleProvider.notifier).state =
+                newValue; // 상태 업데이트
+          },
+        ));
   }
 }

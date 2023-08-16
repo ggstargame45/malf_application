@@ -311,7 +311,7 @@ class _DatePickerState extends State<DatePicker> {
             },
             body: Column(
               children: [
-                const Divider(),
+                const Divider(height: 0.5),
                 SizedBox(
                     height: getHeightByPercentOfScreen(25, context),
                     child: CupertinoDatePicker(
