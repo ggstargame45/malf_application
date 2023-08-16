@@ -35,3 +35,48 @@ class JsonDataNotifier extends StateNotifier<JsonDataState> {
 
 final jsonDataProvider = StateNotifierProvider<JsonDataNotifier, JsonDataState>(
     (ref) => JsonDataNotifier());
+
+
+
+// @riverpod
+// class JsonDataNotifier extends _$JsonDataNotifier {
+//   @override
+//   Future<JsonDataState> build() async {
+//     return JsonDataState(jsonData: JsonData(status: 0, data: List.empty()));
+//   }
+
+//   void loadJsonData(int postId) async {
+//     final jsonDataResponse = await Network(postId: "22").request();
+//     final jsonData = JsonData.fromJson(jsonDataResponse);
+//     state = JsonDataState(isLoading: false, jsonData: jsonData)
+//         as AsyncValue<JsonDataState>;
+//   }
+// }
+
+// @riverpod
+// FutureOr<JsonDataState> jsonDataNotifier(Ref ref, int postId) async {
+//   final jsonDataResponse = await Network(postId: postId.toString()).request();
+//   final jsonData = JsonData.fromJson(jsonDataResponse);
+//   return JsonDataState(isLoading: false, jsonData: jsonData);
+// }
+
+// class JsonDataNotifier extends StateNotifier<JsonDataState> {
+//   JsonDataNotifier(int postId)
+//       : super(
+//             JsonDataState(jsonData: JsonData(status: 0, data: List.empty()))) {
+//     loadJsonData(postId);
+//   }
+
+//   void loadJsonData(int postId) async {
+//     state = state.copyWith(isLoading: true);
+//     final jsonDataResponse = await Network(postId: "22").request();
+//     final jsonData = JsonData.fromJson(jsonDataResponse);
+//     Logger().d(jsonData);
+//     state = state.copyWith(isLoading: false, jsonData: jsonData);
+//   }
+// }
+
+// StateNotifierProvider<JsonDataNotifier, JsonDataState> jsonDataProvider(
+//         int postId) =>
+//     StateNotifierProvider<JsonDataNotifier, JsonDataState>(
+//         (ref) => JsonDataNotifier(postId));
