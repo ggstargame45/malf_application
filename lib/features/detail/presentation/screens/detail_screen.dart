@@ -14,7 +14,8 @@ final scaffoldKey = GlobalKey<ScaffoldState>();
 
 @RoutePage()
 class DetailScreen extends ConsumerWidget {
-  const DetailScreen({super.key});
+  final int postId;
+  const DetailScreen({super.key, required this.postId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -83,3 +84,87 @@ class _MeetingDetailPanelState extends State<MeetingDetailPanel> {
     );
   }
 }
+
+
+// @RoutePage()
+// class DetailScreen extends ConsumerWidget {
+//   final int postId;
+//   const DetailScreen({super.key, required this.postId});
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final jsonDataProviderData = ref.watch(jsonDataNotifierProvider(postId));
+//     return jsonDataProviderData.when(
+//         data: (data) {
+//           return Scaffold(
+//               key: scaffoldKey,
+//               appBar: AppBar(
+//                 backgroundColor: AppColors.white,
+//                 leading: IconButton(
+//                   icon: const Icon(
+//                     Icons.arrow_back_ios_new_rounded,
+//                     color: AppColors.black,
+//                   ),
+//                   onPressed: () {
+//                     context.router.pop();
+//                   },
+//                 ),
+//                 actions: [
+//                   IconButton(
+//                       icon: const Icon(
+//                         Icons.more_horiz_outlined,
+//                         color: AppColors.black,
+//                       ),
+//                       onPressed: () {
+//                         detailMoreSheet(context);
+//                       }),
+//                   const SizedBox(
+//                     width: 10,
+//                   )
+//                 ],
+//               ),
+//               body: const MeetingDetailPanel());
+//         },
+//         error: (error, stackTrace) => Center(child: Text(error.toString())),
+//         loading: () => const CircularProgressIndicator());
+//   }
+// }
+
+// //판넬 미팅 장소 사진,미팅 정보, footer
+// class MeetingDetailPanel extends StatefulWidget {
+//   const MeetingDetailPanel({
+//     super.key,
+//   });
+
+//   @override
+//   State<MeetingDetailPanel> createState() => _MeetingDetailPanelState();
+// }
+
+// class _MeetingDetailPanelState extends State<MeetingDetailPanel> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return SlidingUpPanel(
+//       //장소사진
+//       body: Center(
+//           child: Column(
+//         children: [
+//           SlidingMeetingImg(
+//             postId: postIdd,
+//           )
+//         ],
+//       )),
+//       parallaxEnabled: true,
+//       parallaxOffset: 0.3,
+//       borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+//       minHeight: MediaQuery.of(context).size.height / 1.8,
+//       maxHeight: MediaQuery.of(context).size.height,
+//       //footer
+//       footer: const FooterWigdget(),
+//       //미팅 정보
+//       panelBuilder: (sc) => DetailPanel(
+//         controller: sc,
+//         postId: postIdd,
+//       ),
+//     );
+//   }
+// }

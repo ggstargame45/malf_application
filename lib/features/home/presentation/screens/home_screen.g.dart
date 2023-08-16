@@ -39,21 +39,109 @@ Map<String, dynamic> _$$_ListItemDataToJson(_$_ListItemData instance) =>
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchDataHash() => r'f380af3aa5279f26722f1f9bd09ec88b77e581c9';
+String _$fetchDataHash() => r'07fcfe6f9d03d2cb2a938bd692210f5da6885461';
+
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
+
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
+  }
+
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+typedef FetchDataRef = AutoDisposeFutureProviderRef<List<ListItemData>>;
 
 /// See also [fetchData].
 @ProviderFor(fetchData)
-final fetchDataProvider =
-    AutoDisposeFutureProvider<List<ListItemData>>.internal(
-  fetchData,
-  name: r'fetchDataProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$fetchDataHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const fetchDataProvider = FetchDataFamily();
 
-typedef FetchDataRef = AutoDisposeFutureProviderRef<List<ListItemData>>;
+/// See also [fetchData].
+class FetchDataFamily extends Family<AsyncValue<List<ListItemData>>> {
+  /// See also [fetchData].
+  const FetchDataFamily();
+
+  /// See also [fetchData].
+  FetchDataProvider call(
+    int a,
+  ) {
+    return FetchDataProvider(
+      a,
+    );
+  }
+
+  @override
+  FetchDataProvider getProviderOverride(
+    covariant FetchDataProvider provider,
+  ) {
+    return call(
+      provider.a,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'fetchDataProvider';
+}
+
+/// See also [fetchData].
+class FetchDataProvider extends AutoDisposeFutureProvider<List<ListItemData>> {
+  /// See also [fetchData].
+  FetchDataProvider(
+    this.a,
+  ) : super.internal(
+          (ref) => fetchData(
+            ref,
+            a,
+          ),
+          from: fetchDataProvider,
+          name: r'fetchDataProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$fetchDataHash,
+          dependencies: FetchDataFamily._dependencies,
+          allTransitiveDependencies: FetchDataFamily._allTransitiveDependencies,
+        );
+
+  final int a;
+
+  @override
+  bool operator ==(Object other) {
+    return other is FetchDataProvider && other.a == a;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, a.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
 String _$pageNumberNotifierHash() =>
     r'0f0330b6300ed93886a219f8085d3ee989cef57a';
 
@@ -87,13 +175,13 @@ final dataListNotifierProvider =
 );
 
 typedef _$DataListNotifier = AutoDisposeNotifier<List<ListItemData>>;
-String _$isEndOfListHash() => r'cce80a8719454a01b4ea82df68229dc34d7e98ee';
+String _$isEndOfListHash() => r'44641c2f94399b64ee9cec29686d8c0ed1c182a5';
 
-/// See also [isEndOfList].
-@ProviderFor(isEndOfList)
+/// See also [IsEndOfList].
+@ProviderFor(IsEndOfList)
 final isEndOfListProvider =
-    AutoDisposeNotifierProvider<isEndOfList, bool>.internal(
-  isEndOfList.new,
+    AutoDisposeNotifierProvider<IsEndOfList, bool>.internal(
+  IsEndOfList.new,
   name: r'isEndOfListProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product') ? null : _$isEndOfListHash,
@@ -101,6 +189,6 @@ final isEndOfListProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$isEndOfList = AutoDisposeNotifier<bool>;
+typedef _$IsEndOfList = AutoDisposeNotifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member

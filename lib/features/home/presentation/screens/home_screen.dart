@@ -46,7 +46,7 @@ class DataListNotifier extends _$DataListNotifier {
 }
 
 @riverpod
-class isEndOfList extends _$isEndOfList {
+class IsEndOfList extends _$IsEndOfList {
   @override
   bool build() {
     return false;
@@ -58,7 +58,7 @@ class isEndOfList extends _$isEndOfList {
 }
 
 @riverpod
-FutureOr<List<ListItemData>> fetchData(Ref ref) async {
+FutureOr<List<ListItemData>> fetchData(Ref ref, int a) async {
   final dio = Dio(BaseOptions(
     baseUrl: '${baseUrl}bulletin-board/posts',
     headers: {'Authorization': 'test_1'},
@@ -71,7 +71,6 @@ FutureOr<List<ListItemData>> fetchData(Ref ref) async {
       List<dynamic> data = response.data['data'];
       List<ListItemData> result =
           data.map((e) => ListItemData.fromJson(e)).toList();
-      logger.d(result);
       return result;
     } else {
       return [];
@@ -226,9 +225,8 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final fetchDatas = ref.watch(fetchDataProvider);
+    final fetchDatas = ref.watch(fetchDataProvider(10));
     double screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -250,7 +248,6 @@ class HomeScreen extends ConsumerWidget {
           ),
           IconButton(
             onPressed: () => {
-              context.router.push(const DetailRoute())
               //logger.e(fetchDatas)
             },
             icon: const Icon(Icons.calendar_month_rounded,
@@ -301,39 +298,39 @@ class HomeScreen extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             SizedBox(
-                              width: screenWidth / 5,
-                              height: screenWidth / 5,
+                              width: screenWidth / 6,
+                              height: screenWidth / 6,
                               child: Image.asset(
                                 "assets/images/category/bar.png",
                               ),
                             ),
                             SizedBox(
-                              width: screenWidth / 5,
-                              height: screenWidth / 5,
+                              width: screenWidth / 6,
+                              height: screenWidth / 6,
                               child: Image.asset(
                                 "assets/images/category/culture.png",
                                 fit: BoxFit.fitWidth,
                               ),
                             ),
                             SizedBox(
-                              width: screenWidth / 5,
-                              height: screenWidth / 5,
+                              width: screenWidth / 6,
+                              height: screenWidth / 6,
                               child: Image.asset(
                                 "assets/images/category/food.png",
                                 fit: BoxFit.fitWidth,
                               ),
                             ),
                             SizedBox(
-                              width: screenWidth / 5,
-                              height: screenWidth / 5,
+                              width: screenWidth / 6,
+                              height: screenWidth / 6,
                               child: Image.asset(
                                 "assets/images/category/sports.png",
                                 fit: BoxFit.fitWidth,
                               ),
                             ),
                             SizedBox(
-                              width: screenWidth / 5,
-                              height: screenWidth / 5,
+                              width: screenWidth / 6,
+                              height: screenWidth / 6,
                               child: Image.asset(
                                 "assets/images/category/study.png",
                                 fit: BoxFit.fitWidth,
@@ -350,11 +347,124 @@ class HomeScreen extends ConsumerWidget {
                       if (index == data.length - 1) {
                         // Handle loading next page if required.
                       }
+
                       return GestureDetector(
-                        onTap: () {},
-                        child: SizedBox(
-                          width: screenWidth / 5,
-                          height: screenWidth / 5,
+                        onTap: () {
+                          context.router
+                              .push(DetailRoute(postId: data[index].postId));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 8),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.2,
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.2,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: Image.network(
+                                          '$baseUrl${data[index].meetingPic[0]}',
+                                          headers: const {
+                                            'Authorization': 'test_1'
+                                          },
+                                          errorBuilder: (BuildContext context,
+                                              Object error,
+                                              StackTrace? stackTrace) {
+                                            return const Text('😢');
+                                          },
+                                          fit: BoxFit.cover,
+                                          frameBuilder: (BuildContext context,
+                                              Widget child,
+                                              int? frame,
+                                              bool wasSynchronouslyLoaded) {
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                color: const Color.fromRGBO(
+                                                    91, 91, 91, 1),
+                                              ),
+                                              child: child,
+                                            );
+                                          },
+                                          loadingBuilder: (BuildContext context,
+                                              Widget child,
+                                              ImageChunkEvent?
+                                                  loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            }
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                color: const Color.fromRGBO(
+                                                    91, 91, 91, 1),
+                                              ),
+                                              child: const Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: Colors.amber,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                            "${data[index].authorNickname} ${data[index].userType == 0 ? "관광객" : "현지인"} ${data[index].meetingCapacity}"),
+                                        Text(data[index].title,
+                                            style: const TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold)),
+                                        Text(
+                                            "${data[index].meetingLocation} ${data[index].meetingStartTime.year}-${data[index].meetingStartTime.month}-${data[index].meetingStartTime.day}"),
+
+                                        // _content(
+                                        //     url:
+                                        //         '$baseUrl${data[index].meetingPic[0]}',
+                                        //     title: data[index]
+                                        //         .authorNickname),
+                                        //     content: data[index]
+                                        //         .authorNickname),
+                                        // _content(
+                                        //     url:
+                                        //         '$baseUrl${data[index].meetingPic[0]}',
+                                        //     title: "Author : ",
+                                        //     content:
+                                        //         data[index].authorNickname),
+                                        // _content(
+                                        //     url: (data[index].meetingPic)[0],
+                                        //     title: "장소 : ",
+                                        //     content:
+                                        //         data[index].meetingLocation),
+                                        // _content(
+                                        //     url:
+                                        //         '$baseUrl${data[index].meetingPic[0]}',
+                                        //     title: " : ",
+                                        //     content:
+                                        //         "${data[index].authorNation}"),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -689,16 +799,20 @@ class HomeScreen extends ConsumerWidget {
 
 
 
-      */ /*
+      */  
+/*
     
 
 
 
 
-      */ /*
+
+*/    
+/*
     
 
 
 
 
-      */
+
+*/
