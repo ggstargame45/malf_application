@@ -3,9 +3,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
 import 'package:malf_application/features/detail/data/network/network.dart';
 
-import '../model/json_data_model.dart';
+import '../models/json_data_model.dart';
 
-part '../model/detail_data_provider.freezed.dart';
+part '../models/detail_data_provider.freezed.dart';
 
 @freezed
 class JsonDataState with _$JsonDataState {

@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import './page_animation.dart';
+import '../widgets/category_select_sheet.dart';
 import 'write_screen2.dart';
 import 'write_screen_util.dart';
 
@@ -358,39 +359,40 @@ class WriteScreen1 extends ConsumerWidget {
                             // 카테고리 설정하는 창
                             GestureDetector(
                               onTap: () {
-                                showModalBottomSheet(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return Container(
-                                        height: getHeightByPercentOfScreen(
-                                            50, context),
-                                        decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(20),
-                                            topRight: Radius.circular(20),
-                                          ),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            const WritingPagesBlackText(
-                                                text: "카테고리를 입력해주세요"),
-                                            WhiteBox(
-                                                boxWidth: 0,
-                                                boxHeight: MEDIUMBLANK),
-                                            const Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: <Widget>[
-                                                // CategoryButton() TODO: 토글버튼 구현
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                    backgroundColor: Colors.transparent);
+                                categorySelectSheet(context);
+                                // showModalBottomSheet(
+                                //     context: context,
+                                //     builder: (BuildContext context) {
+                                //       return Container(
+                                //         height: getHeightByPercentOfScreen(
+                                //             50, context),
+                                //         decoration: const BoxDecoration(
+                                //           color: Colors.white,
+                                //           borderRadius: BorderRadius.only(
+                                //             topLeft: Radius.circular(20),
+                                //             topRight: Radius.circular(20),
+                                //           ),
+                                //         ),
+                                //         child: Column(
+                                //           children: [
+                                //             const WritingPagesBlackText(
+                                //                 text: "카테고리를 입력해주세요"),
+                                //             WhiteBox(
+                                //                 boxWidth: 0,
+                                //                 boxHeight: MEDIUMBLANK),
+                                //             const Row(
+                                //               mainAxisAlignment:
+                                //                   MainAxisAlignment
+                                //                       .spaceBetween,
+                                //               children: <Widget>[
+                                //                 CategoryButton()
+                                //               ],
+                                //             )
+                                //           ],
+                                //         ),
+                                //       );
+                                //     },
+                                //     backgroundColor: Colors.transparent);
                               },
                               child: Container(
                                   width: getWidthByPercentOfScreen(90, context),
@@ -456,88 +458,39 @@ class WriteScreen1 extends ConsumerWidget {
   }
 }
 
-// 이미지 추가
-class AddImage extends StatefulWidget {
-  const AddImage({super.key});
+// class CategoryButton extends StatefulWidget {
+//   const CategoryButton({super.key});
 
-  @override
-  _AddImageState createState() => _AddImageState();
-}
+//   @override
+//   _CategoryButtonState createState() => _CategoryButtonState();
+// }
 
-class _AddImageState extends State<AddImage> {
-  XFile? xfile;
-  final picker = ImagePicker();
+// class _CategoryButtonState extends State<CategoryButton> {
+//   bool isTravel = false;
+//   bool isSports = false;
+//   late List<bool> isSelected;
+//   @override
+//   Widget build(BuildContext context) {
+//     return ToggleButtons(isSelected: isSelected, children: const [
+//       Padding(
+//           padding: EdgeInsets.symmetric(horizontal: 5),
+//           child: Text('여행', style: TextStyle(fontSize: 10))),
+//       Padding(
+//           padding: EdgeInsets.symmetric(horizontal: 5),
+//           child: Text('스포츠', style: TextStyle(fontSize: 10))),
+//     ]);
+//   }
 
-  Future getImage(ImageSource imageSource) async {
-    final image = await picker.pickImage(source: imageSource);
-    setState(() {
-      xfile = XFile(image!.path);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        width: getHeightByPercentOfScreen(10, context),
-        height: getHeightByPercentOfScreen(10, context),
-        decoration: ShapeDecoration(
-          color: const Color(0xFFF7F7F7),
-          shape: RoundedRectangleBorder(
-            side: const BorderSide(width: 0.5, color: Color(0xFFD3D3D3)),
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-        child: const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.photo_camera_rounded,
-              size: 38,
-              color: Color(0xFFBEBEBE),
-            ),
-            Text("0 / 10",
-                style: TextStyle(
-                    color: Color(0xFF808080),
-                    fontFamily: 'Pretendard',
-                    fontSize: 12))
-          ],
-        ));
-  }
-}
-
-class CategoryButton extends StatefulWidget {
-  const CategoryButton({super.key});
-
-  @override
-  _CategoryButtonState createState() => _CategoryButtonState();
-}
-
-class _CategoryButtonState extends State<CategoryButton> {
-  bool isTravel = false;
-  bool isSports = false;
-  late List<bool> isSelected;
-  @override
-  Widget build(BuildContext context) {
-    return ToggleButtons(isSelected: isSelected, children: const [
-      Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          child: Text('여행', style: TextStyle(fontSize: 10))),
-      Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          child: Text('스포츠', style: TextStyle(fontSize: 10))),
-    ]);
-  }
-
-  void categorySelect(value) {
-    if (value == 0) {
-      isTravel = true;
-      isSports = false;
-    } else {
-      isTravel = false;
-      isSports = true;
-    }
-    setState(() {
-      isSelected = [isTravel, isSports];
-    });
-  }
-}
+//   void categorySelect(value) {
+//     if (value == 0) {
+//       isTravel = true;
+//       isSports = false;
+//     } else {
+//       isTravel = false;
+//       isSports = true;
+//     }
+//     setState(() {
+//       isSelected = [isTravel, isSports];
+//     });
+//   }
+// }

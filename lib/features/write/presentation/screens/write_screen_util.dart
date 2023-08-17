@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 // 공통
@@ -140,7 +141,7 @@ void closeWritingPages(BuildContext context) {
                       minimumSize:
                           MaterialStateProperty.all(const Size(120, 40))),
                   onPressed: () {
-                    Navigator.of(context).pop(); //창 닫기
+                    Navigator.of(context).pop();
                   },
                   child: const Text(
                     '취소',
@@ -162,8 +163,7 @@ void closeWritingPages(BuildContext context) {
                       minimumSize:
                           MaterialStateProperty.all(const Size(120, 40))),
                   onPressed: () {
-                    Navigator.popUntil(
-                        context, ModalRoute.withName("/")); //초기 화면으로 이동
+                    context.router.popUntilRouteWithName('HomeRoute'); //창 닫기
                   },
                   child: const Text(
                     '나가기',
@@ -233,5 +233,107 @@ class MyBehavior extends ScrollBehavior {
   Widget buildOverscrollIndicator(
       BuildContext context, Widget child, ScrollableDetails details) {
     return child;
+  }
+}
+
+class CategoryButton extends StatefulWidget {
+  const CategoryButton({super.key});
+
+  @override
+  _CategoryButtonState createState() => _CategoryButtonState();
+}
+
+class _CategoryButtonState extends State<CategoryButton> {
+  bool isTravel = false;
+  bool isSports = false;
+  late List<bool> isSelected;
+  @override
+  Widget build(BuildContext context) {
+    return ToggleButtons(isSelected: isSelected, children: const [
+      Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Text('여행', style: TextStyle(fontSize: 10))),
+      Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Text('스포츠', style: TextStyle(fontSize: 10))),
+    ]);
+  }
+
+  void categorySelect(value) {
+    if (value == 0) {
+      isTravel = true;
+      isSports = false;
+    } else {
+      isTravel = false;
+      isSports = true;
+    }
+    setState(() {
+      isSelected = [isTravel, isSports];
+    });
+  }
+}
+
+// write_screen3
+
+// 슬라이더로 SliderThemeData의 child를 Slider로 구성하면 여러가지 커스텀이 가능
+final writeScreenLocalPeopleProvider = StateProvider<double>((ref) => 0);
+
+class LocalPeopleSlider extends ConsumerWidget {
+  const LocalPeopleSlider({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final sliderValue = ref.watch(writeScreenLocalPeopleProvider);
+
+    return SliderTheme(
+        data: SliderThemeData(
+          thumbColor: Colors.blue, // 슬라이더 버튼(Thumb)의 색상
+          tickMarkShape: SliderTickMarkShape.noTickMark,
+          // activeTickMarkColor: Colors.blue,
+          // inactiveTickMarkColor: const Color(0xFFB2BDCF),
+          valueIndicatorColor: const Color(0xFFB2BDCF),
+        ), // 오버레이 색상 (터치 영역의 표시))
+        child: Slider(
+          value: ref.watch(writeScreenLocalPeopleProvider),
+          min: 0,
+          max: 20,
+          divisions: 20,
+          label: '${ref.watch(writeScreenLocalPeopleProvider).toInt()}',
+          onChanged: (newValue) {
+            ref.read(writeScreenLocalPeopleProvider.notifier).state =
+                newValue; // 상태 업데이트
+          },
+        ));
+  }
+}
+
+final writeScreenForeignPeopleProvider = StateProvider<double>((ref) => 0);
+
+class ForeignPeopleSlider extends ConsumerWidget {
+  const ForeignPeopleSlider({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final sliderValue = ref.watch(writeScreenForeignPeopleProvider);
+
+    return SliderTheme(
+        data: SliderThemeData(
+          thumbColor: Colors.blue, // 슬라이더 버튼(Thumb)의 색상
+          tickMarkShape: SliderTickMarkShape.noTickMark,
+          // activeTickMarkColor: Colors.blue,
+          // inactiveTickMarkColor: const Color(0xFFB2BDCF),
+          valueIndicatorColor: const Color(0xFFB2BDCF),
+        ), // 오버레이 색상 (터치 영역의 표시))
+        child: Slider(
+          value: ref.watch(writeScreenForeignPeopleProvider),
+          min: 0,
+          max: 20,
+          divisions: 20,
+          label: '${ref.watch(writeScreenForeignPeopleProvider).toInt()}',
+          onChanged: (newValue) {
+            ref.read(writeScreenForeignPeopleProvider.notifier).state =
+                newValue; // 상태 업데이트
+          },
+        ));
   }
 }

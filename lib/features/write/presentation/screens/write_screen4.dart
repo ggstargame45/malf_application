@@ -1,17 +1,14 @@
 // import 'package:flutter/cupertino.dart';
 // import '/screens/writing_pages/writing_pages1.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart';
 import 'package:malf_application/features/write/presentation/screens/write_screen_post.dart';
-import 'page_animation.dart';
-import 'write_screen_util.dart';
+
 import 'write_screen1.dart';
-import 'write_screen2.dart';
 import 'write_screen3.dart';
-import 'write_screen_post.dart';
+import 'write_screen_util.dart';
 
 String title = '';
 String content = '';
@@ -36,7 +33,6 @@ class WriteScreen4 extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             WhiteBox(boxWidth: 0, boxHeight: 5), // 맨 위 상단 공백
-
             Row(
               // 글쓰기 화면 상단의 앱바
               crossAxisAlignment: CrossAxisAlignment.center,
