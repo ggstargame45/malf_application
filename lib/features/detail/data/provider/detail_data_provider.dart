@@ -26,7 +26,7 @@ class JsonDataNotifier extends StateNotifier<JsonDataState> {
 
   void loadJsonData() async {
     state = state.copyWith(isLoading: true);
-    final jsonDataResponse = await Network(postId: "20").request();
+    final jsonDataResponse = await Network(postId: 20).request();
     final jsonData = JsonData.fromJson(jsonDataResponse);
     Logger().d(jsonData);
     state = state.copyWith(isLoading: false, jsonData: jsonData);

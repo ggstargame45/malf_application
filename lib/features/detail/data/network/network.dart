@@ -11,7 +11,7 @@ class Network {
       headers: {'Authorization': 'test_1'},
       responseType: ResponseType.json));
 
-  String postId;
+  int postId;
   static const String detailUrl = Url.detailUrl;
   Network({
     required this.postId,
@@ -27,15 +27,43 @@ class Network {
     }
   }
 
-  Future<dynamic> post(
-      String userId, int like, int participantionStatus) async {
+  Future<dynamic> likePost(int userId, int like) async {
     try {
       final response = await _dio.post("$detailUrl$postId/like", data: {
         'id': userId,
         'like_check': like,
-        'participantion_status': participantionStatus
       });
-      return response.data;
+      return response.statusCode;
+    } catch (error) {
+      logger.d('오류: $error');
+    }
+  }
+
+  Future<dynamic> participationPost(
+      int userId, int participantionStatus) async {
+    try {
+      final response = await _dio.post("$detailUrl$postId/like", data: {
+        'id': userId,
+        'participation_status': participantionStatus,
+      });
+      logger.d(response.data);
+      return response.statusCode;
+    } catch (error) {
+      logger.d('오류: $error');
+    }
+  }
+
+  Future<dynamic> deletePost(int userId) async {
+    try {
+      final response = await _dio.post("$detailUrl$postId",
+          options: Options(
+            headers: {"user_id": 21},
+          ),
+          data: {
+            'user_id': userId,
+          });
+      logger.d(response.data);
+      return response.statusCode;
     } catch (error) {
       logger.d('오류: $error');
     }

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:malf_application/config/routes/app_route.dart';
+import 'package:malf_application/features/detail/data/network/network.dart';
+
+import '../../../data/provider/detail_data_provider.dart';
 
 var logger = Logger();
 
@@ -28,6 +31,9 @@ class FooterWigdget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // ignore: invalid_use_of_protected_member
+    final jsonData = ref.read(jsonDataProvider).jsonData.data!.first;
+    Logger().d(jsonData!.likecount);
     final isLiked = ref.watch(islikedStateNotifierProvider);
     final isLikedRead = ref.read(islikedStateNotifierProvider.notifier);
     return Container(
@@ -41,7 +47,12 @@ class FooterWigdget extends ConsumerWidget {
           child: GestureDetector(
             onTap: () {
               isLikedRead.toggleIsLiked();
-              logger.d("tap");
+              Network(postId: 20)
+                  .participationPost(20, jsonData.likecheck == 0 ? 0 : 1);
+
+              isLiked == 0
+                  ? jsonData.likecount = jsonData.likecount! + 1
+                  : jsonData.likecount = jsonData.likecount! - 1;
             },
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -51,7 +62,7 @@ class FooterWigdget extends ConsumerWidget {
                       color: Colors.red[400],
                     )
                   : const Icon(Icons.favorite_border),
-              const Text("123")
+              Text("${jsonData.likecount}")
             ]),
           ),
         ),
@@ -59,7 +70,6 @@ class FooterWigdget extends ConsumerWidget {
           children: [
             TextButton(
               onPressed: () {
-                logger.d("tap");
                 context.router.push(const ParticipationRoute());
               },
               style: ButtonStyle(
@@ -81,9 +91,7 @@ class FooterWigdget extends ConsumerWidget {
               width: 10,
             ),
             TextButton(
-              onPressed: () {
-                logger.d("tap");
-              },
+              onPressed: () {},
               style: ButtonStyle(
                   padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                       const EdgeInsets.fromLTRB(40, 19, 40, 19)),
