@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/provider/detail_data_provider.dart';
+import '../../../data/models/json_data_model.dart';
 import 'meeting_detail_info.dart';
 import 'user_container.dart';
 
 //판넬위의 미팅 정보들
 class DetailPanel extends ConsumerWidget {
   final ScrollController controller;
-  const DetailPanel({super.key, required this.controller});
+  Datum? jsonData;
+  DetailPanel({super.key, required this.controller, required this.jsonData});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final jsonData = ref.watch(jsonDataProvider).jsonData.data!.first;
-
     return Padding(
       padding: const EdgeInsets.all(16),
       child: ListView(
@@ -37,13 +36,13 @@ class DetailPanel extends ConsumerWidget {
                       const Text("투어", style: TextStyle(color: Colors.white)),
                 ),
                 Text(
-                  "${jsonData?.title!}",
+                  "${jsonData!.title}",
                   style: const TextStyle(
                       fontSize: 25, fontWeight: FontWeight.bold),
                 ),
-                const Padding(
-                    padding: EdgeInsets.only(top: 8, bottom: 8),
-                    child: MeetingdetailInfo()),
+                Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 8),
+                    child: MeetingdetailInfo(jsonData: jsonData)),
               ],
             ),
           ),
@@ -52,9 +51,11 @@ class DetailPanel extends ConsumerWidget {
               width: 343,
               color: const Color.fromARGB(255, 215, 213, 213)),
           //유저 정보
-          const UserContainer(),
+          UserContainer(
+            jsonData: jsonData,
+          ),
           //미팅 내용
-          Text("${jsonData?.content!}"),
+          Text("${jsonData!.content}"),
           const SizedBox(
             height: 16,
           ),
