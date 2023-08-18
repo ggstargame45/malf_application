@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
-import 'package:malf_application/features/detail/constants/url_const.dart';
 
 import '../../../data/models/json_data_model.dart';
 
@@ -18,10 +17,10 @@ class UserContainer extends ConsumerWidget {
       padding: const EdgeInsets.only(top: 16, bottom: 20),
       child: Row(
         children: [
-          CircleAvatar(
+          const CircleAvatar(
             minRadius: 25,
-            backgroundImage: NetworkImage(
-                "${Url.baseUrl}/${jsonDecode(jsonData!.authorpicture!)[0]}"),
+            // backgroundImage: NetworkImage(
+            //     "${Url.baseUrl}/${jsonDecode(jsonData!.authorpicture!)[0]}"),
           ),
           const SizedBox(
             width: 8,

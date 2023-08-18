@@ -28,14 +28,6 @@ class PostData {
   void setIsLikedCount(int value) {
     isLikedCount = value;
   }
-
-  void incrementCount() {
-    isLikedCount = isLikedCount++;
-  }
-
-  void decrementCount() {
-    isLikedCount = isLikedCount--;
-  }
 }
 
 class PostDataNotifier extends StateNotifier<PostData> {
@@ -43,13 +35,14 @@ class PostDataNotifier extends StateNotifier<PostData> {
       : super(
             PostData(isLikedCheck: 0, participationStatus: 0, isLikedCount: 0));
 
-  // void setState(isLikedCheck,participationStatus,isLikedCount){
-  //   state = PostData(
-  //     isLikedCheck: isLikedCheck,
-  //     participationStatus: participationStatus,
-  //     isLikedCount: isLikedCount,
-  //   );
-  // }
+  void setState(isLikedCheck, participationStatus, isLikedCount) {
+    state = PostData(
+      isLikedCheck: isLikedCheck,
+      participationStatus: participationStatus,
+      isLikedCount: isLikedCount,
+    );
+  }
+
   // Toggle isLikedCheck
   void toggleIsLiked() {
     state = PostData(
@@ -57,5 +50,19 @@ class PostDataNotifier extends StateNotifier<PostData> {
       participationStatus: state.participationStatus,
       isLikedCount: state.isLikedCount,
     );
+  }
+
+  void increaseCount() {
+    state = PostData(
+        isLikedCheck: state.isLikedCheck,
+        participationStatus: state.participationStatus,
+        isLikedCount: state.isLikedCount + 1);
+  }
+
+  void decreaseCount() {
+    state = PostData(
+        isLikedCheck: state.isLikedCheck,
+        participationStatus: state.participationStatus,
+        isLikedCount: state.isLikedCount - 1);
   }
 }

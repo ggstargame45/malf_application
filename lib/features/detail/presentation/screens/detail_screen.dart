@@ -29,6 +29,7 @@ class DetailScreen extends ConsumerWidget {
       final jsonDataState = data.jsonData.status;
       final jsonData = data.jsonData.data!.first;
       logger.d("$jsonDataState");
+
       return Scaffold(
           key: scaffoldKey,
           appBar: AppBar(

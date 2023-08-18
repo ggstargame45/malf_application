@@ -17,17 +17,24 @@ final postDataNotifierProvider =
 
 class FooterWigdget extends ConsumerWidget {
   Datum? jsonData;
+  bool _isExecuted = false;
   FooterWigdget({required this.jsonData, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // ignore: invalid_use_of_protected_member
-    PostData postData = PostData(
-        isLikedCheck: jsonData!.likecheck!,
-        participationStatus: jsonData!.participationstatus!,
-        isLikedCount: jsonData!.likecount!);
+
     final postDataValue = ref.watch(postDataNotifierProvider);
     final postDataState = ref.read(postDataNotifierProvider.notifier);
+    if (!_isExecuted) {
+      _isExecuted = true;
+      Future(
+        () {
+          postDataState.setState(jsonData!.likecheck,
+              jsonData!.participationstatus, jsonData!.likecount);
+        },
+      );
+    }
     return Container(
       height: 80,
       width: MediaQuery.of(context).size.width,
@@ -42,8 +49,8 @@ class FooterWigdget extends ConsumerWidget {
               Network(postId: 20).participationPost(
                   20, postDataValue.isLikedCheck == 0 ? 0 : 1);
               postDataValue.isLikedCheck == 0
-                  ? postData.incrementCount()
-                  : postData.decrementCount();
+                  ? postDataState.increaseCount()
+                  : postDataState.decreaseCount();
             },
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
