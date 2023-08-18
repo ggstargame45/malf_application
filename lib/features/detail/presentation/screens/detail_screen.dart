@@ -50,7 +50,7 @@ class DetailScreen extends ConsumerWidget {
                     color: AppColors.black,
                   ),
                   onPressed: () {
-                    detailMoreSheet(context);
+                    detailMoreSheet(context, postId);
                   }),
               const SizedBox(
                 width: 10,

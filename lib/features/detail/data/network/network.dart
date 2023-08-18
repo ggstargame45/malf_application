@@ -53,14 +53,14 @@ class Network {
     }
   }
 
-  Future<dynamic> deletePost(int userId) async {
+  Future<dynamic> delete() async {
     try {
-      final response = await _dio.post("$detailUrl$postId",
+      final response = await _dio.delete("$detailUrl$postId",
           options: Options(
             headers: {"user_id": 21},
           ),
           data: {
-            'user_id': userId,
+            'user_id': postId,
           });
       logger.d(response.data);
       return response.statusCode;
