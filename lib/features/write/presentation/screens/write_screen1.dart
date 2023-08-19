@@ -60,6 +60,10 @@ class ImageNotifier extends StateNotifier<List<File>> {
   void refresh(List<File> newList) {
     state = newList;
   }
+
+  void clearImage() {
+    state = [];
+  }
 }
 
 @RoutePage()
@@ -135,74 +139,145 @@ class WriteScreen1 extends ConsumerWidget {
 
                             WhiteBox(
                                 boxWidth: 0, boxHeight: 1), // 사진 <-> 사진첨부 공백
-                            SizedBox(
-                              height: getHeightByPercentOfScreen(25, context),
-                              width: getWidthByPercentOfScreen(90, context),
-                              child: ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                itemCount:
-                                    ref.watch(writeScreenImageProvider).length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Container(
-                                      height: 30,
-                                      color: const Color.fromARGB(
-                                          255, 255, 228, 147),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Image.file(ref.watch(
-                                              writeScreenImageProvider)[index])
-                                        ],
-                                      ));
-                                },
-                                separatorBuilder:
-                                    (BuildContext context, int index) =>
-                                        WhiteBox(
-                                            boxWidth: MEDIUMBLANK,
-                                            boxHeight: 0),
-                              ),
-                            ),
 
                             SizedBox(
-                                width: getHeightByPercentOfScreen(10, context),
-                                height: getHeightByPercentOfScreen(10, context),
-                                child: ElevatedButton(
-                                    onPressed: () async {
-                                      final image = await picker.pickImage(
-                                          source: ImageSource
-                                              .gallery); // 갤러리에서 이미지 뽑아옴
-                                      imageList.add(File(image!.path));
-                                      ref
-                                          .read(
-                                              writeScreenImageProvider.notifier)
-                                          .refresh(imageList);
+                              // 사진을 추가할 수 있는 좌측 카메라 버튼
+                              height: getHeightByPercentOfScreen(10, context),
+                              width: getWidthByPercentOfScreen(90, context),
+                              child: Row(children: [
+                                SizedBox(
+                                    width:
+                                        getHeightByPercentOfScreen(10, context),
+                                    height:
+                                        getHeightByPercentOfScreen(10, context),
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        if (imageList.length < 10) {
+                                          final image = await picker.pickImage(
+                                              source: ImageSource
+                                                  .gallery); // 갤러리에서 이미지 뽑아옴
+                                          imageList.add(File(image!.path));
+                                          ref.refresh(writeScreenImageProvider);
+                                          ref
+                                              .read(writeScreenImageProvider
+                                                  .notifier)
+                                              .refresh(imageList);
+                                        }
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16)),
+                                        backgroundColor:
+                                            const Color(0xFFF7F7F7),
+                                        side: const BorderSide(
+                                            width: 0.75,
+                                            color: Color(0xFFD3D3D3)),
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Icon(
+                                            Icons.photo_camera_rounded,
+                                            size: 38,
+                                            color: Color(0xFFBEBEBE),
+                                          ),
+                                          Text(
+                                              "${ref.watch(writeScreenImageProvider).length} / 10",
+                                              style: const TextStyle(
+                                                  color: Color(0xFF808080),
+                                                  fontFamily: 'Pretendard',
+                                                  fontSize: 12)),
+                                        ],
+                                      ),
+                                    )),
+                                WhiteBox(boxWidth: 3, boxHeight: 0),
+                                SizedBox(
+                                  // 사진들을 미리 볼 수 있게 해주는 리스트뷰
+                                  height:
+                                      getHeightByPercentOfScreen(10, context),
+                                  width: getWidthByPercentOfScreen(60, context),
+                                  child: ListView.separated(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: ref
+                                        .watch(writeScreenImageProvider)
+                                        .length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Container(
+                                          decoration: ShapeDecoration(
+                                            color: Colors.white,
+                                            shape: RoundedRectangleBorder(
+                                              side: const BorderSide(
+                                                  width: 0.75,
+                                                  color: Color(0xFFD3D3D3)),
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                            ),
+                                          ),
+                                          child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      16), // ClipRRect의 모서리 설정
+                                              child: Stack(
+                                                children: [
+                                                  Image.file(
+                                                    ref.watch(
+                                                            writeScreenImageProvider)[
+                                                        index],
+                                                    height:
+                                                        getHeightByPercentOfScreen(
+                                                            10, context),
+                                                    width:
+                                                        getHeightByPercentOfScreen(
+                                                            10, context),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                  Positioned(
+                                                      top:
+                                                          getWidthByPercentOfScreen(
+                                                              -2, context),
+                                                      right:
+                                                          getWidthByPercentOfScreen(
+                                                              2, context),
+                                                      child: SizedBox(
+                                                          width: 20,
+                                                          child:
+                                                              FloatingActionButton(
+                                                            backgroundColor:
+                                                                const Color(
+                                                                    0xFFD3D3D3),
+                                                            onPressed: () {
+                                                              imageList
+                                                                  .removeAt(
+                                                                      index);
+                                                              ref.refresh(
+                                                                  writeScreenImageProvider);
+                                                              ref
+                                                                  .read(writeScreenImageProvider
+                                                                      .notifier)
+                                                                  .refresh(
+                                                                      imageList);
+                                                            }, // 해당 이미지 삭제
+                                                            child: const Icon(
+                                                                Icons.close,
+                                                                size: 15,
+                                                                color: Colors
+                                                                    .white),
+                                                          )))
+                                                ],
+                                              )));
                                     },
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(16)),
-                                      backgroundColor: const Color(0xFFF7F7F7),
-                                      side: const BorderSide(
-                                          width: 0.5, color: Color(0xFFD3D3D3)),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const Icon(
-                                          Icons.photo_camera_rounded,
-                                          size: 38,
-                                          color: Color(0xFFBEBEBE),
-                                        ),
-                                        Text(
-                                            "${ref.watch(writeScreenImageProvider).length} / 10",
-                                            style: const TextStyle(
-                                                color: Color(0xFF808080),
-                                                fontFamily: 'Pretendard',
-                                                fontSize: 12))
-                                      ],
-                                    ))),
+                                    separatorBuilder:
+                                        (BuildContext context, int index) =>
+                                            WhiteBox(
+                                                boxWidth: MEDIUMBLANK,
+                                                boxHeight: 0),
+                                  ),
+                                ),
+                              ]),
+                            ),
 
                             WhiteBox(
                                 boxWidth: 0,
@@ -458,39 +533,5 @@ class WriteScreen1 extends ConsumerWidget {
   }
 }
 
-// class CategoryButton extends StatefulWidget {
-//   const CategoryButton({super.key});
 
-//   @override
-//   _CategoryButtonState createState() => _CategoryButtonState();
-// }
 
-// class _CategoryButtonState extends State<CategoryButton> {
-//   bool isTravel = false;
-//   bool isSports = false;
-//   late List<bool> isSelected;
-//   @override
-//   Widget build(BuildContext context) {
-//     return ToggleButtons(isSelected: isSelected, children: const [
-//       Padding(
-//           padding: EdgeInsets.symmetric(horizontal: 5),
-//           child: Text('여행', style: TextStyle(fontSize: 10))),
-//       Padding(
-//           padding: EdgeInsets.symmetric(horizontal: 5),
-//           child: Text('스포츠', style: TextStyle(fontSize: 10))),
-//     ]);
-//   }
-
-//   void categorySelect(value) {
-//     if (value == 0) {
-//       isTravel = true;
-//       isSports = false;
-//     } else {
-//       isTravel = false;
-//       isSports = true;
-//     }
-//     setState(() {
-//       isSelected = [isTravel, isSports];
-//     });
-//   }
-// }
