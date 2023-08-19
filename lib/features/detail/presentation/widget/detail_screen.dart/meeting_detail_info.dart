@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/provider/detail_data_provider.dart';
+import '../../../data/models/json_data_model.dart';
 
 class MeetingdetailInfo extends ConsumerWidget {
-  const MeetingdetailInfo({super.key});
+  Datum? jsonData;
+  MeetingdetailInfo({super.key, required this.jsonData});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final jsonData = ref.watch(jsonDataProvider).jsonData.data!.first;
     DateTime dateTime = DateTime.parse(jsonData!.meetingstarttime!);
     String formattedDate =
         "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
@@ -34,7 +34,7 @@ class MeetingdetailInfo extends ConsumerWidget {
             const SizedBox(
               width: 6,
             ),
-            Text(jsonData.meetinglocation!),
+            Text(jsonData!.meetinglocation!),
           ],
         ),
         const SizedBox(
@@ -92,10 +92,10 @@ class MeetingdetailInfo extends ConsumerWidget {
             ),
             Text.rich(TextSpan(children: <TextSpan>[
               TextSpan(
-                text: "${jsonData.participationstatus}/",
+                text: "${jsonData!.participationstatus}/",
               ),
               TextSpan(
-                  text: "${jsonData.meetingcapacity}",
+                  text: "${jsonData!.meetingcapacity}",
                   style: const TextStyle(color: Colors.grey))
             ])),
             const Icon(

@@ -3,33 +3,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:malf_application/config/routes/app_route.dart';
+import 'package:malf_application/features/detail/data/models/json_data_model.dart';
+import 'package:malf_application/features/detail/data/network/network.dart';
+
+import '../../../data/provider/detail_postdata.dart';
 
 var logger = Logger();
 
-class IsLikedState extends StateNotifier<int> {
-  IsLikedState() : super(1);
-
-  void toggleIsLiked() {
-    if (state == 0) {
-      state = 1;
-    } else if (state == 1) {
-      state = 0;
-    }
-  }
-}
-
-final islikedStateNotifierProvider =
-    StateNotifierProvider<IsLikedState, int>((ref) {
-  return IsLikedState();
+final postDataNotifierProvider =
+    StateNotifierProvider<PostDataNotifier, PostData>((ref) {
+  return PostDataNotifier();
 });
 
 class FooterWigdget extends ConsumerWidget {
-  const FooterWigdget({super.key});
+  Datum? jsonData;
+  bool _isExecuted = false;
+  FooterWigdget({required this.jsonData, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isLiked = ref.watch(islikedStateNotifierProvider);
-    final isLikedRead = ref.read(islikedStateNotifierProvider.notifier);
+    // ignore: invalid_use_of_protected_member
+
+    final postDataValue = ref.watch(postDataNotifierProvider);
+    final postDataState = ref.read(postDataNotifierProvider.notifier);
+    if (!_isExecuted) {
+      _isExecuted = true;
+      Future(
+        () {
+          postDataState.setState(jsonData!.likecheck,
+              jsonData!.participationstatus, jsonData!.likecount);
+        },
+      );
+    }
     return Container(
       height: 80,
       width: MediaQuery.of(context).size.width,
@@ -40,18 +45,22 @@ class FooterWigdget extends ConsumerWidget {
           height: 60,
           child: GestureDetector(
             onTap: () {
-              isLikedRead.toggleIsLiked();
-              logger.d("tap");
+              postDataState.toggleIsLiked();
+              Network(postId: 20).participationPost(
+                  20, postDataValue.isLikedCheck == 0 ? 0 : 1);
+              postDataValue.isLikedCheck == 0
+                  ? postDataState.increaseCount()
+                  : postDataState.decreaseCount();
             },
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              isLiked == 1
+              postDataValue.isLikedCheck == 1
                   ? Icon(
                       Icons.favorite,
                       color: Colors.red[400],
                     )
                   : const Icon(Icons.favorite_border),
-              const Text("123")
+              Text("${postDataValue.isLikedCount}")
             ]),
           ),
         ),
@@ -59,7 +68,6 @@ class FooterWigdget extends ConsumerWidget {
           children: [
             TextButton(
               onPressed: () {
-                logger.d("tap");
                 context.router.push(const ParticipationRoute());
               },
               style: ButtonStyle(
@@ -81,9 +89,7 @@ class FooterWigdget extends ConsumerWidget {
               width: 10,
             ),
             TextButton(
-              onPressed: () {
-                logger.d("tap");
-              },
+              onPressed: () {},
               style: ButtonStyle(
                   padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                       const EdgeInsets.fromLTRB(40, 19, 40, 19)),

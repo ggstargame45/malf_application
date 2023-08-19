@@ -2,25 +2,25 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:malf_application/features/detail/constants/url_const.dart';
+import 'package:logger/logger.dart';
 
-import '../../../data/provider/detail_data_provider.dart';
+import '../../../data/models/json_data_model.dart';
 
 class UserContainer extends ConsumerWidget {
-  const UserContainer({super.key});
+  Datum? jsonData;
+  UserContainer({super.key, required this.jsonData});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final jsonData = ref.watch(jsonDataProvider).jsonData.data!.first;
-
+    Logger().d(jsonDecode(jsonData!.authorpicture!)[0]);
     return Container(
       padding: const EdgeInsets.only(top: 16, bottom: 20),
       child: Row(
         children: [
-          CircleAvatar(
+          const CircleAvatar(
             minRadius: 25,
-            backgroundImage: NetworkImage(
-                "${Url.baseUrl}/${jsonDecode(jsonData!.authorpicture!)[0]}"),
+            // backgroundImage: NetworkImage(
+            //     "${Url.baseUrl}/${jsonDecode(jsonData!.authorpicture!)[0]}"),
           ),
           const SizedBox(
             width: 8,
@@ -37,7 +37,7 @@ class UserContainer extends ConsumerWidget {
                       color: Color.fromARGB(255, 68, 176, 253),
                       borderRadius: BorderRadius.all(Radius.circular(20))),
                   child: Text(
-                    jsonData.usertype == 0 ? "현지인" : "여행객",
+                    jsonData!.usertype == 0 ? "현지인" : "여행객",
                     style: const TextStyle(color: Colors.white, fontSize: 10),
                   ),
                 ),
@@ -47,7 +47,7 @@ class UserContainer extends ConsumerWidget {
                 Row(
                   children: [
                     Text(
-                      "${jsonData.authornickname}",
+                      "${jsonData!.authornickname}",
                       style: const TextStyle(fontSize: 15),
                     ),
                     const SizedBox(

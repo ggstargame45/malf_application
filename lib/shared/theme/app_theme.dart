@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:malf_application/features/detail/constants/ui_const.dart';
 //import 'package:flutter_project/shared/data/local/storage_service.dart';
 //import 'package:flutter_project/shared/domain/providers/sharedpreferences_storage_service_provider.dart';
 //import 'package:flutter_project/shared/globals.dart';
 import 'package:malf_application/shared/theme/app_colors.dart';
 import 'package:malf_application/shared/theme/test_styles.dart';
 import 'package:malf_application/shared/theme/text_theme.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // final appThemeProvider = StateNotifierProvider<AppThemeModeNotifier, ThemeMode>(
 //       (ref) {
@@ -92,7 +93,7 @@ class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       brightness: Brightness.light,
-      primaryColor: AppColors.primary,
+      primaryColor: MalfColor().selectedBlue,
       textTheme: TextThemes.textTheme,
       primaryTextTheme: TextThemes.primaryTextTheme,
       colorScheme: const ColorScheme.light(
