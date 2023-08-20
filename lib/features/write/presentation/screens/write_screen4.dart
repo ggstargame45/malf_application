@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:malf_application/features/write/presentation/screens/write_screen2.dart';
 import 'package:malf_application/features/write/presentation/screens/write_screen_post.dart';
 
 import 'write_screen1.dart';
@@ -72,6 +73,8 @@ class WriteScreen4 extends ConsumerWidget {
                 )
               ],
             ),
+            WritingPagesBlackText(
+                text: "Category: ${ref.watch(writeScreenCategoryProvider)}"),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -90,6 +93,8 @@ class WriteScreen4 extends ConsumerWidget {
                 )
               ],
             ),
+            WritingPagesBlackText(
+                text: "Date: ${ref.watch(writeScreenDateProvider)}"),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -118,13 +123,15 @@ class WriteScreen4 extends ConsumerWidget {
 
             const Spacer(),
             WritingPagesNextbutton(
+              // 전송
               pressNextButton: true
                   ? () {
                       title = ref.watch(writeScreenTitleProvider);
                       content = ref.watch(writeScreenContentProvider);
-                      category = 1;
+                      category = MappingCategory(
+                          ref.watch(writeScreenCategoryProvider));
                       meeting_location = ref.watch(writeScreenPlaceProvider);
-                      meeting_start_time = '2023-08-09 19:00:00';
+                      meeting_start_time = ref.watch(writeScreenDateProvider);
                       capacity_local =
                           ref.watch(writeScreenLocalPeopleProvider).toInt();
                       capacity_travel =
@@ -137,7 +144,6 @@ class WriteScreen4 extends ConsumerWidget {
                           meeting_location: meeting_location,
                           capacity_local: capacity_local,
                           capacity_travel: capacity_travel);
-                      print(title);
                       postPosting(postingBody);
                       // _registration();
                     }
@@ -148,5 +154,20 @@ class WriteScreen4 extends ConsumerWidget {
         )),
       ),
     );
+  }
+}
+
+// 카테고리를 int로 바꾸기 위한 함수
+int MappingCategory(String category) {
+  if (category == "여행") {
+    return 1;
+  } else if (category == "맛집") {
+    return 2;
+  } else if (category == "독서") {
+    return 3;
+  } else if (category == "스포츠") {
+    return 4;
+  } else {
+    return 5;
   }
 }
