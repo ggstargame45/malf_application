@@ -8,7 +8,6 @@ import 'page_animation.dart';
 import 'write_screen_util.dart';
 import 'write_screen3.dart';
 
-final writeScreenDateProvider = StateProvider<String>((ref) => "");
 DateTime date = DateTime.now();
 String hour = '06';
 String minute = '00';
@@ -16,6 +15,19 @@ String ampm = '오후';
 
 bool calendarExpanded = false;
 bool pickerExpanded = false;
+
+final writeScreenDateProvider =
+    StateNotifierProvider<DateNotifier, String>((ref) {
+  return DateNotifier();
+});
+
+class DateNotifier extends StateNotifier<String> {
+  DateNotifier() : super("${DateFormat('yyyy-MM-dd ').format(date)}18:00:00");
+
+  void setText(String text) {
+    state = text;
+  }
+}
 
 class WriteScreen2 extends ConsumerWidget {
   const WriteScreen2({super.key});
@@ -123,6 +135,8 @@ class WriteScreen2 extends ConsumerWidget {
             WritingPagesNextbutton(
               pressNextButton: true
                   ? () {
+                      ref.read(writeScreenDateProvider.notifier).setText(
+                          "${DateFormat("yyyy-MM-dd ").format(date)}$hour:$minute:00");
                       PageRouteWithAnimation pageRouteWithAnimation =
                           PageRouteWithAnimation(WriteScreen3());
                       Navigator.push(
@@ -294,7 +308,7 @@ class _DatePickerState extends State<DatePicker> {
                                 ),
                               ),
                               Text(
-                                '$ampm $hour:$minute',
+                                '$ampm ${(int.parse(hour) % 12).toString()}:$minute',
                                 style: const TextStyle(
                                   color: Color(0xFF1A1A1A),
                                   fontSize: 18,
@@ -321,9 +335,9 @@ class _DatePickerState extends State<DatePicker> {
                         setState(() {
                           time = newTime;
                           if (time.hour < 10) {
-                            hour = '0${(time.hour % 12).toString()}';
+                            hour = '0${(time.hour).toString()}';
                           } else {
-                            hour = (time.hour % 12).toString();
+                            hour = (time.hour).toString();
                           }
                           if (time.minute < 10) {
                             minute = '0${minute = time.minute.toString()}';

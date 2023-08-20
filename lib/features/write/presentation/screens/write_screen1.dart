@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import './page_animation.dart';
-import '../widgets/category_select_sheet.dart';
 import 'write_screen2.dart';
 import 'write_screen_util.dart';
 
@@ -173,6 +172,7 @@ class WriteScreen1 extends ConsumerWidget {
                                         side: const BorderSide(
                                             width: 0.75,
                                             color: Color(0xFFD3D3D3)),
+                                        elevation: 0,
                                       ),
                                       child: Column(
                                         mainAxisAlignment:
@@ -434,40 +434,65 @@ class WriteScreen1 extends ConsumerWidget {
                             // 카테고리 설정하는 창
                             GestureDetector(
                               onTap: () {
-                                categorySelectSheet(context);
-                                // showModalBottomSheet(
-                                //     context: context,
-                                //     builder: (BuildContext context) {
-                                //       return Container(
-                                //         height: getHeightByPercentOfScreen(
-                                //             50, context),
-                                //         decoration: const BoxDecoration(
-                                //           color: Colors.white,
-                                //           borderRadius: BorderRadius.only(
-                                //             topLeft: Radius.circular(20),
-                                //             topRight: Radius.circular(20),
-                                //           ),
-                                //         ),
-                                //         child: Column(
-                                //           children: [
-                                //             const WritingPagesBlackText(
-                                //                 text: "카테고리를 입력해주세요"),
-                                //             WhiteBox(
-                                //                 boxWidth: 0,
-                                //                 boxHeight: MEDIUMBLANK),
-                                //             const Row(
-                                //               mainAxisAlignment:
-                                //                   MainAxisAlignment
-                                //                       .spaceBetween,
-                                //               children: <Widget>[
-                                //                 CategoryButton()
-                                //               ],
-                                //             )
-                                //           ],
-                                //         ),
-                                //       );
-                                //     },
-                                //     backgroundColor: Colors.transparent);
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        height: getHeightByPercentOfScreen(
+                                            50, context),
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20),
+                                          ),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            WhiteBox(
+                                                boxWidth: 0,
+                                                boxHeight: MEDIUMBLANK),
+                                            const WritingPagesBlackText(
+                                                text: "대표 카테고리 선택"),
+                                            WhiteBox(
+                                                boxWidth: 0,
+                                                boxHeight: MEDIUMBLANK),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: <Widget>[
+                                                CategoryButton(category: "여행"),
+                                                CategoryButton(category: "맛집"),
+                                              ],
+                                            ),
+                                            WhiteBox(
+                                                boxWidth: 0,
+                                                boxHeight: MEDIUMBLANK),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: <Widget>[
+                                                CategoryButton(category: "독서"),
+                                                CategoryButton(
+                                                  category: "스포츠",
+                                                )
+                                              ],
+                                            ),
+                                            WhiteBox(
+                                                boxWidth: 0,
+                                                boxHeight: MEDIUMBLANK),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                CategoryButton(category: "영화")
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    backgroundColor: Colors.transparent);
                               },
                               child: Container(
                                   width: getWidthByPercentOfScreen(90, context),
@@ -533,5 +558,28 @@ class WriteScreen1 extends ConsumerWidget {
   }
 }
 
+class CategoryButton extends ConsumerWidget {
+  String category;
+  CategoryButton({super.key, required this.category});
 
-
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(width: 0.50, color: Color(0xFFD3D3D3)),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            backgroundColor: Colors.white,
+            elevation: 0,
+            minimumSize: Size(
+              getWidthByPercentOfScreen(42, context),
+              getHeightByPercentOfScreen(7, context),
+            )),
+        onPressed: () {
+          ref.read(writeScreenCategoryProvider.notifier).setText(category);
+          Navigator.pop(context);
+        },
+        child: Text(category, style: const TextStyle(color: Colors.black)));
+  }
+}
