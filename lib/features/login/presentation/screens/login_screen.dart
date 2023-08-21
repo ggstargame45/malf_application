@@ -3,9 +3,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
-import 'package:malf_application/config/routes/app_route.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+// Import for Android features.
+import 'package:webview_flutter_android/webview_flutter_android.dart';
+// Import for iOS features.
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 part 'login_screen.g.dart';
 
@@ -14,7 +17,7 @@ const baseUrl = 'http://3.36.185.179:8000/';
 final logger = Logger();
 
 @riverpod
-FutureOr<Map<String, String>> fetchLogin(Ref ref) async {
+FutureOr<Uri> fetchLogin(Ref ref) async {
   final dio = Dio(BaseOptions(
     baseUrl: '${baseUrl}auth/kakao',
     //headers: {'Authorization': 'test_1'},
@@ -25,41 +28,46 @@ FutureOr<Map<String, String>> fetchLogin(Ref ref) async {
   Response response = await dio.get("");
 
   Uri rrrr = response.realUri;
-
+  //Uri rrrr = Uri.parse('https://accounts.kakao.com/login/?continue=https%3A%2F%2Fkauth.kakao.com%2Foauth%2Fauthorize%3Fresponse_type%3Dcode%26redirect_uri%3Dhttp%253A%252F%252F3.36.185.179%253A8000%252Fauth%252Fkakao%252Fcallback%26through_account%3Dtrue%26client_id%3D02004f12cbb6023c0878057134e2bdb7#login')
   logger.d(rrrr);
 
   // kakaoSchemeStream.listen((rrrr) {
   //   logger.d('kakaoSchemeStream : $rrrr');
   // });
 
-  Map<String, String> result = {'refreshToken': '', 'accessToken': ''};
+  return rrrr;
 
-  if (await isKakaoTalkInstalled()) {
-    try {
-      await UserApi.instance.loginWithKakaoTalk();
-      logger.d('카카오톡으로 로그인 성공');
-    } catch (error) {
-      logger.d('카카오톡으로 로그인 실패 $error');
+  // if (await isKakaoTalkInstalled()) {
+  //   try {
+  //     await AuthCodeClient.instance.authorizeWithTalk(
+  //       redirectUri: '$rrrr',
+  //     );
+  //     logger.d('카카오톡으로 로그인 성공');
+  //   } catch (error) {
+  //     logger.d('카카오톡으로 로그인 실패 $error');
 
-      // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
-      try {
-        await UserApi.instance.loginWithKakaoAccount();
-        logger.d('카카오계정으로 로그인 성공asdasdasd');
-      } catch (error) {
-        logger.e("$error");
-        logger.e('카카오계정으로 로그인 실dddd패 $error');
-      }
-    }
-  } else {
-    try {
-      await UserApi.instance.loginWithKakaoAccount();
-      var usertoken = await UserApi.instance.accessTokenInfo();
-      logger.d("카카오계정으로 로그인 성공 ${usertoken.toJson()}}");
-    } catch (error) {
-      logger.e('카카오계정으로 로그인 실패 $error');
-    }
-  }
-  return result;
+  //     // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
+  //     try {
+  //       await AuthCodeClient.instance.authorize(
+  //         redirectUri: '$rrrr',
+  //       );
+  //       logger.d('카카오계정으로 로그인 성공asdasdasd');
+  //     } catch (error) {
+  //       logger.e("$error");
+  //       logger.e('카카오계정으로 로그인 실dddd패 $error');
+  //     }
+  //   }
+  // } else {
+  //   try {
+  //     await AuthCodeClient.instance.authorize(
+  //       redirectUri: '$rrrr}',
+  //     );
+  //     var usertoken = await UserApi.instance.accessTokenInfo();
+  //     logger.d("카카오계정으로 로그인 성공 ${usertoken.toJson()}}");
+  //   } catch (error) {
+  //     logger.e('카카오계정으로 로그인 실패 $error');
+  //   }
+  // }
 
   // try {
   //   final response = await dio.get("");
@@ -83,23 +91,9 @@ class LoginScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final fetchLoginAsyncValue = ref.watch(fetchLoginProvider);
-    return Scaffold(
-      body: fetchLoginAsyncValue.when(
-        data: (data) {
-          return const TestLoginBody();
-        },
-        loading: () {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-        error: (error, stackTrace) {
-          return const Center(
-            child: Text('error'),
-          );
-        },
-      ),
+    //
+    return const Scaffold(
+      body: TestLoginBody(),
     );
   }
 }
@@ -112,18 +106,101 @@ class TestLoginBody extends ConsumerStatefulWidget {
 }
 
 class _TestLoginBodyState extends ConsumerState<TestLoginBody> {
+  late final WebViewController _controller;
+
   @override
   Widget build(BuildContext context) {
+    late final PlatformWebViewControllerCreationParams params;
     final fetchLoginAsyncValue = ref.watch(fetchLoginProvider);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text('refresh : ${fetchLoginAsyncValue.value!['refreshToken']}'),
-        Text('access : ${fetchLoginAsyncValue.value!['accessToken']}'),
-        FloatingActionButton(onPressed: () {
-          context.router.push(HomeRoute());
-        })
-      ],
-    );
+
+    return fetchLoginAsyncValue.when(data: (data) {
+      if (WebViewPlatform.instance is WebKitWebViewPlatform) {
+        params = WebKitWebViewControllerCreationParams(
+          allowsInlineMediaPlayback: true,
+          mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
+        );
+      } else {
+        params = const PlatformWebViewControllerCreationParams();
+      }
+
+      final WebViewController controller =
+          WebViewController.fromPlatformCreationParams(params);
+
+      controller
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setBackgroundColor(const Color(0x00000000))
+        ..setNavigationDelegate(
+          NavigationDelegate(
+            onProgress: (int progress) {
+              debugPrint('WebView is loading (progress : $progress%)');
+            },
+            onPageStarted: (String url) {
+              debugPrint('Page started loading: $url');
+            },
+            onPageFinished: (String url) {
+              debugPrint('Page finished loading: $url');
+            },
+            onWebResourceError: (WebResourceError error) {
+              debugPrint('''
+              Page resource error:
+                code: ${error.errorCode}
+                description: ${error.description}
+                errorType: ${error.errorType}
+                isForMainFrame: ${error.isForMainFrame}
+          ''');
+            },
+            onNavigationRequest: (NavigationRequest request) {
+              debugPrint('allowing navigation to ${request.url}');
+              return NavigationDecision.navigate;
+            },
+          ),
+        )
+        ..addJavaScriptChannel(
+          'Toaster',
+          onMessageReceived: (JavaScriptMessage message) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(message.message)),
+            );
+          },
+        )
+        ..loadRequest(Uri.parse('${baseUrl}auth/kakao'));
+
+      if (controller.platform is AndroidWebViewController) {
+        AndroidWebViewController.enableDebugging(true);
+        (controller.platform as AndroidWebViewController)
+            .setMediaPlaybackRequiresUserGesture(false);
+      }
+
+      _controller = controller;
+
+      return SafeArea(
+          bottom: false,
+          child: SizedBox(
+              height: MediaQuery.of(context).size.height / 2,
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: WebViewWidget(controller: _controller)));
+    }, error: (error, stackTrace) {
+      return const Center(
+        child: Text('error'),
+      );
+    }, loading: () {
+      return const Center(
+        child: Text('loading'),
+      );
+    });
+
+    // final fetchLoginAsyncValue = ref.watch(fetchLoginProvider);
+    // return fetchLoginAsyncValue.when(data:
+    // (data) {
+    //   return data;
+    // }, error: (error, stackTrace) {
+    //   return const Center(
+    //     child: Text('error'),
+    //   );
+    // }, loading: () {
+    //   return const Center(
+    //     child: Text('loading'),
+    //   );
+    // });
   }
 }

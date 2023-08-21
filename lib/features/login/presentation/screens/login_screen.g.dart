@@ -6,12 +6,11 @@ part of 'login_screen.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchLoginHash() => r'6f69189f86af755ddd526d1a6dbfba43260ad636';
+String _$fetchLoginHash() => r'c6d4acbebd2abb964c316c852ffb4f25f1a4a93e';
 
 /// See also [fetchLogin].
 @ProviderFor(fetchLogin)
-final fetchLoginProvider =
-    AutoDisposeFutureProvider<Map<String, String>>.internal(
+final fetchLoginProvider = AutoDisposeFutureProvider<Uri>.internal(
   fetchLogin,
   name: r'fetchLoginProvider',
   debugGetCreateSourceHash:
@@ -20,6 +19,6 @@ final fetchLoginProvider =
   allTransitiveDependencies: null,
 );
 
-typedef FetchLoginRef = AutoDisposeFutureProviderRef<Map<String, String>>;
+typedef FetchLoginRef = AutoDisposeFutureProviderRef<Uri>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member
