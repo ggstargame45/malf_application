@@ -4,83 +4,37 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:malf_application/features/write/presentation/widgets/write_screen1_widgets.dart';
 
 import './page_animation.dart';
 import 'write_screen2.dart';
-import 'write_screen_util.dart';
-
-final writeScreenTitleProvider =
-    StateNotifierProvider<TitleNotifier, String>((ref) {
-  return TitleNotifier();
-});
-
-class TitleNotifier extends StateNotifier<String> {
-  TitleNotifier() : super('');
-
-  void setText(String text) {
-    state = text;
-  }
-}
-
-final writeScreenContentProvider =
-    StateNotifierProvider<ContentNotifier, String>((ref) {
-  return ContentNotifier();
-});
-
-class ContentNotifier extends StateNotifier<String> {
-  ContentNotifier() : super('');
-
-  void setText(String text) {
-    state = text;
-  }
-}
-
-final writeScreenCategoryProvider =
-    StateNotifierProvider<CategoryNotifier, String>((ref) {
-  return CategoryNotifier();
-});
-
-class CategoryNotifier extends StateNotifier<String> {
-  CategoryNotifier() : super("카테고리를 선택해주세요.");
-
-  void setText(String text) {
-    state = text;
-  }
-}
-
-final writeScreenImageProvider =
-    StateNotifierProvider<ImageNotifier, List<File>>((ref) {
-  return ImageNotifier();
-});
-
-class ImageNotifier extends StateNotifier<List<File>> {
-  ImageNotifier() : super([]);
-
-  void refresh(List<File> newList) {
-    state = newList;
-  }
-
-  void clearImage() {
-    state = [];
-  }
-}
+import '../widgets/write_screen_common.dart';
+import '../providers/write_screen_providers.dart';
 
 @RoutePage()
 class WriteScreen1 extends ConsumerWidget {
   WriteScreen1({Key? key}) : super(key: key);
 
-  bool _isButtonEnabled = false;
-  Color _titleOver40TextColor = Colors.white;
-  final int TITLELIMIT = 40;
-
-  final picker = ImagePicker();
-  List<File> imageList = [];
+  bool _isButtonEnabled = false; // '다음'버튼이 활성화되는지 여부
+  Color _titleOver40TextColor = Colors.white; // 제목 제한 안내 색상
+  final int TITLELIMIT = 40; // 제목 제한 상수
+  final picker = ImagePicker(); // 이미지피커
+  List<File> imageList = []; // 이미지 리스트
+  bool isFirstLoaded = true; // 화면을 불러올 때마다 riverpod 초기화하기 위함
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // 화면이 처음 로딩될 때마다 riverpod 초기화, 카테고리 색상 초기화
+    if (isFirstLoaded) {
+      ref.refresh(writeScreenImageProvider);
+      ref.refresh(writeScreenCategoryProvider);
+      categoryColor = const Color(0xFFBEBEBE);
+      isFirstLoaded = false;
+    }
+    // 키보드가 올라오면 화면 크기를 줄여서 스크롤 가능하게 함
     double isKeyboardDetected() {
       if (MediaQuery.of(context).viewInsets.bottom != 0) {
-        return 22;
+        return 26;
       } else {
         return 0;
       }
@@ -93,202 +47,53 @@ class WriteScreen1 extends ConsumerWidget {
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
+            appBar: WriteScreenAppbar(context),
             body: SafeArea(
               child: Column(
                 children: <Widget>[
-                  WhiteBox(boxWidth: 0, boxHeight: 5), // 맨 위 상단 공백
-
-                  Row(
-                    // 글쓰기 화면 상단의 앱바
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back_ios_new_outlined),
-                        iconSize: getWidthByPercentOfScreen(6, context),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.close),
-                        iconSize: getWidthByPercentOfScreen(8, context),
-                        onPressed: () {
-                          closeWritingPages(context);
-                        },
-                      )
-                    ],
-                  ),
-                  WhiteBox(
-                      boxWidth: 0,
-                      boxHeight: SMALLBLANK), // 앱바 <-> 모임을소개해주세요 공백
-
                   SizedBox(
+                    // height를 키보드가 발견되지 않으면 75, 발견되면 (75-키보드)로 설정
                     height: getHeightByPercentOfScreen(
-                        70 - isKeyboardDetected(), context),
+                        75 - isKeyboardDetected(), context),
                     child: ScrollConfiguration(
+                        // behavior를 common에 정의한 MyBehavior()로 설정하면 스크롤 가능
                         behavior: MyBehavior(),
                         child: SingleChildScrollView(
                           child: Column(children: [
                             const WritingPagesBlackText(text: '모임을 소개해주세요.'),
-                            WhiteBox(
-                                boxWidth: 0,
-                                boxHeight: 3), // 모임을 소개해주세요 <-> 사진 공백
+
+                            // 모임을 소개해주세요 <-> 사진 공백
+                            WhiteBox(boxWidth: 0, boxHeight: 3),
+
                             const WritingPagesGrayText(text: '사진'),
 
-                            WhiteBox(
-                                boxWidth: 0, boxHeight: 1), // 사진 <-> 사진첨부 공백
+                            // 사진 <-> 사진첨부 공백
+                            WhiteBox(boxWidth: 0, boxHeight: 1),
 
+                            // 사진 추가 버튼, 사진 나오는 화면
                             SizedBox(
-                              // 사진을 추가할 수 있는 좌측 카메라 버튼
                               height: getHeightByPercentOfScreen(10, context),
                               width: getWidthByPercentOfScreen(90, context),
                               child: Row(children: [
-                                SizedBox(
-                                    width:
-                                        getHeightByPercentOfScreen(10, context),
-                                    height:
-                                        getHeightByPercentOfScreen(10, context),
-                                    child: ElevatedButton(
-                                      onPressed: () async {
-                                        if (imageList.length < 10) {
-                                          final image = await picker.pickImage(
-                                              source: ImageSource
-                                                  .gallery); // 갤러리에서 이미지 뽑아옴
-                                          imageList.add(File(image!.path));
-                                          ref.refresh(writeScreenImageProvider);
-                                          ref
-                                              .read(writeScreenImageProvider
-                                                  .notifier)
-                                              .refresh(imageList);
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(16)),
-                                        backgroundColor:
-                                            const Color(0xFFF7F7F7),
-                                        side: const BorderSide(
-                                            width: 0.75,
-                                            color: Color(0xFFD3D3D3)),
-                                        elevation: 0,
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const Icon(
-                                            Icons.photo_camera_rounded,
-                                            size: 38,
-                                            color: Color(0xFFBEBEBE),
-                                          ),
-                                          Text(
-                                              "${ref.watch(writeScreenImageProvider).length} / 10",
-                                              style: const TextStyle(
-                                                  color: Color(0xFF808080),
-                                                  fontFamily: 'Pretendard',
-                                                  fontSize: 12)),
-                                        ],
-                                      ),
-                                    )),
+                                // 사진을 고를 수 있는 카메라 버튼
+                                ImageSelector(
+                                    picker: picker, imageList: imageList),
                                 WhiteBox(boxWidth: 3, boxHeight: 0),
-                                SizedBox(
-                                  // 사진들을 미리 볼 수 있게 해주는 리스트뷰
-                                  height:
-                                      getHeightByPercentOfScreen(10, context),
-                                  width: getWidthByPercentOfScreen(60, context),
-                                  child: ListView.separated(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: ref
-                                        .watch(writeScreenImageProvider)
-                                        .length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Container(
-                                          decoration: ShapeDecoration(
-                                            color: Colors.white,
-                                            shape: RoundedRectangleBorder(
-                                              side: const BorderSide(
-                                                  width: 0.75,
-                                                  color: Color(0xFFD3D3D3)),
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                            ),
-                                          ),
-                                          child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      16), // ClipRRect의 모서리 설정
-                                              child: Stack(
-                                                children: [
-                                                  Image.file(
-                                                    ref.watch(
-                                                            writeScreenImageProvider)[
-                                                        index],
-                                                    height:
-                                                        getHeightByPercentOfScreen(
-                                                            10, context),
-                                                    width:
-                                                        getHeightByPercentOfScreen(
-                                                            10, context),
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                  Positioned(
-                                                      top:
-                                                          getWidthByPercentOfScreen(
-                                                              -2, context),
-                                                      right:
-                                                          getWidthByPercentOfScreen(
-                                                              2, context),
-                                                      child: SizedBox(
-                                                          width: 20,
-                                                          child:
-                                                              FloatingActionButton(
-                                                            backgroundColor:
-                                                                const Color(
-                                                                    0xFFD3D3D3),
-                                                            onPressed: () {
-                                                              imageList
-                                                                  .removeAt(
-                                                                      index);
-                                                              ref.refresh(
-                                                                  writeScreenImageProvider);
-                                                              ref
-                                                                  .read(writeScreenImageProvider
-                                                                      .notifier)
-                                                                  .refresh(
-                                                                      imageList);
-                                                            }, // 해당 이미지 삭제
-                                                            child: const Icon(
-                                                                Icons.close,
-                                                                size: 15,
-                                                                color: Colors
-                                                                    .white),
-                                                          )))
-                                                ],
-                                              )));
-                                    },
-                                    separatorBuilder:
-                                        (BuildContext context, int index) =>
-                                            WhiteBox(
-                                                boxWidth: MEDIUMBLANK,
-                                                boxHeight: 0),
-                                  ),
-                                ),
+                                // 사진을 보여주는 리스트뷰
+                                ImageListView(imageList: imageList),
                               ]),
                             ),
 
-                            WhiteBox(
-                                boxWidth: 0,
-                                boxHeight: MEDIUMBLANK), // 사진첨부 <-> 제목 공백
+                            // 사진첨부 <-> 제목 공백
+                            WhiteBox(boxWidth: 0, boxHeight: MEDIUMBLANK),
 
                             const WritingPagesGrayText(text: '제목'),
-                            WhiteBox(
-                                boxWidth: 0,
-                                boxHeight: 1), // 제목 <-> 제목을 입력해주세요 공백
+
+                            // 제목 <-> 제목을 입력해주세요 공백
+                            WhiteBox(boxWidth: 0, boxHeight: 1),
+
+                            // 제목을 입력해주세요.
                             Row(
-                              // 제목을 입력해주세요.
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Container(
@@ -342,9 +147,11 @@ class WriteScreen1 extends ConsumerWidget {
                                 ),
                               ],
                             ),
-                            WhiteBox(
-                                boxWidth: 0,
-                                boxHeight: 1.5), // 제목을 입력해주세요 <-> 40자이하 공백
+
+                            // 제목을 입력해주세요 <-> 제목 제한 문구 공백
+                            WhiteBox(boxWidth: 0, boxHeight: 1.5),
+
+                            // 제목 제한 문구(활성화 시 빨간색)
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
@@ -361,17 +168,17 @@ class WriteScreen1 extends ConsumerWidget {
                                 ),
                               ],
                             ),
-                            WhiteBox(
-                                boxWidth: 0,
-                                boxHeight: SMALLBLANK), // 40자이하 <-> 내용 공백
+
+                            // 제목 제한 문구 <-> 내용 공백
+                            WhiteBox(boxWidth: 0, boxHeight: SMALLBLANK),
 
                             const WritingPagesGrayText(text: '내용'),
 
-                            WhiteBox(
-                                boxWidth: 0,
-                                boxHeight: SMALLBLANK), // 내용 <-> 소개글을 입력해주세요 공백
+                            // 내용 <-> 소개글을 입력해주세요 공백
+                            WhiteBox(boxWidth: 0, boxHeight: SMALLBLANK),
+
+                            // 소개글을 입력해주세요.(선택)
                             Row(
-                              // 소개글을 입력해주세요.(선택)
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 WhiteBox(boxWidth: 5, boxHeight: 0),
@@ -428,108 +235,19 @@ class WriteScreen1 extends ConsumerWidget {
                               ],
                             ),
 
+                            // 소개글 입력 <-> 카테고리 공백
                             WhiteBox(boxWidth: 0, boxHeight: MEDIUMBLANK),
-                            const WritingPagesGrayText(text: "카테고리"),
-                            WhiteBox(boxWidth: 0, boxHeight: SMALLBLANK),
-                            // 카테고리 설정하는 창
-                            GestureDetector(
-                              onTap: () {
-                                showModalBottomSheet(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return Container(
-                                        height: getHeightByPercentOfScreen(
-                                            50, context),
-                                        decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(20),
-                                            topRight: Radius.circular(20),
-                                          ),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            WhiteBox(
-                                                boxWidth: 0,
-                                                boxHeight: MEDIUMBLANK),
-                                            const WritingPagesBlackText(
-                                                text: "대표 카테고리 선택"),
-                                            WhiteBox(
-                                                boxWidth: 0,
-                                                boxHeight: MEDIUMBLANK),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: <Widget>[
-                                                CategoryButton(category: "여행"),
-                                                CategoryButton(category: "맛집"),
-                                              ],
-                                            ),
-                                            WhiteBox(
-                                                boxWidth: 0,
-                                                boxHeight: MEDIUMBLANK),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: <Widget>[
-                                                CategoryButton(category: "독서"),
-                                                CategoryButton(
-                                                  category: "스포츠",
-                                                )
-                                              ],
-                                            ),
-                                            WhiteBox(
-                                                boxWidth: 0,
-                                                boxHeight: MEDIUMBLANK),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                CategoryButton(category: "영화")
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                    backgroundColor: Colors.transparent);
-                              },
-                              child: Container(
-                                  width: getWidthByPercentOfScreen(90, context),
-                                  height:
-                                      getHeightByPercentOfScreen(6.5, context),
-                                  padding: const EdgeInsets.only(
-                                      left: 16, right: 16),
-                                  decoration: ShapeDecoration(
-                                    color: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      side: const BorderSide(
-                                          width: 0.50,
-                                          color: Color(0xFFD3D3D3)),
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                  ),
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                            ref.watch(
-                                                writeScreenCategoryProvider),
-                                            style: const TextStyle(
-                                              color: Color(0xFFBEBEBE),
-                                              fontSize: 16,
-                                              fontFamily: 'Pretendard',
-                                              fontWeight: FontWeight.w500,
-                                            ))
-                                      ])),
-                            ),
 
-                            WhiteBox(boxWidth: 0, boxHeight: MEDIUMBLANK),
+                            const WritingPagesGrayText(text: "카테고리"),
+
+                            // 카테고리 <-> 카테고리 설정 창 공백
+                            WhiteBox(boxWidth: 0, boxHeight: SMALLBLANK),
+
+                            // 카테고리 설정하는 창
+                            const SelectCategory(),
                           ]),
                         )),
                   ),
-
                   const Spacer(),
                   WritingPagesNextbutton(
                     pressNextButton: _isButtonEnabled
@@ -555,31 +273,5 @@ class WriteScreen1 extends ConsumerWidget {
     } else {
       _titleOver40TextColor = Colors.white; // 이외의 경우 하얀색으로 변경 (안보이게끔)
     }
-  }
-}
-
-class CategoryButton extends ConsumerWidget {
-  String category;
-  CategoryButton({super.key, required this.category});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              side: const BorderSide(width: 0.50, color: Color(0xFFD3D3D3)),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            backgroundColor: Colors.white,
-            elevation: 0,
-            minimumSize: Size(
-              getWidthByPercentOfScreen(42, context),
-              getHeightByPercentOfScreen(7, context),
-            )),
-        onPressed: () {
-          ref.read(writeScreenCategoryProvider.notifier).setText(category);
-          Navigator.pop(context);
-        },
-        child: Text(category, style: const TextStyle(color: Colors.black)));
   }
 }

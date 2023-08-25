@@ -5,8 +5,9 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'page_animation.dart';
-import 'write_screen_util.dart';
+import '../widgets/write_screen_common.dart';
 import 'write_screen3.dart';
+import '../providers/write_screen_providers.dart';
 
 DateTime date = DateTime.now();
 String hour = '06';
@@ -16,19 +17,6 @@ String ampm = '오후';
 bool calendarExpanded = false;
 bool pickerExpanded = false;
 
-final writeScreenDateProvider =
-    StateNotifierProvider<DateNotifier, String>((ref) {
-  return DateNotifier();
-});
-
-class DateNotifier extends StateNotifier<String> {
-  DateNotifier() : super("${DateFormat('yyyy-MM-dd ').format(date)}18:00:00");
-
-  void setText(String text) {
-    state = text;
-  }
-}
-
 class WriteScreen2 extends ConsumerWidget {
   const WriteScreen2({super.key});
 
@@ -36,7 +24,7 @@ class WriteScreen2 extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     initializeDateFormatting();
     date = DateTime.now();
-    hour = '06';
+    hour = '18';
     minute = '00';
     ampm = '오후';
 
@@ -236,7 +224,7 @@ class _DateCalendarState extends State<DateCalendar> {
                       headerPadding: EdgeInsets.symmetric(vertical: 4.0),
                     ),
                     daysOfWeekStyle: const DaysOfWeekStyle(
-                        // 요일 글씨 수정(안하면 짤림)
+                        // 요일 글씨 수정(한글로 출력할 경우 글자가 짤려 원래보다 작게 설정해둠)
                         weekdayStyle: TextStyle(fontSize: 13),
                         weekendStyle: TextStyle(fontSize: 13)),
                     onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
@@ -368,32 +356,3 @@ class _DatePickerState extends State<DatePicker> {
     );
   }
 }
-
-// class CupertinoPickerWidget extends StatefulWidget {
-//   final List<String> items;
-//   String item;
-
-//   CupertinoPickerWidget({super.key, required this.items, required this.item});
-
-//   @override
-//   _CupertinoPickerWidgetState createState() => _CupertinoPickerWidgetState();
-// }
-
-// class _CupertinoPickerWidgetState extends State<CupertinoPickerWidget> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return CupertinoPicker(
-//       itemExtent: 50,
-//       onSelectedItemChanged: (i) {
-//         setState(() {
-//           widget.item = widget.items[i];
-//         });
-//       },
-//       children: widget.items.map<Widget>((i) {
-//         return Center(
-//           child: Text(i),
-//         );
-//       }).toList(),
-//     );
-//   }
-// }

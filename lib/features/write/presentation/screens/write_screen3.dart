@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'page_animation.dart';
-import 'write_screen_util.dart';
+import '../widgets/write_screen_common.dart';
 import 'write_screen4.dart';
 
 final writeScreenPlaceProvider =
@@ -156,13 +156,15 @@ class LocalPeopleSlider extends ConsumerWidget {
     final sliderValue = ref.watch(writeScreenLocalPeopleProvider);
 
     return SliderTheme(
+        // 슬라이더의 색상 등을 커스텀하려면 사용
         data: SliderThemeData(
           thumbColor: Colors.blue, // 슬라이더 버튼(Thumb)의 색상
-          tickMarkShape: SliderTickMarkShape.noTickMark,
+          tickMarkShape: SliderTickMarkShape
+              .noTickMark, // 슬라이더 내 범위마다 칸 설정(noTickMark는 해당 없음)
           // activeTickMarkColor: Colors.blue,
           // inactiveTickMarkColor: const Color(0xFFB2BDCF),
-          valueIndicatorColor: const Color(0xFFB2BDCF),
-        ), // 오버레이 색상 (터치 영역의 표시))
+          valueIndicatorColor: const Color(0xFFB2BDCF), // 슬라이더 위에 나오는 현재 숫자 색상
+        ),
         child: Slider(
           value: ref.watch(writeScreenLocalPeopleProvider),
           min: 0,

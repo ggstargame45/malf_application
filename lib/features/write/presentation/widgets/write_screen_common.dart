@@ -1,8 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-// 공통
-
 // 화면의 가로, 세로 길이에 맞춰 비율을 계산해주는 함수
 double getWidthByPercentOfScreen(double percent, BuildContext context) {
   return MediaQuery.of(context).size.width * percent / 100;
@@ -10,6 +8,30 @@ double getWidthByPercentOfScreen(double percent, BuildContext context) {
 
 double getHeightByPercentOfScreen(double percent, BuildContext context) {
   return MediaQuery.of(context).size.height * percent / 100;
+}
+
+// 공통 앱바
+PreferredSizeWidget WriteScreenAppbar(BuildContext context) {
+  return AppBar(
+    backgroundColor: Colors.white,
+    leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios_new),
+        iconSize: 24,
+        color: Colors.black,
+        onPressed: () {
+          Navigator.pop(context);
+        }),
+    actions: [
+      IconButton(
+        icon: const Icon(Icons.close),
+        iconSize: 33,
+        color: Colors.black,
+        onPressed: () {
+          closeWritingPages(context);
+        },
+      )
+    ],
+  );
 }
 
 // 큰 검정 글씨
@@ -236,42 +258,6 @@ class MyBehavior extends ScrollBehavior {
   }
 }
 
-class CategoryButton extends StatefulWidget {
-  const CategoryButton({super.key});
-
-  @override
-  _CategoryButtonState createState() => _CategoryButtonState();
-}
-
-class _CategoryButtonState extends State<CategoryButton> {
-  bool isTravel = false;
-  bool isSports = false;
-  late List<bool> isSelected;
-  @override
-  Widget build(BuildContext context) {
-    return ToggleButtons(isSelected: isSelected, children: const [
-      Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          child: Text('여행', style: TextStyle(fontSize: 10))),
-      Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          child: Text('스포츠', style: TextStyle(fontSize: 10))),
-    ]);
-  }
-
-  void categorySelect(value) {
-    if (value == 0) {
-      isTravel = true;
-      isSports = false;
-    } else {
-      isTravel = false;
-      isSports = true;
-    }
-    setState(() {
-      isSelected = [isTravel, isSports];
-    });
-  }
-}
 
 // write_screen3
 
