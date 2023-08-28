@@ -105,6 +105,8 @@ class TestLoginBody extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _TestLoginBodyState();
 }
 
+const int aaaa = 10;
+
 class _TestLoginBodyState extends ConsumerState<TestLoginBody> {
   late final WebViewController _controller;
 
@@ -149,20 +151,26 @@ class _TestLoginBodyState extends ConsumerState<TestLoginBody> {
                 isForMainFrame: ${error.isForMainFrame}
           ''');
             },
-            onNavigationRequest: (NavigationRequest request) {
-              debugPrint('allowing navigation to ${request.url}');
+            onNavigationRequest: (NavigationRequest request) async {
+              logger.i('allowing navigation to ${request.url}');
+              if (request.url
+                  .contains('http://3.36.185.179:8000/auth/kakao/callback')) {
+                Response response = await Dio().get(request.url);
+                logger.d("asdasdddd");
+                logger.d("asdfasdfadsf : ${response.data}");
+              }
               return NavigationDecision.navigate;
             },
           ),
         )
-        ..addJavaScriptChannel(
-          'Toaster',
-          onMessageReceived: (JavaScriptMessage message) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(message.message)),
-            );
-          },
-        )
+        // ..addJavaScriptChannel(
+        //   'Toaster',
+        //   onMessageReceived: (JavaScriptMessage message) {
+        //     ScaffoldMessenger.of(context).showSnackBar(
+        //       SnackBar(content: Text(message.message)),
+        //     );
+        //   },
+        // )
         ..loadRequest(Uri.parse('${baseUrl}auth/kakao'));
 
       if (controller.platform is AndroidWebViewController) {
