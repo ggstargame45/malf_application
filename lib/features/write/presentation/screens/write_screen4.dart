@@ -8,7 +8,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:malf_application/features/write/presentation/screens/write_screen_post.dart';
 import 'package:auto_route/auto_route.dart';
 
-import 'write_screen3.dart';
 import '../widgets/write_screen_common.dart';
 import '../providers/write_screen_providers.dart';
 
@@ -29,91 +28,22 @@ class WriteScreen4 extends ConsumerWidget {
     return MaterialApp(
       home: Scaffold(
         resizeToAvoidBottomInset: false,
+        appBar: WriteScreenAppBar(context),
         backgroundColor: Colors.white,
         body: SafeArea(
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            WhiteBox(boxWidth: 0, boxHeight: 5), // 맨 위 상단 공백
-            Row(
-              // 글쓰기 화면 상단의 앱바
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back_ios_new_outlined),
-                  iconSize: getWidthByPercentOfScreen(6, context),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  iconSize: getWidthByPercentOfScreen(8, context),
-                  onPressed: () {
-                    closeWritingPages(context);
-                  },
-                )
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: Text(
-                    'Test: ${ref.watch(writeScreenTitleProvider)}',
-                    style: const TextStyle(
-                      color: Color(0xFF292524),
-                      fontSize: 24,
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                )
-              ],
-            ),
+            WritingPagesBlackText(
+                text: "Title: ${ref.watch(writeScreenTitleProvider)}"),
+            WritingPagesBlackText(
+                text: "Content: ${ref.watch(writeScreenContentProvider)}"),
             WritingPagesBlackText(
                 text: "Category: ${ref.watch(writeScreenCategoryProvider)}"),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: Text(
-                    'Content: ${ref.watch(writeScreenContentProvider)}',
-                    style: const TextStyle(
-                      color: Color(0xFF292524),
-                      fontSize: 24,
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                )
-              ],
-            ),
             WritingPagesBlackText(
                 text: "Date: ${ref.watch(writeScreenDateProvider)}"),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: Text(
-                    'Place: ${ref.watch(writeScreenPlaceProvider)}',
-                    style: const TextStyle(
-                      color: Color(0xFF292524),
-                      fontSize: 24,
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                )
-              ],
-            ),
+            WritingPagesBlackText(
+                text: "Place: ${ref.watch(writeScreenPlaceProvider)}"),
             WritingPagesBlackText(
               text: 'LocalPeople: ${ref.watch(writeScreenLocalPeopleProvider)}',
             ),
@@ -121,7 +51,6 @@ class WriteScreen4 extends ConsumerWidget {
               text:
                   'ForeignPeople: ${ref.watch(writeScreenForeignPeopleProvider)}',
             ),
-
             const Spacer(),
             WritingPagesNextbutton(
               // 전송
@@ -172,7 +101,7 @@ class WriteScreen4 extends ConsumerWidget {
   }
 }
 
-// 카테고리를 int로 바꾸기 위한 함수
+// 카테고리를 string으로 바꾸기 위한 함수
 String MappingCategory(String category) {
   if (category == "여행") {
     return '1';
@@ -182,7 +111,9 @@ String MappingCategory(String category) {
     return '3';
   } else if (category == "스포츠") {
     return '4';
-  } else {
+  } else if (category == "영화") {
     return '5';
+  } else {
+    return '0';
   }
 }

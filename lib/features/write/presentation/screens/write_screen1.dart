@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:malf_application/features/write/presentation/widgets/write_screen1_widgets.dart';
 
-import './page_animation.dart';
 import 'write_screen2.dart';
 import '../widgets/write_screen_common.dart';
 import '../providers/write_screen_providers.dart';
@@ -28,6 +27,8 @@ class WriteScreen1 extends ConsumerWidget {
     if (isFirstLoaded) {
       ref.refresh(writeScreenImageProvider);
       ref.refresh(writeScreenCategoryProvider);
+      ref.refresh(selectedDayProvider);
+      ref.refresh(timePickerProvider);
       categoryColor = const Color(0xFFBEBEBE);
       isFirstLoaded = false;
     }
@@ -47,7 +48,7 @@ class WriteScreen1 extends ConsumerWidget {
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
-            appBar: WriteScreenAppbar(context),
+            appBar: WriteScreenAppBar(context),
             body: SafeArea(
               child: Column(
                 children: <Widget>[
@@ -139,7 +140,8 @@ class WriteScreen1 extends ConsumerWidget {
                                                   .read(writeScreenTitleProvider
                                                       .notifier)
                                                   .setText(text);
-                                              _checkBlankCondition(text);
+                                              _checkBlankCondition(ref.watch(
+                                                  writeScreenTitleProvider));
                                             }),
                                       )
                                     ],

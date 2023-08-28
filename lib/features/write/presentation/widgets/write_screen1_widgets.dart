@@ -120,9 +120,6 @@ class CategoryButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (ref.watch(writeScreenCategoryProvider).length > 5) {
-      categoryColor = const Color(0xFFBEBEBE);
-    }
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
