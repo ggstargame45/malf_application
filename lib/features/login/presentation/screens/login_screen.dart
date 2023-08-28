@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
+import 'package:malf_application/config/routes/app_route.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 // Import for Android features.
 import 'package:webview_flutter_android/webview_flutter_android.dart';
@@ -15,6 +16,20 @@ part 'login_screen.g.dart';
 const baseUrl = 'http://3.36.185.179:8000/';
 
 final logger = Logger();
+
+String accessToken = '';
+String refreshToken = '';
+
+final PlatformWebViewControllerCreationParams params =
+    (WebViewPlatform.instance is WebKitWebViewPlatform)
+        ? WebKitWebViewControllerCreationParams(
+            allowsInlineMediaPlayback: true,
+            mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
+          )
+        : const PlatformWebViewControllerCreationParams();
+
+final WebViewController controller =
+    WebViewController.fromPlatformCreationParams(params);
 
 @riverpod
 FutureOr<Uri> fetchLogin(Ref ref) async {
@@ -105,29 +120,12 @@ class TestLoginBody extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _TestLoginBodyState();
 }
 
-const int aaaa = 10;
-
 class _TestLoginBodyState extends ConsumerState<TestLoginBody> {
-  late final WebViewController _controller;
-
   @override
   Widget build(BuildContext context) {
-    late final PlatformWebViewControllerCreationParams params;
     final fetchLoginAsyncValue = ref.watch(fetchLoginProvider);
 
     return fetchLoginAsyncValue.when(data: (data) {
-      if (WebViewPlatform.instance is WebKitWebViewPlatform) {
-        params = WebKitWebViewControllerCreationParams(
-          allowsInlineMediaPlayback: true,
-          mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
-        );
-      } else {
-        params = const PlatformWebViewControllerCreationParams();
-      }
-
-      final WebViewController controller =
-          WebViewController.fromPlatformCreationParams(params);
-
       controller
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
         ..setBackgroundColor(const Color(0x00000000))
@@ -156,8 +154,15 @@ class _TestLoginBodyState extends ConsumerState<TestLoginBody> {
               if (request.url
                   .contains('http://3.36.185.179:8000/auth/kakao/callback')) {
                 Response response = await Dio().get(request.url);
-                logger.d("asdasdddd");
-                logger.d("asdfasdfadsf : ${response.data}");
+                accessToken = response.data['token']['accessToken'];
+                refreshToken = response.data['token']['refreshToken'];
+                logger.d('accessToken : $accessToken');
+                logger.d('refreshToken : $refreshToken');
+                //destroy WebView
+                context.router.pushAndPopUntil(
+                    HomeRoute(
+                        accessToken: accessToken, refreshToken: refreshToken),
+                    predicate: (route) => false);
               }
               return NavigationDecision.navigate;
             },
@@ -179,14 +184,12 @@ class _TestLoginBodyState extends ConsumerState<TestLoginBody> {
             .setMediaPlaybackRequiresUserGesture(false);
       }
 
-      _controller = controller;
-
       return SafeArea(
           bottom: false,
           child: SizedBox(
               height: MediaQuery.of(context).size.height / 2,
               width: MediaQuery.of(context).size.width * 0.8,
-              child: WebViewWidget(controller: _controller)));
+              child: WebViewWidget(controller: controller)));
     }, error: (error, stackTrace) {
       return const Center(
         child: Text('error'),

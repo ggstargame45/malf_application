@@ -30,7 +30,11 @@ abstract class _$AppRouter extends RootStackRouter {
           routeData.argsAs<HomeRouteArgs>(orElse: () => const HomeRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: HomeScreen(key: args.key),
+        child: HomeScreen(
+          key: args.key,
+          accessToken: args.accessToken,
+          refreshToken: args.refreshToken,
+        ),
       );
     },
     LoginRoute.name: (routeData) {
@@ -98,10 +102,16 @@ class DetailRouteArgs {
 class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
   HomeRoute({
     Key? key,
+    String accessToken = '',
+    String refreshToken = '',
     List<PageRouteInfo>? children,
   }) : super(
           HomeRoute.name,
-          args: HomeRouteArgs(key: key),
+          args: HomeRouteArgs(
+            key: key,
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+          ),
           initialChildren: children,
         );
 
@@ -111,13 +121,21 @@ class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
 }
 
 class HomeRouteArgs {
-  const HomeRouteArgs({this.key});
+  const HomeRouteArgs({
+    this.key,
+    this.accessToken = '',
+    this.refreshToken = '',
+  });
 
   final Key? key;
 
+  final String accessToken;
+
+  final String refreshToken;
+
   @override
   String toString() {
-    return 'HomeRouteArgs{key: $key}';
+    return 'HomeRouteArgs{key: $key, accessToken: $accessToken, refreshToken: $refreshToken}';
   }
 }
 

@@ -39,7 +39,7 @@ Map<String, dynamic> _$$_ListItemDataToJson(_$_ListItemData instance) =>
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchDataHash() => r'07fcfe6f9d03d2cb2a938bd692210f5da6885461';
+String _$fetchDataHash() => r'b3cca045f432b4b710a1806623fca3ae4124c50f';
 
 /// Copied from Dart SDK
 class _SystemHash {

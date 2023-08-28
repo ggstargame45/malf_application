@@ -21,6 +21,11 @@ const japanE = "🇯🇵";
 const chinaE = "🇨🇳";
 const germanyE = "🇩🇪";
 
+Map<String, String> auth = {
+  "refreshToken": "",
+  "accessToken": "",
+};
+
 @riverpod
 class PageNumberNotifier extends _$PageNumberNotifier {
   @override
@@ -61,7 +66,7 @@ class IsEndOfList extends _$IsEndOfList {
 FutureOr<List<ListItemData>> fetchData(Ref ref, int a) async {
   final dio = Dio(BaseOptions(
     baseUrl: '${baseUrl}bulletin-board/posts',
-    headers: {'Authorization': 'test_1'},
+    headers: {'Authorization': auth['refreshToken']},
   ));
   final pageNumber = ref.read(pageNumberNotifierProvider);
 
@@ -216,7 +221,14 @@ class DateTimeConverter implements JsonConverter<DateTime, String> {
 
 @RoutePage()
 class HomeScreen extends ConsumerWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({Key? key, this.accessToken = '', this.refreshToken = ''})
+      : super(key: key) {
+    auth['accessToken'] = accessToken;
+    auth['refreshToken'] = refreshToken;
+  }
+
+  String accessToken = '';
+  String refreshToken = '';
 
   int selectedBottomIndex = 0;
   // final fetchDataProvider =
@@ -227,6 +239,10 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final fetchDatas = ref.watch(fetchDataProvider(10));
     double screenWidth = MediaQuery.of(context).size.width;
+
+    logger.d("refreshToken at hiome: $refreshToken");
+    logger.d("accessToken at hiome: $accessToken");
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -373,7 +389,8 @@ class HomeScreen extends ConsumerWidget {
                                         child: Image.network(
                                           '$baseUrl${data[index].meetingPic[0]}',
                                           headers: const {
-                                            'Authorization': 'test_1'
+                                            'Authorization':
+                                                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3VuaXFfaWQiOiJ0ZXN0XzEiLCJpYXQiOjE2OTI2Mjg2MTcsImV4cCI6MTcyNDE2NDYxN30.-X3GnzUEMfmpIRXznFtdJdDr5x5aWa-D_kU_w9mU6hk',
                                           },
                                           errorBuilder: (BuildContext context,
                                               Object error,
@@ -816,3 +833,4 @@ class HomeScreen extends ConsumerWidget {
 
 
 */
+
