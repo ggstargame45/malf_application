@@ -10,8 +10,8 @@ import 'package:logger/logger.dart';
 import 'package:malf_application/config/routes/app_route.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'home_screen.g.dart';
 part 'home_screen.freezed.dart';
+part 'home_screen.g.dart';
 
 const baseUrl = 'http://3.36.185.179:8000/';
 const baseId = "";
@@ -716,6 +716,8 @@ class HomeScreen extends ConsumerWidget {
             case 1:
               break;
             case 2:
+              Logger().d("tap");
+              context.router.push(const ChattingListRoute());
               break;
             case 3:
               break;

@@ -15,6 +15,18 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    ChattingListRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ChattingListScreen(),
+      );
+    },
+    ChattingRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ChattingScreen(),
+      );
+    },
     DetailRoute.name: (routeData) {
       final args = routeData.argsAs<DetailRouteArgs>();
       return AutoRoutePage<dynamic>(
@@ -48,6 +60,34 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
   };
+}
+
+/// generated route for
+/// [ChattingListScreen]
+class ChattingListRoute extends PageRouteInfo<void> {
+  const ChattingListRoute({List<PageRouteInfo>? children})
+      : super(
+          ChattingListRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ChattingListRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ChattingScreen]
+class ChattingRoute extends PageRouteInfo<void> {
+  const ChattingRoute({List<PageRouteInfo>? children})
+      : super(
+          ChattingRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ChattingRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
