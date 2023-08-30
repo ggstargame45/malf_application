@@ -6,8 +6,6 @@ import 'package:intl/intl.dart';
 
 // 사진 riverpod
 
-final testProvier = StateProvider<List<File>>((ref) => []);
-
 final writeScreenImageProvider =
     StateNotifierProvider<ImageNotifier, List<File>>((ref) {
   return ImageNotifier();
@@ -153,3 +151,10 @@ class PlaceNotifier extends StateNotifier<String> {
 // 슬라이더
 final writeScreenLocalPeopleProvider = StateProvider<double>((ref) => 0);
 final writeScreenForeignPeopleProvider = StateProvider<double>((ref) => 0);
+
+// 글 수정하기를 통해 들어왔을 경우
+final modifyProviderContainer = ProviderContainer();
+
+final isModifyScreenProvider = StateProvider<bool>((ref) => false);
+final detailScreenProvider = StateProvider<List<String>>((ref) => []);
+final detailImageProvider = StateProvider<List<File>>((ref) => []);

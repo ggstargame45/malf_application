@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:malf_application/config/routes/app_route.dart';
 
 import '../../../data/network/network.dart';
+import './modify_screen.dart';
 
 void detailMoreSheet(context, postId) {
   showModalBottomSheet(
@@ -61,25 +62,31 @@ void detailMoreSheet(context, postId) {
                     color: Color.fromARGB(49, 158, 158, 158),
                   ),
                 ),
-                Container(
-                    padding: const EdgeInsets.all(15),
-                    width: MediaQuery.sizeOf(context).width,
-                    height: 60,
-                    child: const Row(
-                      children: [
-                        Icon(
-                          Icons.mode_edit_outlined,
-                          color: Color.fromARGB(138, 158, 158, 158),
-                          size: 30,
-                        ),
-                        Text(
-                          "게시물 수정",
-                          style: TextStyle(
-                              color: Color.fromARGB(138, 158, 158, 158),
-                              fontWeight: FontWeight.w700),
-                        )
-                      ],
-                    )),
+                GestureDetector(
+                  onTap: () {
+                    settingWriteScreenProvider(postId);
+                    context.router.push(WriteRoute1());
+                  },
+                  child: Container(
+                      padding: const EdgeInsets.all(15),
+                      width: MediaQuery.sizeOf(context).width,
+                      height: 60,
+                      child: const Row(
+                        children: [
+                          Icon(
+                            Icons.mode_edit_outlined,
+                            color: Color.fromARGB(138, 158, 158, 158),
+                            size: 30,
+                          ),
+                          Text(
+                            "게시물 수정",
+                            style: TextStyle(
+                                color: Color.fromARGB(138, 158, 158, 158),
+                                fontWeight: FontWeight.w700),
+                          )
+                        ],
+                      )),
+                ),
                 const SizedBox(
                   height: 20,
                 ),

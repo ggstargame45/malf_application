@@ -20,18 +20,49 @@ class WriteScreen1 extends ConsumerWidget {
   final picker = ImagePicker(); // 이미지피커
   List<File> imageList = []; // 이미지 리스트
   bool isFirstLoaded = true; // 화면을 불러올 때마다 riverpod 초기화하기 위함
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _contentController = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // 화면이 처음 로딩될 때마다 riverpod 초기화, 카테고리 색상 초기화
     if (isFirstLoaded) {
-      ref.refresh(writeScreenImageProvider);
-      ref.refresh(writeScreenCategoryProvider);
-      ref.refresh(selectedDayProvider);
-      ref.refresh(timePickerProvider);
-      categoryColor = const Color(0xFFBEBEBE);
+      if (!(modifyProviderContainer
+          .read(isModifyScreenProvider.notifier)
+          .state)) {
+        // 글쓰기 버튼을 눌러 새로 작성하는 경우
+        ref.refresh(writeScreenImageProvider);
+        ref.refresh(writeScreenCategoryProvider);
+        ref.refresh(selectedDayProvider);
+        ref.refresh(timePickerProvider);
+        ref.refresh(dateCalendarExpandedProvider);
+        ref.refresh(datePickerExpandedProvider);
+        categoryColor = const Color(0xFFBEBEBE);
+      }
+
+      // 상세글에서 수정하기를 통해 들어온 경우
+      else {
+        print("true");
+        List<String> data =
+            modifyProviderContainer.read(detailScreenProvider.notifier).state;
+        // 제목 설정
+        ref.read(writeScreenTitleProvider.notifier).setText(data[0]);
+        _titleController.text = ref.watch(writeScreenTitleProvider);
+        // 내용 설정
+        ref.read(writeScreenContentProvider.notifier).setText(data[1]);
+        _contentController.text = ref.watch(writeScreenContentProvider);
+        // 카테고리 설정
+        ref.read(writeScreenCategoryProvider.notifier).setText(
+            modifyProviderContainer
+                .read(detailScreenProvider.notifier)
+                .state[2]);
+
+        modifyProviderContainer.read(isModifyScreenProvider.notifier).state =
+            false;
+      }
       isFirstLoaded = false;
     }
+
     // 키보드가 올라오면 화면 크기를 줄여서 스크롤 가능하게 함
     double isKeyboardDetected() {
       if (MediaQuery.of(context).viewInsets.bottom != 0) {
@@ -125,6 +156,7 @@ class WriteScreen1 extends ConsumerWidget {
                                               fontFamily: 'Pretendard',
                                               fontWeight: FontWeight.w500,
                                             ),
+                                            controller: _titleController,
                                             decoration: const InputDecoration(
                                               hintText: '제목을 입력해주세요.',
                                               hintStyle: TextStyle(
@@ -213,6 +245,7 @@ class WriteScreen1 extends ConsumerWidget {
                                             fontWeight: FontWeight.w500,
                                           ),
                                           maxLines: null,
+                                          controller: _contentController,
                                           decoration: const InputDecoration(
                                             hintText: '소개글을 입력해주세요.(선택)',
                                             hintStyle: TextStyle(

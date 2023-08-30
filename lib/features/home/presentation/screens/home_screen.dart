@@ -61,7 +61,10 @@ class IsEndOfList extends _$IsEndOfList {
 FutureOr<List<ListItemData>> fetchData(Ref ref, int a) async {
   final dio = Dio(BaseOptions(
     baseUrl: '${baseUrl}bulletin-board/posts',
-    headers: {'Authorization': 'test_1'},
+    headers: {
+      'Authorization':
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3VuaXFfaWQiOiJ0ZXN0XzEiLCJpYXQiOjE2OTI2Mjg2MTcsImV4cCI6MTcyNDE2NDYxN30.-X3GnzUEMfmpIRXznFtdJdDr5x5aWa-D_kU_w9mU6hk'
+    },
   ));
   final pageNumber = ref.read(pageNumberNotifierProvider);
 

@@ -47,7 +47,10 @@ Future<bool> postPosting(PostingBody data, List<File> imageList) async {
   }
 
   // request 헤더 설정
-  request.headers['Authorization'] = 'test_1';
+  // test_1
+  String token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3VuaXFfaWQiOiJ0ZXN0XzEiLCJpYXQiOjE2OTI2Mjg2MTcsImV4cCI6MTcyNDE2NDYxN30.-X3GnzUEMfmpIRXznFtdJdDr5x5aWa-D_kU_w9mU6hk';
+  request.headers['Authorization'] = token;
   request.headers['Content-Type'] = 'multipart/form-data;';
 
   // request 바디 설정

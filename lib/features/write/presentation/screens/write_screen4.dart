@@ -87,6 +87,7 @@ class WriteScreen4 extends ConsumerWidget {
                         context.router
                             .popUntilRouteWithName('HomeRoute'); //창 닫기
                         print("글쓰기 성공");
+                        context.router.popUntilRouteWithName('HomeRoute');
                       } else {
                         print("글쓰기 실패");
                       }
