@@ -32,6 +32,8 @@ class WriteScreen1 extends ConsumerWidget {
           .state)) {
         // 글쓰기 버튼을 눌러 새로 작성하는 경우
         ref.refresh(writeScreenImageProvider);
+        ref.refresh(writeScreenTitleProvider);
+        ref.refresh(writeScreenContentProvider);
         ref.refresh(writeScreenCategoryProvider);
         ref.refresh(selectedDayProvider);
         ref.refresh(timePickerProvider);
@@ -42,7 +44,6 @@ class WriteScreen1 extends ConsumerWidget {
 
       // 상세글에서 수정하기를 통해 들어온 경우
       else {
-        print("true");
         List<String> data =
             modifyProviderContainer.read(detailScreenProvider.notifier).state;
         // 제목 설정
@@ -52,10 +53,15 @@ class WriteScreen1 extends ConsumerWidget {
         ref.read(writeScreenContentProvider.notifier).setText(data[1]);
         _contentController.text = ref.watch(writeScreenContentProvider);
         // 카테고리 설정
-        ref.read(writeScreenCategoryProvider.notifier).setText(
-            modifyProviderContainer
-                .read(detailScreenProvider.notifier)
-                .state[2]);
+        ref.read(writeScreenCategoryProvider.notifier).setText(data[2]);
+        categoryColor = Colors.black;
+        // 날짜, 시간 설정(확인 필요)
+        ref.read(selectedDayProvider.notifier).setDate(DateTime.parse(data[3]));
+        // 장소 설정
+        ref.read(writeScreenPlaceProvider.notifier).setText(data[3]);
+        // 인원 설정(수정 필요)
+        ref.read(writeScreenLocalPeopleProvider.notifier).state = 1;
+        ref.read(writeScreenForeignPeopleProvider.notifier).state = 1;
 
         modifyProviderContainer.read(isModifyScreenProvider.notifier).state =
             false;
