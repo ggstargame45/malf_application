@@ -436,31 +436,6 @@ class HomeScreen extends ConsumerWidget {
                                                 fontWeight: FontWeight.bold)),
                                         Text(
                                             "${data[index].meetingLocation} ${data[index].meetingStartTime.year}-${data[index].meetingStartTime.month}-${data[index].meetingStartTime.day}"),
-
-                                        // _content(
-                                        //     url:
-                                        //         '$baseUrl${data[index].meetingPic[0]}',
-                                        //     title: data[index]
-                                        //         .authorNickname),
-                                        //     content: data[index]
-                                        //         .authorNickname),
-                                        // _content(
-                                        //     url:
-                                        //         '$baseUrl${data[index].meetingPic[0]}',
-                                        //     title: "Author : ",
-                                        //     content:
-                                        //         data[index].authorNickname),
-                                        // _content(
-                                        //     url: (data[index].meetingPic)[0],
-                                        //     title: "장소 : ",
-                                        //     content:
-                                        //         data[index].meetingLocation),
-                                        // _content(
-                                        //     url:
-                                        //         '$baseUrl${data[index].meetingPic[0]}',
-                                        //     title: " : ",
-                                        //     content:
-                                        //         "${data[index].authorNation}"),
                                       ],
                                     )
                                   ],
@@ -478,200 +453,7 @@ class HomeScreen extends ConsumerWidget {
           },
           error: (error, stackTrace) => Center(child: Text(error.toString())),
           loading: () => const CircularProgressIndicator()),
-      // NotificationListener<ScrollUpdateNotification>(
-      //   onNotification: (ScrollUpdateNotification notification) {
-      //     fetchNotifier.scrollListerner(notification);
-      //     return false;
-      //   },
-      //   child: fetchDatas.when(
-      //     data: ((data) => Column(
-      //           children: [
-      //             Padding(
-      //               padding: const EdgeInsets.all(8.0),
-      //               child: SizedBox(
-      //                 height: 300,
-      //                 child: AspectRatio(
-      //                   aspectRatio: 16 /
-      //                       9, // Adjust this value based on your image's aspect ratio
-      //                   child: Image.network(
-      //                     "http://3.36.185.179:8000/ad/1.png",
-      //                     fit: BoxFit.scaleDown,
-      //                   ),
-      //                 ),
-      //               ),
-      //             ),
-      //             const Padding(
-      //               padding: EdgeInsets.all(8.0),
-      //               child: Text(
-      //                 "오늘의 최신 모임",
-      //               ),
-      //             ),
-      //             Expanded(
-      //               child: ListView.builder(
-      //                 itemCount: data.length,
-      //                 itemBuilder: ((context, index) {
-      //                   return GestureDetector(
-      //                       onTap: () {
-      //                         context.router.push(const DetailRoute());
-      //                         // Navigator.of(context).pushNamed('/detail',
-      //                         //     arguments: data[index].postId);
-      //                       },
-      //                       child: Padding(
-      //                         padding: const EdgeInsets.symmetric(
-      //                             horizontal: 20, vertical: 8),
-      //                         child: Column(
-      //                           children: [
-      //                             SizedBox(
-      //                               child: Row(
-      //                                 crossAxisAlignment:
-      //                                     CrossAxisAlignment.start,
-      //                                 children: [
-      //                                   SizedBox(
-      //                                     width: MediaQuery.of(context)
-      //                                             .size
-      //                                             .width *
-      //                                         0.2,
-      //                                     height: MediaQuery.of(context)
-      //                                             .size
-      //                                             .width *
-      //                                         0.2,
-      //                                     child: ClipRRect(
-      //                                       borderRadius:
-      //                                           BorderRadius.circular(12),
-      //                                       child: Image.network(
-      //                                         '$baseUrl${data[index].meetingPic[0]}',
-      //                                         errorBuilder:
-      //                                             (BuildContext context,
-      //                                                 Object error,
-      //                                                 StackTrace? stackTrace) {
-      //                                           return const Text('😢');
-      //                                         },
-      //                                         fit: BoxFit.cover,
-      //                                         frameBuilder: (BuildContext
-      //                                                 context,
-      //                                             Widget child,
-      //                                             int? frame,
-      //                                             bool wasSynchronouslyLoaded) {
-      //                                           return Container(
-      //                                             decoration: BoxDecoration(
-      //                                               borderRadius:
-      //                                                   BorderRadius.circular(
-      //                                                       12),
-      //                                               color: const Color.fromRGBO(
-      //                                                   91, 91, 91, 1),
-      //                                             ),
-      //                                             child: child,
-      //                                           );
-      //                                         },
-      //                                         loadingBuilder:
-      //                                             (BuildContext context,
-      //                                                 Widget child,
-      //                                                 ImageChunkEvent?
-      //                                                     loadingProgress) {
-      //                                           if (loadingProgress == null) {
-      //                                             return child;
-      //                                           }
-      //                                           return Container(
-      //                                             decoration: BoxDecoration(
-      //                                               borderRadius:
-      //                                                   BorderRadius.circular(
-      //                                                       12),
-      //                                               color: const Color.fromRGBO(
-      //                                                   91, 91, 91, 1),
-      //                                             ),
-      //                                             child: const Center(
-      //                                               child:
-      //                                                   CircularProgressIndicator(
-      //                                                 color: Colors.amber,
-      //                                               ),
-      //                                             ),
-      //                                           );
-      //                                         },
-      //                                       ),
-      //                                     ),
-      //                                   ),
-      //                                   const SizedBox(width: 12),
-      //                                   Column(
-      //                                     crossAxisAlignment:
-      //                                         CrossAxisAlignment.start,
-      //                                     children: [
-      //                                       _content(
-      //                                           url:
-      //                                               '$baseUrl${data[index].meetingPic[0]}',
-      //                                           title: "ID : ",
-      //                                           content: data[index]
-      //                                               .meetingStartTime
-      //                                               .toString()),
-      //                                       _content(
-      //                                           url:
-      //                                               '$baseUrl${data[index].meetingPic[0]}',
-      //                                           title: "Author : ",
-      //                                           content:
-      //                                               data[index].authorNickname),
-      //                                       _content(
-      //                                           url:
-      //                                               (data[index].meetingPic)[0],
-      //                                           title: "장소 : ",
-      //                                           content: data[index]
-      //                                               .meetingLocation),
-      //                                       _content(
-      //                                           url:
-      //                                               '$baseUrl${data[index].meetingPic[0]}',
-      //                                           title: " : ",
-      //                                           content:
-      //                                               "${data[index].authorNation}"),
-      //                                     ],
-      //                                   )
-      //                                 ],
-      //                               ),
-      //                             ),
-      //                             if (data.length - 1 == index &&
-      //                                 fetchNotifier.isAdd) ...[
-      //                               const SizedBox(
-      //                                 height: 100,
-      //                                 child: Center(
-      //                                     child: CircularProgressIndicator(
-      //                                   color: Colors.deepOrange,
-      //                                 )),
-      //                               ),
-      //                             ],
-      //                           ],
-      //                         ),
-      //                       ));
-      //                   //... your item builder here
-      //                 }),
-      //               ),
-      //             ),
-      //           ],
-      //         )),
-      //     error: (error, stackTrace) => Text("Error : $error"),
-      //     loading: () => const Center(
-      //       child: CircularProgressIndicator(),
-      //     ),
-      //   ),
-      // ),
 
-      // Center(
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: [
-      //       ElevatedButton(
-      //         onPressed: () => context.router.push(const DetailRoute()),
-      //         child: const Text(
-      //           'Detail Screen',
-      //           locale: Locale(
-      //             'kr',
-      //           ),
-      //         ),
-      //       ),
-      //       ElevatedButton(
-      //         onPressed: () => context.router.push(WriteRoute1()),
-      //         child: const Text('Write Screen'),
-      //       ),
-      //     ],
-      //   ),
-      // ),
-      //
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.router.push(WriteRoute1()),
         child: const Icon(Icons.add),
@@ -707,9 +489,6 @@ class HomeScreen extends ConsumerWidget {
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
-          // setState(() {
-          //   selectedIndex = index;
-          // });
           switch (index) {
             case 0:
               break;
@@ -717,7 +496,7 @@ class HomeScreen extends ConsumerWidget {
               break;
             case 2:
               Logger().d("tap");
-              context.router.push(const ChattingListRoute());
+              context.router.push(ChattingRoute());
               break;
             case 3:
               break;
