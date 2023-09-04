@@ -1,6 +1,61 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+// 페이지 애니메이션
+class PageRouteWithAnimation {
+  final Widget page;
+
+  PageRouteWithAnimation(this.page);
+
+  Route slideRitghtToLeft() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return page;
+      },
+      transitionsBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        Widget child,
+      ) {
+        var begin = const Offset(1.0, 0.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+
+  Route slideLeftToRight() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return page;
+      },
+      transitionsBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        Widget child,
+      ) {
+        var begin = const Offset(1.0, 0.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+}
+
 // 화면의 가로, 세로 길이에 맞춰 비율을 계산해주는 함수
 double getWidthByPercentOfScreen(double percent, BuildContext context) {
   return MediaQuery.of(context).size.width * percent / 100;
@@ -11,9 +66,10 @@ double getHeightByPercentOfScreen(double percent, BuildContext context) {
 }
 
 // 공통 앱바
-PreferredSizeWidget WriteScreenAppbar(BuildContext context) {
+PreferredSizeWidget WriteScreenAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: Colors.white,
+    elevation: 0.0,
     leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new),
         iconSize: 24,
@@ -213,6 +269,7 @@ class WritingPagesNextbutton extends StatelessWidget {
     required this.pressNextButton,
   }) : super(key: key);
 
+  // pressNextButton은 버튼 활성화 여부
   final VoidCallback? pressNextButton;
 
   @override
@@ -247,8 +304,6 @@ class WritingPagesNextbutton extends StatelessWidget {
   }
 }
 
-// write_screen1
-
 // ScrollConfiguration에서 Behavior를 MyBehavior로 설정하면 스크롤이 가능해짐(키보드가 올라오는 경우 등)
 class MyBehavior extends ScrollBehavior {
   @override
@@ -257,69 +312,3 @@ class MyBehavior extends ScrollBehavior {
     return child;
   }
 }
-
-
-// write_screen3
-
-// 슬라이더로 SliderThemeData의 child를 Slider로 구성하면 여러가지 커스텀이 가능
-// final writeScreenLocalPeopleProvider = StateProvider<double>((ref) => 0);
-
-// class LocalPeopleSlider extends ConsumerWidget {
-//   const LocalPeopleSlider({super.key});
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     final sliderValue = ref.watch(writeScreenLocalPeopleProvider);
-
-//     return SliderTheme(
-//         data: SliderThemeData(
-//           thumbColor: Colors.blue, // 슬라이더 버튼(Thumb)의 색상
-//           tickMarkShape: SliderTickMarkShape.noTickMark,
-//           // activeTickMarkColor: Colors.blue,
-//           // inactiveTickMarkColor: const Color(0xFFB2BDCF),
-//           valueIndicatorColor: const Color(0xFFB2BDCF),
-//         ), // 오버레이 색상 (터치 영역의 표시))
-//         child: Slider(
-//           value: ref.watch(writeScreenLocalPeopleProvider),
-//           min: 0,
-//           max: 20,
-//           divisions: 20,
-//           label: '${ref.watch(writeScreenLocalPeopleProvider).toInt()}',
-//           onChanged: (newValue) {
-//             ref.read(writeScreenLocalPeopleProvider.notifier).state =
-//                 newValue; // 상태 업데이트
-//           },
-//         ));
-//   }
-// }
-
-// final writeScreenForeignPeopleProvider = StateProvider<double>((ref) => 0);
-
-// class ForeignPeopleSlider extends ConsumerWidget {
-//   const ForeignPeopleSlider({super.key});
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     final sliderValue = ref.watch(writeScreenForeignPeopleProvider);
-
-//     return SliderTheme(
-//         data: SliderThemeData(
-//           thumbColor: Colors.blue, // 슬라이더 버튼(Thumb)의 색상
-//           tickMarkShape: SliderTickMarkShape.noTickMark,
-//           // activeTickMarkColor: Colors.blue,
-//           // inactiveTickMarkColor: const Color(0xFFB2BDCF),
-//           valueIndicatorColor: const Color(0xFFB2BDCF),
-//         ), // 오버레이 색상 (터치 영역의 표시))
-//         child: Slider(
-//           value: ref.watch(writeScreenForeignPeopleProvider),
-//           min: 0,
-//           max: 20,
-//           divisions: 20,
-//           label: '${ref.watch(writeScreenForeignPeopleProvider).toInt()}',
-//           onChanged: (newValue) {
-//             ref.read(writeScreenForeignPeopleProvider.notifier).state =
-//                 newValue; // 상태 업데이트
-//           },
-//         ));
-//   }
-// }
