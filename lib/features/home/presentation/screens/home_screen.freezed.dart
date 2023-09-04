@@ -30,8 +30,12 @@ mixin _$ListItemData {
   int get authorNation => throw _privateConstructorUsedError;
   @JsonKey(name: 'user_type')
   int get userType => throw _privateConstructorUsedError;
-  @JsonKey(name: 'meeting_capacity')
-  int get meetingCapacity => throw _privateConstructorUsedError;
+  @JsonKey(name: 'capacity_local')
+  int get capacityLocal => throw _privateConstructorUsedError;
+  @JsonKey(name: 'capacity_travel')
+  int get capacityTravel =>
+      throw _privateConstructorUsedError; //@JsonKey(name: 'amount_local') required int amountLocal,
+//@JsonKey(name: 'amount_travel') required int amountTravel,
   @JsonKey(name: 'meeting_pic')
   @PicListConverter()
   List<String> get meetingPic =>
@@ -61,7 +65,8 @@ abstract class $ListItemDataCopyWith<$Res> {
       @JsonKey(name: 'author_nickname') String authorNickname,
       @JsonKey(name: 'author_nation') int authorNation,
       @JsonKey(name: 'user_type') int userType,
-      @JsonKey(name: 'meeting_capacity') int meetingCapacity,
+      @JsonKey(name: 'capacity_local') int capacityLocal,
+      @JsonKey(name: 'capacity_travel') int capacityTravel,
       @JsonKey(name: 'meeting_pic') @PicListConverter() List<String> meetingPic,
       @JsonKey(name: 'meeting_location') String meetingLocation,
       @JsonKey(name: 'meeting_start_time')
@@ -87,7 +92,8 @@ class _$ListItemDataCopyWithImpl<$Res, $Val extends ListItemData>
     Object? authorNickname = null,
     Object? authorNation = null,
     Object? userType = null,
-    Object? meetingCapacity = null,
+    Object? capacityLocal = null,
+    Object? capacityTravel = null,
     Object? meetingPic = null,
     Object? meetingLocation = null,
     Object? meetingStartTime = null,
@@ -113,9 +119,13 @@ class _$ListItemDataCopyWithImpl<$Res, $Val extends ListItemData>
           ? _value.userType
           : userType // ignore: cast_nullable_to_non_nullable
               as int,
-      meetingCapacity: null == meetingCapacity
-          ? _value.meetingCapacity
-          : meetingCapacity // ignore: cast_nullable_to_non_nullable
+      capacityLocal: null == capacityLocal
+          ? _value.capacityLocal
+          : capacityLocal // ignore: cast_nullable_to_non_nullable
+              as int,
+      capacityTravel: null == capacityTravel
+          ? _value.capacityTravel
+          : capacityTravel // ignore: cast_nullable_to_non_nullable
               as int,
       meetingPic: null == meetingPic
           ? _value.meetingPic
@@ -147,7 +157,8 @@ abstract class _$$_ListItemDataCopyWith<$Res>
       @JsonKey(name: 'author_nickname') String authorNickname,
       @JsonKey(name: 'author_nation') int authorNation,
       @JsonKey(name: 'user_type') int userType,
-      @JsonKey(name: 'meeting_capacity') int meetingCapacity,
+      @JsonKey(name: 'capacity_local') int capacityLocal,
+      @JsonKey(name: 'capacity_travel') int capacityTravel,
       @JsonKey(name: 'meeting_pic') @PicListConverter() List<String> meetingPic,
       @JsonKey(name: 'meeting_location') String meetingLocation,
       @JsonKey(name: 'meeting_start_time')
@@ -171,7 +182,8 @@ class __$$_ListItemDataCopyWithImpl<$Res>
     Object? authorNickname = null,
     Object? authorNation = null,
     Object? userType = null,
-    Object? meetingCapacity = null,
+    Object? capacityLocal = null,
+    Object? capacityTravel = null,
     Object? meetingPic = null,
     Object? meetingLocation = null,
     Object? meetingStartTime = null,
@@ -197,9 +209,13 @@ class __$$_ListItemDataCopyWithImpl<$Res>
           ? _value.userType
           : userType // ignore: cast_nullable_to_non_nullable
               as int,
-      meetingCapacity: null == meetingCapacity
-          ? _value.meetingCapacity
-          : meetingCapacity // ignore: cast_nullable_to_non_nullable
+      capacityLocal: null == capacityLocal
+          ? _value.capacityLocal
+          : capacityLocal // ignore: cast_nullable_to_non_nullable
+              as int,
+      capacityTravel: null == capacityTravel
+          ? _value.capacityTravel
+          : capacityTravel // ignore: cast_nullable_to_non_nullable
               as int,
       meetingPic: null == meetingPic
           ? _value._meetingPic
@@ -226,7 +242,8 @@ class _$_ListItemData implements _ListItemData {
       @JsonKey(name: 'author_nickname') required this.authorNickname,
       @JsonKey(name: 'author_nation') required this.authorNation,
       @JsonKey(name: 'user_type') required this.userType,
-      @JsonKey(name: 'meeting_capacity') required this.meetingCapacity,
+      @JsonKey(name: 'capacity_local') required this.capacityLocal,
+      @JsonKey(name: 'capacity_travel') required this.capacityTravel,
       @JsonKey(name: 'meeting_pic')
       @PicListConverter()
       required final List<String> meetingPic,
@@ -255,9 +272,16 @@ class _$_ListItemData implements _ListItemData {
   @JsonKey(name: 'user_type')
   final int userType;
   @override
-  @JsonKey(name: 'meeting_capacity')
-  final int meetingCapacity;
+  @JsonKey(name: 'capacity_local')
+  final int capacityLocal;
+  @override
+  @JsonKey(name: 'capacity_travel')
+  final int capacityTravel;
+//@JsonKey(name: 'amount_local') required int amountLocal,
+//@JsonKey(name: 'amount_travel') required int amountTravel,
   final List<String> _meetingPic;
+//@JsonKey(name: 'amount_local') required int amountLocal,
+//@JsonKey(name: 'amount_travel') required int amountTravel,
   @override
   @JsonKey(name: 'meeting_pic')
   @PicListConverter()
@@ -279,7 +303,7 @@ class _$_ListItemData implements _ListItemData {
 
   @override
   String toString() {
-    return 'ListItemData(postId: $postId, title: $title, authorNickname: $authorNickname, authorNation: $authorNation, userType: $userType, meetingCapacity: $meetingCapacity, meetingPic: $meetingPic, meetingLocation: $meetingLocation, meetingStartTime: $meetingStartTime)';
+    return 'ListItemData(postId: $postId, title: $title, authorNickname: $authorNickname, authorNation: $authorNation, userType: $userType, capacityLocal: $capacityLocal, capacityTravel: $capacityTravel, meetingPic: $meetingPic, meetingLocation: $meetingLocation, meetingStartTime: $meetingStartTime)';
   }
 
   @override
@@ -295,8 +319,10 @@ class _$_ListItemData implements _ListItemData {
                 other.authorNation == authorNation) &&
             (identical(other.userType, userType) ||
                 other.userType == userType) &&
-            (identical(other.meetingCapacity, meetingCapacity) ||
-                other.meetingCapacity == meetingCapacity) &&
+            (identical(other.capacityLocal, capacityLocal) ||
+                other.capacityLocal == capacityLocal) &&
+            (identical(other.capacityTravel, capacityTravel) ||
+                other.capacityTravel == capacityTravel) &&
             const DeepCollectionEquality()
                 .equals(other._meetingPic, _meetingPic) &&
             (identical(other.meetingLocation, meetingLocation) ||
@@ -314,7 +340,8 @@ class _$_ListItemData implements _ListItemData {
       authorNickname,
       authorNation,
       userType,
-      meetingCapacity,
+      capacityLocal,
+      capacityTravel,
       const DeepCollectionEquality().hash(_meetingPic),
       meetingLocation,
       meetingStartTime);
@@ -340,7 +367,8 @@ abstract class _ListItemData implements ListItemData {
       @JsonKey(name: 'author_nickname') required final String authorNickname,
       @JsonKey(name: 'author_nation') required final int authorNation,
       @JsonKey(name: 'user_type') required final int userType,
-      @JsonKey(name: 'meeting_capacity') required final int meetingCapacity,
+      @JsonKey(name: 'capacity_local') required final int capacityLocal,
+      @JsonKey(name: 'capacity_travel') required final int capacityTravel,
       @JsonKey(name: 'meeting_pic')
       @PicListConverter()
       required final List<String> meetingPic,
@@ -368,9 +396,13 @@ abstract class _ListItemData implements ListItemData {
   @JsonKey(name: 'user_type')
   int get userType;
   @override
-  @JsonKey(name: 'meeting_capacity')
-  int get meetingCapacity;
+  @JsonKey(name: 'capacity_local')
+  int get capacityLocal;
   @override
+  @JsonKey(name: 'capacity_travel')
+  int get capacityTravel;
+  @override //@JsonKey(name: 'amount_local') required int amountLocal,
+//@JsonKey(name: 'amount_travel') required int amountTravel,
   @JsonKey(name: 'meeting_pic')
   @PicListConverter()
   List<String> get meetingPic;

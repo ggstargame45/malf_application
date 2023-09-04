@@ -13,7 +13,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'home_screen.g.dart';
 part 'home_screen.freezed.dart';
 
-const baseUrl = 'http://3.36.185.179:8000/';
+const baseUrl = 'http://13.125.43.68:8000/';
 const baseId = "";
 const koreaE = "🇰🇷";
 const usaE = "🇺🇲";
@@ -173,7 +173,10 @@ class ListItemData with _$ListItemData {
     @JsonKey(name: 'author_nickname') required String authorNickname,
     @JsonKey(name: 'author_nation') required int authorNation,
     @JsonKey(name: 'user_type') required int userType,
-    @JsonKey(name: 'meeting_capacity') required int meetingCapacity,
+    @JsonKey(name: 'capacity_local') required int capacityLocal,
+    @JsonKey(name: 'capacity_travel') required int capacityTravel,
+    //@JsonKey(name: 'amount_local') required int amountLocal,
+    //@JsonKey(name: 'amount_travel') required int amountTravel,
     @JsonKey(name: 'meeting_pic')
     @PicListConverter()
     required List<String> meetingPic,
@@ -283,7 +286,7 @@ class HomeScreen extends ConsumerWidget {
                             decoration: const BoxDecoration(
                               image: DecorationImage(
                                 image: NetworkImage(
-                                    "http://3.36.185.179:8000/ad/1.png"),
+                                    "http://13.125.43.68:8000/ad/1.png"),
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -429,7 +432,7 @@ class HomeScreen extends ConsumerWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                            "${data[index].authorNickname} ${data[index].userType == 0 ? "관광객" : "현지인"} ${data[index].meetingCapacity}"),
+                                            "${data[index].authorNickname} ${data[index].userType == 0 ? "관광객" : "현지인"} ${data[index].capacityLocal}명"),
                                         Text(data[index].title,
                                             style: const TextStyle(
                                                 fontSize: 20,

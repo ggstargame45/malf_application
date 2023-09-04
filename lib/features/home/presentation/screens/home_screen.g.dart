@@ -13,7 +13,8 @@ _$_ListItemData _$$_ListItemDataFromJson(Map<String, dynamic> json) =>
       authorNickname: json['author_nickname'] as String,
       authorNation: json['author_nation'] as int,
       userType: json['user_type'] as int,
-      meetingCapacity: json['meeting_capacity'] as int,
+      capacityLocal: json['capacity_local'] as int,
+      capacityTravel: json['capacity_travel'] as int,
       meetingPic:
           const PicListConverter().fromJson(json['meeting_pic'] as String),
       meetingLocation: json['meeting_location'] as String,
@@ -28,7 +29,8 @@ Map<String, dynamic> _$$_ListItemDataToJson(_$_ListItemData instance) =>
       'author_nickname': instance.authorNickname,
       'author_nation': instance.authorNation,
       'user_type': instance.userType,
-      'meeting_capacity': instance.meetingCapacity,
+      'capacity_local': instance.capacityLocal,
+      'capacity_travel': instance.capacityTravel,
       'meeting_pic': const PicListConverter().toJson(instance.meetingPic),
       'meeting_location': instance.meetingLocation,
       'meeting_start_time':
@@ -39,7 +41,7 @@ Map<String, dynamic> _$$_ListItemDataToJson(_$_ListItemData instance) =>
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchDataHash() => r'07fcfe6f9d03d2cb2a938bd692210f5da6885461';
+String _$fetchDataHash() => r'c3a24673d835b7278a361998708601ec741e1b18';
 
 /// Copied from Dart SDK
 class _SystemHash {
