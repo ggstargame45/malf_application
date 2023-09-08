@@ -1,4 +1,3 @@
-import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +8,6 @@ import '../providers/home.dart';
 import '../widget/messages.dart';
 import '../widget/new_messge.dart';
 
-@RoutePage()
 class ChattingScreen extends StatefulWidget {
   ChattingScreen({super.key});
   String userName = "user1";
