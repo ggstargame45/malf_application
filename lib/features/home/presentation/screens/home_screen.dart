@@ -496,7 +496,7 @@ class HomeScreen extends ConsumerWidget {
               break;
             case 2:
               Logger().d("tap");
-              context.router.push(ChattingRoute());
+              context.router.push(const ChattingBuildRoute());
               break;
             case 3:
               break;

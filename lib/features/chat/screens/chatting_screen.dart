@@ -19,6 +19,12 @@ class _ChattingScreenState extends State<ChattingScreen> {
   late IO.Socket _socket;
 
   _connectSocket() {
+    _socket = IO.io(
+      'http://13.125.43.68:8000',
+      IO.OptionBuilder()
+          .setPath("/chatTest")
+          .setTransports(['websocket']).build(),
+    );
     _socket.onConnect((data) => Logger().d('Connection established'));
     _socket.onConnectError((data) => Logger().d('Connect Error: $data'));
     _socket.onDisconnect((data) => Logger().d('Socket.IO server disconnected'));
@@ -36,12 +42,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
   void initState() {
     super.initState();
     //Important: If your server is running on localhost and you are testing your app on Android then replace http://localhost:3000 with http://10.0.2.2:3000
-    _socket = IO.io(
-      'http://13.125.43.68:8000',
-      IO.OptionBuilder()
-          .setPath("/chatTest")
-          .setTransports(['websocket']).build(),
-    );
+
     _connectSocket();
   }
 
@@ -106,24 +107,21 @@ class _ChattingScreenState extends State<ChattingScreen> {
                 ]),
           ),
           Positioned(
-            child: ChangeNotifierProvider(
-              create: (context) => HomeProvider(),
-              child: Container(
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 99,
-                    ),
-                    Expanded(
-                        child: Messages(
-                      userName: widget.userName,
-                    )),
-                    NewMessage(
-                      userName: widget.userName,
-                      socket: _socket,
-                    ),
-                  ],
-                ),
+            child: Container(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 99,
+                  ),
+                  Expanded(
+                      child: Messages(
+                    userName: widget.userName,
+                  )),
+                  NewMessage(
+                    userName: widget.userName,
+                    socket: _socket,
+                  ),
+                ],
               ),
             ),
           )

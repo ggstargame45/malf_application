@@ -15,7 +15,7 @@ class _NewMessageState extends State<NewMessage> {
   late IO.Socket _socket;
   final TextEditingController _messageInputController = TextEditingController();
   _sendMessage() {
-    _socket.emit('message', {
+    _socket.emit('chat', {
       'message': _messageInputController.text.trim(),
       'sender': widget.userName
     });

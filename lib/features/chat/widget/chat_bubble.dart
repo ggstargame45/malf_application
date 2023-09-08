@@ -23,7 +23,7 @@ class ChatBubbleMessage extends StatefulWidget {
 class _ChatBubbleMessageState extends State<ChatBubbleMessage> {
   @override
   Widget build(BuildContext context) {
-    return widget.userName == widget.message.senderUsername
+    return widget.userName == widget.message.sender
         ? Padding(
             padding: widget.userName == widget.beforeUser
                 ? const EdgeInsets.only(top: 6)
@@ -62,13 +62,13 @@ class _ChatBubbleMessageState extends State<ChatBubbleMessage> {
           )
         //다른유저
         : Padding(
-            padding: widget.message.senderUsername == widget.beforeUser
+            padding: widget.message.sender == widget.beforeUser
                 ? const EdgeInsets.only(top: 6)
                 : const EdgeInsets.only(top: 16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                widget.message.senderUsername == widget.beforeUser
+                widget.message.sender == widget.beforeUser
                     ? const SizedBox(
                         width: 35,
                       )
@@ -82,12 +82,12 @@ class _ChatBubbleMessageState extends State<ChatBubbleMessage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    widget.message.senderUsername == widget.beforeUser
+                    widget.message.sender == widget.beforeUser
                         ? const SizedBox(
                             height: 1,
                           )
                         : Text(
-                            widget.message.senderUsername,
+                            widget.message.sender,
                           ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,

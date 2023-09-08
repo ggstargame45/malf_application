@@ -22,7 +22,7 @@ class _MessagesState extends State<Messages> {
           final message = provider.messages[index];
           final beforeMessageUser = index == provider.messages.length - 1
               ? null
-              : provider.messages[index + 1].senderUsername;
+              : provider.messages[index + 1].sender;
           final beforeMessageTime = index == provider.messages.length - 1
               ? null
               : provider.messages[index + 1].sentAt;

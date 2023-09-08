@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../features/chat/screens/chatting_screen.dart';
+import '../../features/chat/screens/chatting_build_screen.dart';
 import '../../features/detail/presentation/screens/detail_screen.dart';
 import '../../features/detail/presentation/screens/participation_sreen.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
@@ -21,6 +21,6 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: DetailRoute.page),
         AutoRoute(page: WriteRoute1.page),
         AutoRoute(page: ParticipationRoute.page),
-        AutoRoute(page: ChattingRoute.page),
+        AutoRoute(page: ChattingBuildRoute.page),
       ];
 }
