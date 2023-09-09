@@ -4,6 +4,8 @@ import 'package:malf_application/main/malf.dart';
 import 'package:malf_application/main/observers.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(ProviderScope(
     observers: [
       Observers(),

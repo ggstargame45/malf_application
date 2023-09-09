@@ -20,7 +20,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
 
   _connectSocket() {
     _socket = IO.io(
-      'http://13.125.43.68:8000',
+      'http://13.125.43.68:8000/chat',
       IO.OptionBuilder()
           .setPath("/chatTest")
           .setTransports(['websocket']).build(),
@@ -28,6 +28,12 @@ class _ChattingScreenState extends State<ChattingScreen> {
     _socket.onConnect((data) => Logger().d('Connection established'));
     _socket.onConnectError((data) => Logger().d('Connect Error: $data'));
     _socket.onDisconnect((data) => Logger().d('Socket.IO server disconnected'));
+    _socket.emit("join", "1");
+    _socket.on(
+        'join',
+        (data) => {
+              Logger().d(data),
+            });
     _socket.on(
         'chat',
         (data) => {
@@ -41,7 +47,6 @@ class _ChattingScreenState extends State<ChattingScreen> {
   @override
   void initState() {
     super.initState();
-    //Important: If your server is running on localhost and you are testing your app on Android then replace http://localhost:3000 with http://10.0.2.2:3000
 
     _connectSocket();
   }

@@ -16,6 +16,7 @@ class _NewMessageState extends State<NewMessage> {
   final TextEditingController _messageInputController = TextEditingController();
   _sendMessage() {
     _socket.emit('chat', {
+      'room': "1",
       'message': _messageInputController.text.trim(),
       'sender': widget.userName
     });

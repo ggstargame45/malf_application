@@ -13,7 +13,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'home_screen.freezed.dart';
 part 'home_screen.g.dart';
 
-const baseUrl = 'http://3.36.185.179:8000/';
+const baseUrl = "http://13.125.43.68:8000/";
 const baseId = "";
 const koreaE = "🇰🇷";
 const usaE = "🇺🇲";
@@ -496,7 +496,7 @@ class HomeScreen extends ConsumerWidget {
               break;
             case 2:
               Logger().d("tap");
-              context.router.push(const ChattingBuildRoute());
+              context.router.push(const ChattingListRoute());
               break;
             case 3:
               break;

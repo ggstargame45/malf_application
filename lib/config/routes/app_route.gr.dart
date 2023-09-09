@@ -21,6 +21,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const ChattingBuildScreen(),
       );
     },
+    ChattingListRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ChattingListScreen(),
+      );
+    },
     DetailRoute.name: (routeData) {
       final args = routeData.argsAs<DetailRouteArgs>();
       return AutoRoutePage<dynamic>(
@@ -66,6 +72,20 @@ class ChattingBuildRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ChattingBuildRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ChattingListScreen]
+class ChattingListRoute extends PageRouteInfo<void> {
+  const ChattingListRoute({List<PageRouteInfo>? children})
+      : super(
+          ChattingListRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ChattingListRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
