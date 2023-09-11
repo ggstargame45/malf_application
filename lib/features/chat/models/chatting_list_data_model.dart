@@ -1,11 +1,13 @@
+import 'dart:convert';
+
 class ChattingListModel {
-  final int post_id;
-  final List<String> picture;
+  final int postId;
+  final List<dynamic> picture;
   final String title;
-  final String personnel;
+  final int personnel;
 
   ChattingListModel(
-      {required this.post_id,
+      {required this.postId,
       required this.picture,
       required this.title,
       required this.personnel});
@@ -13,8 +15,8 @@ class ChattingListModel {
   // Factory method to create a Post instance from a Map (usually from JSON)
   factory ChattingListModel.fromJson(Map<String, dynamic> json) {
     return ChattingListModel(
-      post_id: json['post_id'],
-      picture: List<String>.from(json['picture']),
+      postId: json['post_id'],
+      picture: jsonDecode(json['picture']),
       title: json['title'],
       personnel: json['personnel'],
     );
@@ -23,7 +25,7 @@ class ChattingListModel {
   // Method to convert a Post instance into a Map (usually for JSON serialization)
   Map<String, dynamic> toJson() {
     return {
-      'post_id': post_id,
+      'post_id': postId,
       'picture': picture,
       'title': title,
       'personnel': personnel,

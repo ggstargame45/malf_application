@@ -16,9 +16,13 @@ abstract class _$AppRouter extends RootStackRouter {
   @override
   final Map<String, PageFactory> pagesMap = {
     ChattingBuildRoute.name: (routeData) {
+      final args = routeData.argsAs<ChattingBuildRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const ChattingBuildScreen(),
+        child: ChattingBuildScreen(
+          postId: args.postId,
+          key: args.key,
+        ),
       );
     },
     ChattingListRoute.name: (routeData) {
@@ -64,16 +68,40 @@ abstract class _$AppRouter extends RootStackRouter {
 
 /// generated route for
 /// [ChattingBuildScreen]
-class ChattingBuildRoute extends PageRouteInfo<void> {
-  const ChattingBuildRoute({List<PageRouteInfo>? children})
-      : super(
+class ChattingBuildRoute extends PageRouteInfo<ChattingBuildRouteArgs> {
+  ChattingBuildRoute({
+    required String postId,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           ChattingBuildRoute.name,
+          args: ChattingBuildRouteArgs(
+            postId: postId,
+            key: key,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'ChattingBuildRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<ChattingBuildRouteArgs> page =
+      PageInfo<ChattingBuildRouteArgs>(name);
+}
+
+class ChattingBuildRouteArgs {
+  const ChattingBuildRouteArgs({
+    required this.postId,
+    this.key,
+  });
+
+  final String postId;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'ChattingBuildRouteArgs{postId: $postId, key: $key}';
+  }
 }
 
 /// generated route for

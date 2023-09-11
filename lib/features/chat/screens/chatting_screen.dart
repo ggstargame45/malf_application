@@ -9,8 +9,9 @@ import '../widget/messages.dart';
 import '../widget/new_messge.dart';
 
 class ChattingScreen extends StatefulWidget {
-  ChattingScreen({super.key});
+  ChattingScreen({required this.postId, super.key});
   String userName = "user1";
+  String? postId;
   @override
   State<ChattingScreen> createState() => _ChattingScreenState();
 }
@@ -28,7 +29,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
     _socket.onConnect((data) => Logger().d('Connection established'));
     _socket.onConnectError((data) => Logger().d('Connect Error: $data'));
     _socket.onDisconnect((data) => Logger().d('Socket.IO server disconnected'));
-    _socket.emit("join", "1");
+    // _socket.emit("join", widget.postId);
     _socket.on(
         'join',
         (data) => {
@@ -47,8 +48,6 @@ class _ChattingScreenState extends State<ChattingScreen> {
   @override
   void initState() {
     super.initState();
-
-    _connectSocket();
   }
 
   @override
