@@ -37,7 +37,7 @@ class _ChatBubbleMessageState extends State<ChatBubbleMessage> {
                       height: 27,
                     ),
                     Text(
-                      DateFormat('hh:mm a').format(widget.message.sentAt),
+                      DateFormat('hh:mm a').format(widget.message.sendAt),
                       style: const TextStyle(color: Colors.grey, fontSize: 10),
                     ),
                   ],
@@ -115,7 +115,7 @@ class _ChatBubbleMessageState extends State<ChatBubbleMessage> {
                             ),
                             Text(
                               DateFormat('hh:mm a')
-                                  .format(widget.message.sentAt),
+                                  .format(widget.message.sendAt),
                               style: const TextStyle(
                                   color: Colors.grey, fontSize: 10),
                             ),

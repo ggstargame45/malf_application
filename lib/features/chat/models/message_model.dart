@@ -1,14 +1,14 @@
 class Message {
-  final int room;
+  final String room;
   final String message;
   final String sender;
-  final DateTime sentAt;
+  final DateTime sendAt;
 
   Message({
     required this.room,
     required this.message,
     required this.sender,
-    required this.sentAt,
+    required this.sendAt,
   });
 
   factory Message.fromJson(Map<String, dynamic> message) {
@@ -16,7 +16,7 @@ class Message {
       room: message['room'],
       message: message['message'],
       sender: message['sender'],
-      sentAt: DateTime.fromMillisecondsSinceEpoch(message['sentAt']),
+      sendAt: DateTime.fromMillisecondsSinceEpoch(message['sendAt']),
     );
   }
 }

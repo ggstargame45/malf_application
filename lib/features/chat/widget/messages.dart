@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/home.dart';
@@ -14,8 +15,9 @@ class Messages extends StatefulWidget {
 class _MessagesState extends State<Messages> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomeProvider>(
-      builder: (_, provider, __) => ListView.builder(
+    return Consumer<HomeProvider>(builder: (_, provider, __) {
+      Logger().d(provider.messages);
+      return ListView.builder(
         reverse: true,
         itemCount: provider.messages.length,
         itemBuilder: (context, index) {
@@ -25,7 +27,7 @@ class _MessagesState extends State<Messages> {
               : provider.messages[index + 1].sender;
           final beforeMessageTime = index == provider.messages.length - 1
               ? null
-              : provider.messages[index + 1].sentAt;
+              : provider.messages[index + 1].sendAt;
           return Padding(
             padding: const EdgeInsets.only(right: 8, left: 8),
             child: ChatBubbleMessage(
@@ -35,7 +37,7 @@ class _MessagesState extends State<Messages> {
                 beforeUser: beforeMessageUser),
           );
         },
-      ),
-    );
+      );
+    });
   }
 }

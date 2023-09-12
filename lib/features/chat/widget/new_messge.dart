@@ -5,7 +5,12 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 class NewMessage extends StatefulWidget {
   final String userName;
   final IO.Socket socket;
-  const NewMessage({super.key, required this.userName, required this.socket});
+  final String? postId;
+  const NewMessage(
+      {super.key,
+      required this.postId,
+      required this.userName,
+      required this.socket});
 
   @override
   State<NewMessage> createState() => _NewMessageState();
@@ -16,19 +21,19 @@ class _NewMessageState extends State<NewMessage> {
   final TextEditingController _messageInputController = TextEditingController();
   _sendMessage() {
     _socket.emit('chat', {
-      'room': "1",
+      'room': widget.postId,
       'message': _messageInputController.text.trim(),
       'sender': widget.userName
     });
-
+    Logger().d(_messageInputController.text);
     _messageInputController.clear();
   }
 
   @override
   void initState() {
     super.initState();
-    //Important: If your server is running on localhost and you are testing your app on Android then replace http://localhost:3000 with http://10.0.2.2:3000
     _socket = widget.socket;
+    //Important: If your server is running on localhost and you are testing your app on Android then replace http://localhost:3000 with http://10.0.2.2:3000
   }
 
   @override
@@ -70,7 +75,6 @@ class _NewMessageState extends State<NewMessage> {
           IconButton(
             onPressed: () {
               if (_messageInputController.text.trim().isNotEmpty) {
-                Logger().d(_messageInputController.text);
                 _sendMessage();
               }
             },

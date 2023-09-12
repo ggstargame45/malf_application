@@ -29,7 +29,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
     _socket.onConnect((data) => Logger().d('Connection established'));
     _socket.onConnectError((data) => Logger().d('Connect Error: $data'));
     _socket.onDisconnect((data) => Logger().d('Socket.IO server disconnected'));
-    // _socket.emit("join", widget.postId);
+    _socket.emit("join", widget.postId);
     _socket.on(
         'join',
         (data) => {
@@ -38,16 +38,26 @@ class _ChattingScreenState extends State<ChattingScreen> {
     _socket.on(
         'chat',
         (data) => {
-              Logger().d(data),
-              Provider.of<HomeProvider>(context, listen: false).addNewMessage(
-                Message.fromJson(data),
-              ),
+              if (mounted)
+                {
+                  Provider.of<HomeProvider>(context, listen: false)
+                      .addNewMessage(
+                    Message.fromJson(data),
+                  )
+                }
             });
   }
 
   @override
   void initState() {
     super.initState();
+    _connectSocket();
+  }
+
+  @override
+  void dispose() {
+    _socket.disconnect();
+    super.dispose();
   }
 
   @override
@@ -124,6 +134,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
                   NewMessage(
                     userName: widget.userName,
                     socket: _socket,
+                    postId: widget.postId,
                   ),
                 ],
               ),

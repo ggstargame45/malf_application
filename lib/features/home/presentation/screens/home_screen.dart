@@ -283,7 +283,7 @@ class HomeScreen extends ConsumerWidget {
                             decoration: const BoxDecoration(
                               image: DecorationImage(
                                 image: NetworkImage(
-                                    "http://3.36.185.179:8000/ad/1.png"),
+                                    "http://13.125.43.68:8000/ad/1.png"),
                                 fit: BoxFit.cover,
                               ),
                             ),
