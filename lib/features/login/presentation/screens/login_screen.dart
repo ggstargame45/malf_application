@@ -13,7 +13,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 part 'login_screen.g.dart';
 
-const baseUrl = 'http://13.125.43.68:8000/';
+const baseUrl = 'http://malftravel.com/';
 
 final logger = Logger();
 
@@ -152,7 +152,7 @@ class _TestLoginBodyState extends ConsumerState<TestLoginBody> {
           onNavigationRequest: (NavigationRequest request) async {
             logger.i('allowing navigation to ${request.url}');
             if (request.url
-                .contains('http://13.125.43.68:8000/auth/kakao/callback')) {
+                .contains('http://malftravel.com/auth/kakao/callback')) {
               Response response = await Dio().get(request.url);
               accessToken = response.data['token']['accessToken'];
               refreshToken = response.data['token']['refreshToken'];
