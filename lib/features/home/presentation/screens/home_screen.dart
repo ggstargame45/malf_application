@@ -69,7 +69,7 @@ FutureOr<List<ListItemData>> fetchData(Ref ref, int a) async {
   final pageNumber = ref.read(pageNumberNotifierProvider);
 
   try {
-    final response = await dio.get("/?page=$pageNumber&limit=10");
+    final response = await dio.get("/?page=$pageNumber&limit=11");
     if (response.statusCode == 200) {
       List<dynamic> data = response.data['data'];
       List<ListItemData> result =

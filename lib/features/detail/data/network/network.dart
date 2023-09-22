@@ -8,9 +8,10 @@ var logger = Logger();
 class Network {
   final _dio = Dio(BaseOptions(
       baseUrl: Url.baseUrl,
-      headers: {'Authorization':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3VuaXFfaWQiOiJ0ZXN0XzEiLCJpYXQiOjE2OTI2Mjg2MTcsImV4cCI6MTcyNDE2NDYxN30.-X3GnzUEMfmpIRXznFtdJdDr5x5aWa-D_kU_w9mU6hk'
-},
+      headers: {
+        'Authorization':
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3VuaXFfaWQiOiJ0ZXN0XzEiLCJpYXQiOjE2OTI2Mjg2MTcsImV4cCI6MTcyNDE2NDYxN30.-X3GnzUEMfmpIRXznFtdJdDr5x5aWa-D_kU_w9mU6hk'
+      },
       responseType: ResponseType.json));
 
   int postId;
