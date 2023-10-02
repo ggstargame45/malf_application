@@ -18,19 +18,28 @@ Widget _buildTimeStamp(DateTime sendAt) {
   );
 }
 
-// void showImage(BuildContext context) {
-//     showDialog(
-//         context: context,
-//         builder: (context) {
-//           return AddImageState(
-//             pickImage,
-//             postId: widget.postId!,
-//           );
-//         });
-//   }
+void showImage(BuildContext context, String imgSrc) {
+  showDialog(
+      useSafeArea: true,
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Container(
+            width: 200,
+            height: 400,
+            alignment: Alignment.center,
+            child: Image.network(imgSrc, fit: BoxFit.fitWidth),
+          ),
+        );
+      });
+}
+
 Widget _buildMessageBubble(BuildContext context, bool isSentByCurrentUser,
     Message message, String postId) {
-  List<dynamic> imgList = jsonDecode(message.message);
+  List<dynamic> imgList = [];
+  if (message.type == 1) {
+    imgList = jsonDecode(message.message);
+  }
 
   return Row(
     crossAxisAlignment: CrossAxisAlignment.end,
@@ -54,7 +63,10 @@ Widget _buildMessageBubble(BuildContext context, bool isSentByCurrentUser,
                     itemCount: imgList.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) => GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        showImage(context,
+                            "https://malftravel.com/${imgList[index]}");
+                      },
                       child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Image.network(
