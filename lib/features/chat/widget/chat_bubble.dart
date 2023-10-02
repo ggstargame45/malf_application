@@ -25,10 +25,10 @@ void showImage(BuildContext context, String imgSrc) {
       builder: (context) {
         return AlertDialog(
           content: Container(
-            width: 200,
-            height: 400,
+            width: 250,
+            height: 450,
             alignment: Alignment.center,
-            child: Image.network(imgSrc, fit: BoxFit.fitWidth),
+            child: Image.network(imgSrc, fit: BoxFit.fill),
           ),
         );
       });
