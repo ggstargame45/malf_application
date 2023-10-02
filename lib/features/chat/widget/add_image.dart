@@ -1,12 +1,14 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:malf_application/features/chat/providers/chat_image_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:logger/logger.dart';
 
 class AddImageState extends StatefulWidget {
-  const AddImageState(this.addImageFunc, {super.key});
+  AddImageState(this.addImageFunc, {required this.postId, super.key});
+  String postId;
   final Function(XFile? pickedImage) addImageFunc;
 
   @override
@@ -15,6 +17,7 @@ class AddImageState extends StatefulWidget {
 
 class _AddImageStateState extends State<AddImageState> {
   List<XFile?> pickedImages = [];
+  final Dio _dio = Dio();
 
   void _pickImageGallery() async {
     final imagePicker = ImagePicker();
@@ -41,6 +44,34 @@ class _AddImageStateState extends State<AddImageState> {
     });
     for (XFile? pickedImage in pickedImages) {
       widget.addImageFunc(pickedImage);
+    }
+  }
+
+  Future<bool> sendImages(List<XFile?> imageList, String postId) async {
+    // MultiPartRequest로 request 정의
+    var request = http.MultipartRequest(
+        'POST', Uri.parse("http://malftravel.com/chat/$postId/image"));
+
+    // request에 사진 업로드
+    for (int i = 0; i < imageList.length; i++) {
+      request.files
+          .add(await http.MultipartFile.fromPath('image', imageList[i]!.path));
+    }
+
+    // request 헤더 설정
+    request.headers['Authorization'] =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3VuaXFfaWQiOiJ0ZXN0XzEiLCJpYXQiOjE2OTI2Mjg2MTcsImV4cCI6MTcyNDE2NDYxN30.-X3GnzUEMfmpIRXznFtdJdDr5x5aWa-D_kU_w9mU6hk';
+    request.headers['Content-Type'] = 'multipart/form-data;';
+
+    // request.send()를 통해 post
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      Logger().d('요청이 성공적으로 처리되었습니다.');
+      return true;
+    } else {
+      Logger().e('요청이 실패하였습니다. 상태 코드: ${response.statusCode}');
+      return false;
     }
   }
 
@@ -98,9 +129,11 @@ class _AddImageStateState extends State<AddImageState> {
               children: [
                 TextButton.icon(
                     onPressed: () {
-                      Provider.of<ChatImageProvider>(context, listen: false)
-                          .addNewImage(pickedImages);
-
+                      try {
+                        sendImages(pickedImages, widget.postId);
+                      } catch (e) {
+                        Logger().e(e);
+                      }
                       Navigator.pop(context);
                     },
                     icon: const Icon(Icons.check),

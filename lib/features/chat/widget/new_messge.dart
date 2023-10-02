@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
-import 'package:malf_application/features/chat/models/message_model.dart';
-import 'package:malf_application/features/chat/providers/message_provider.dart';
 import 'package:malf_application/features/chat/widget/add_image.dart';
-import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class NewMessage extends StatefulWidget {
@@ -23,21 +20,22 @@ class NewMessage extends StatefulWidget {
 
 class _NewMessageState extends State<NewMessage> {
   late IO.Socket _socket;
+  bool isImgMessage = false;
   final TextEditingController _messageInputController = TextEditingController();
   _sendMessage() {
     _socket.emit('chat', {
-      'room': widget.postId,
+      'room': "1",
       'message': _messageInputController.text.trim(),
       'sender': widget.userName
     });
-    Provider.of<MessageProvider>(context, listen: false).addNewMessage(
-      Message(
-        room: 'Room4',
-        message: _messageInputController.text.trim(),
-        sender: widget.userName,
-        sendAt: DateTime.now().subtract(const Duration(days: 2, hours: 1)),
-      ),
-    );
+    // Provider.of<MessageProvider>(context, listen: false).addNewMessage(
+    //   Message(
+    //     room: 'Room4',
+    //     message: _messageInputController.text.trim(),
+    //     sender: widget.userName,
+    //     sendAt: DateTime.now().subtract(const Duration(days: 2, hours: 1)),
+    //   ),
+    // );
     Logger().d(_messageInputController.text);
     _messageInputController.clear();
   }
@@ -62,7 +60,10 @@ class _NewMessageState extends State<NewMessage> {
     showDialog(
         context: context,
         builder: (context) {
-          return AddImageState(pickImage);
+          return AddImageState(
+            pickImage,
+            postId: widget.postId!,
+          );
         });
   }
 

@@ -1,13 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 import '../models/message_model.dart';
-import '../providers/chat_image_provider.dart';
 
 Widget _buildTimeStamp(DateTime sendAt) {
   return Row(
@@ -20,55 +16,54 @@ Widget _buildTimeStamp(DateTime sendAt) {
   );
 }
 
-Widget _buildMessageBubble(
-    BuildContext context, bool isSentByCurrentUser, Message message,
-    {List<XFile>? pickedImages}) {
-  return Consumer<ChatImageProvider>(builder: (_, provider, __) {
-    pickedImages = provider.images;
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        if (isSentByCurrentUser) _buildTimeStamp(message.sendAt),
-        ChatBubble(
-          clipper: ChatBubbleClipper5(
-              type: isSentByCurrentUser
-                  ? BubbleType.sendBubble
-                  : BubbleType.receiverBubble),
-          alignment:
-              isSentByCurrentUser ? Alignment.topRight : Alignment.topLeft,
-          margin: const EdgeInsets.only(right: 4, left: 4),
-          backGroundColor: isSentByCurrentUser ? Colors.blue : Colors.white,
-          child: Container(
+Widget _buildMessageBubble(BuildContext context, bool isSentByCurrentUser,
+    Message message, String postId) {
+  // List<String> imgList =
+  //     List<String>.from(jsonDecode(jsonDecode(message.message)));
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: [
+      if (isSentByCurrentUser) _buildTimeStamp(message.sendAt),
+      ChatBubble(
+        clipper: ChatBubbleClipper5(
+            type: isSentByCurrentUser
+                ? BubbleType.sendBubble
+                : BubbleType.receiverBubble),
+        alignment: isSentByCurrentUser ? Alignment.topRight : Alignment.topLeft,
+        margin: const EdgeInsets.only(right: 4, left: 4),
+        backGroundColor: isSentByCurrentUser ? Colors.blue : Colors.white,
+        child: Container(
             constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width * 0.7,
+              maxWidth: MediaQuery.of(context).size.width * 0.6,
+              maxHeight: 300,
             ),
-            child: pickedImages!.isEmpty == true
-                ? Text(
+            child: message.type == 1
+                ? ListView.builder(
+                    itemCount: 2,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {},
+                      child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.network(
+                              "https://malftravel.com/karina.jpeg")),
+                    ),
+                    //Image.network("https://malftravel.com/${message.message}")),
+                  )
+                : Text(
                     message.message,
                     style: TextStyle(
                         color:
                             isSentByCurrentUser ? Colors.white : Colors.black),
-                  )
-                : ListView.builder(
-                    itemCount: pickedImages!.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.file(
-                        File(pickedImages![index].path),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-          ),
-        ),
-        if (!isSentByCurrentUser) _buildTimeStamp(message.sendAt),
-      ],
-    );
-  });
+                  )),
+      ),
+      if (!isSentByCurrentUser) _buildTimeStamp(message.sendAt),
+    ],
+  );
 }
 
 class ChatBubbleMessage extends StatefulWidget {
+  final String postId;
   final String userName;
   final Message message;
   final String? beforeUser;
@@ -76,6 +71,7 @@ class ChatBubbleMessage extends StatefulWidget {
   final List<XFile>? pickedImages;
   const ChatBubbleMessage(
       {super.key,
+      required this.postId,
       required this.userName,
       required this.message,
       this.beforeUser,
@@ -90,7 +86,7 @@ class _ChatBubbleMessageState extends State<ChatBubbleMessage> {
   @override
   Widget build(BuildContext context) {
     bool isSentByCurrentUser = widget.userName == widget.message.sender;
-
+    bool isImgMessage = widget.message.type == 1;
     return Padding(
       padding: widget.userName == widget.beforeUser
           ? const EdgeInsets.only(top: 2)
@@ -123,8 +119,8 @@ class _ChatBubbleMessageState extends State<ChatBubbleMessage> {
                 Text(
                   widget.message.sender,
                 ),
-              _buildMessageBubble(context, isSentByCurrentUser, widget.message,
-                  pickedImages: widget.pickedImages),
+              _buildMessageBubble(
+                  context, isSentByCurrentUser, widget.message, widget.postId),
               const SizedBox(height: 3),
             ],
           ),

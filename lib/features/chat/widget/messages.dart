@@ -6,8 +6,9 @@ import '../providers/message_provider.dart';
 import 'chat_bubble.dart';
 
 class Messages extends StatefulWidget {
-  const Messages({super.key, required this.userName});
+  const Messages({super.key, required this.postId, required this.userName});
   final String userName;
+  final String postId;
   @override
   State<Messages> createState() => _MessagesState();
 }
@@ -31,6 +32,7 @@ class _MessagesState extends State<Messages> {
           return Padding(
             padding: const EdgeInsets.only(right: 8, left: 8),
             child: ChatBubbleMessage(
+                postId: widget.postId,
                 userName: widget.userName,
                 message: message,
                 beforeTime: beforeMessageTime,
