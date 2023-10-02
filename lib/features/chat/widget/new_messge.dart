@@ -62,7 +62,7 @@ class _NewMessageState extends State<NewMessage> {
         builder: (context) {
           return AddImageState(
             pickImage,
-            postId: widget.postId!,
+            postId: "1",
           );
         });
   }

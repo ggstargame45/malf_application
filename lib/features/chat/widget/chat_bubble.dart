@@ -16,6 +16,16 @@ Widget _buildTimeStamp(DateTime sendAt) {
   );
 }
 
+// void showImage(BuildContext context) {
+//     showDialog(
+//         context: context,
+//         builder: (context) {
+//           return AddImageState(
+//             pickImage,
+//             postId: widget.postId!,
+//           );
+//         });
+//   }
 Widget _buildMessageBubble(BuildContext context, bool isSentByCurrentUser,
     Message message, String postId) {
   // List<String> imgList =
