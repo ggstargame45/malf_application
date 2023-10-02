@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:malf_application/config/routes/app_route.dart';
-import 'package:malf_application/features/chat/models/chatting_list_data_model.dart';
+import 'package:malf_application/features/chat/models/chatting_list_model.dart';
 import 'package:malf_application/features/detail/constants/url_const.dart';
 
 @RoutePage()

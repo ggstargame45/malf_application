@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/home_provider.dart';
+import '../providers/message_provider.dart';
 import 'chat_bubble.dart';
 
 class Messages extends StatefulWidget {
@@ -15,7 +15,7 @@ class Messages extends StatefulWidget {
 class _MessagesState extends State<Messages> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomeProvider>(builder: (_, provider, __) {
+    return Consumer<MessageProvider>(builder: (_, provider, __) {
       Logger().d(provider.messages);
       return ListView.builder(
         reverse: true,

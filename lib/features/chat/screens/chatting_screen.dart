@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../models/message_model.dart';
-import '../providers/home_provider.dart';
+import '../providers/message_provider.dart';
 import '../widget/messages.dart';
 import '../widget/new_messge.dart';
 
@@ -42,7 +42,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
           (data) => {
                 if (mounted)
                   {
-                    Provider.of<HomeProvider>(context, listen: false)
+                    Provider.of<MessageProvider>(context, listen: false)
                         .addNewMessage(
                       Message.fromJson(data),
                     )

@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import '../models/message_model.dart';
 
-class HomeProvider extends ChangeNotifier {
+class MessageProvider extends ChangeNotifier {
   final List<Message> _messages = [
     Message(
       room: 'Room1',
@@ -19,8 +19,8 @@ class HomeProvider extends ChangeNotifier {
     Message(
       room: 'Room2',
       message: 'Did you finish the assignment?',
-      sender: 'Charlie',
-      sendAt: DateTime.now().subtract(const Duration(hours: 1)),
+      sender: 'Bob',
+      sendAt: DateTime.now().subtract(const Duration(minutes: 29)),
     ),
     Message(
       room: 'Room2',
