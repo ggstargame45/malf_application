@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,8 +30,8 @@ Widget _buildTimeStamp(DateTime sendAt) {
 //   }
 Widget _buildMessageBubble(BuildContext context, bool isSentByCurrentUser,
     Message message, String postId) {
-  // List<String> imgList =
-  //     List<String>.from(jsonDecode(jsonDecode(message.message)));
+  List<dynamic> imgList = jsonDecode(message.message);
+
   return Row(
     crossAxisAlignment: CrossAxisAlignment.end,
     children: [
@@ -49,16 +51,17 @@ Widget _buildMessageBubble(BuildContext context, bool isSentByCurrentUser,
             ),
             child: message.type == 1
                 ? ListView.builder(
-                    itemCount: 2,
+                    itemCount: imgList.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) => GestureDetector(
                       onTap: () {},
                       child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Image.network(
-                              "https://malftravel.com/karina.jpeg")),
+                            "https://malftravel.com/${imgList[index]}",
+                            fit: BoxFit.fill,
+                          )),
                     ),
-                    //Image.network("https://malftravel.com/${message.message}")),
                   )
                 : Text(
                     message.message,

@@ -31,7 +31,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
       _socket.onConnectError((data) => Logger().d('Connect Error: $data'));
       _socket
           .onDisconnect((data) => Logger().d('Socket.IO server disconnected'));
-      _socket.emit("join", "1");
+      _socket.emit("join", widget.postId);
       _socket.on(
           'join',
           (data) => {

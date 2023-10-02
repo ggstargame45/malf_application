@@ -24,7 +24,7 @@ class _NewMessageState extends State<NewMessage> {
   final TextEditingController _messageInputController = TextEditingController();
   _sendMessage() {
     _socket.emit('chat', {
-      'room': "1",
+      'room': widget.postId,
       'message': _messageInputController.text.trim(),
       'sender': widget.userName
     });
@@ -62,7 +62,7 @@ class _NewMessageState extends State<NewMessage> {
         builder: (context) {
           return AddImageState(
             pickImage,
-            postId: "1",
+            postId: widget.postId!,
           );
         });
   }
