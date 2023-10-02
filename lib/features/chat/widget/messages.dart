@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/home.dart';
+import '../providers/home_provider.dart';
 import 'chat_bubble.dart';
 
 class Messages extends StatefulWidget {

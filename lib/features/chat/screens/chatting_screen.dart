@@ -4,13 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../models/message_model.dart';
-import '../providers/home.dart';
+import '../providers/home_provider.dart';
 import '../widget/messages.dart';
 import '../widget/new_messge.dart';
 
 class ChattingScreen extends StatefulWidget {
   ChattingScreen({required this.postId, super.key});
-  String userName = "user1";
+  String userName = "Alice";
   String? postId;
   @override
   State<ChattingScreen> createState() => _ChattingScreenState();
@@ -20,32 +20,37 @@ class _ChattingScreenState extends State<ChattingScreen> {
   late IO.Socket _socket;
 
   _connectSocket() {
-    _socket = IO.io(
-      'http://13.125.43.68:8000/chat',
-      IO.OptionBuilder()
-          .setPath("/chatTest")
-          .setTransports(['websocket']).build(),
-    );
-    _socket.onConnect((data) => Logger().d('Connection established'));
-    _socket.onConnectError((data) => Logger().d('Connect Error: $data'));
-    _socket.onDisconnect((data) => Logger().d('Socket.IO server disconnected'));
-    _socket.emit("join", widget.postId);
-    _socket.on(
-        'join',
-        (data) => {
-              Logger().d(data),
-            });
-    _socket.on(
-        'chat',
-        (data) => {
-              if (mounted)
-                {
-                  Provider.of<HomeProvider>(context, listen: false)
-                      .addNewMessage(
-                    Message.fromJson(data),
-                  )
-                }
-            });
+    try {
+      _socket = IO.io(
+        'http://13.125.43.68:8000/chat',
+        IO.OptionBuilder()
+            .setPath("/chatTest")
+            .setTransports(['websocket']).build(),
+      );
+      _socket.onConnect((data) => Logger().d('Connection established'));
+      _socket.onConnectError((data) => Logger().d('Connect Error: $data'));
+      _socket
+          .onDisconnect((data) => Logger().d('Socket.IO server disconnected'));
+      _socket.emit("join", widget.postId);
+      _socket.on(
+          'join',
+          (data) => {
+                Logger().d(data),
+              });
+      _socket.on(
+          'chat',
+          (data) => {
+                if (mounted)
+                  {
+                    Provider.of<HomeProvider>(context, listen: false)
+                        .addNewMessage(
+                      Message.fromJson(data),
+                    )
+                  }
+              });
+    } catch (e) {
+      Logger().e(e);
+    }
   }
 
   @override

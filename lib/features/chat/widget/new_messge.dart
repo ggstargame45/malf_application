@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
+import 'package:malf_application/features/chat/widget/add_image.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class NewMessage extends StatefulWidget {
@@ -29,6 +31,30 @@ class _NewMessageState extends State<NewMessage> {
     _messageInputController.clear();
   }
 
+  List<XFile?> pickedImage = [];
+
+  // void _pickImage() async {
+  //   final imagePicker = ImagePicker();
+  //   final pickedImageFile = await imagePicker.pickImage(
+  //       source: ImageSource.gallery, imageQuality: 50, maxHeight: 150);
+  //   setState(() {
+  //     if (pickedImageFile != null) {
+  //       pickedImage = File(pickedImageFile.path);
+  //     }
+  //   });
+  // }
+  void pickImage(XFile? image) {
+    pickedImage.insert(0, image);
+  }
+
+  void showImagePicker(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AddImageState(pickImage);
+        });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -56,18 +82,19 @@ class _NewMessageState extends State<NewMessage> {
               child: TextField(
             controller: _messageInputController,
             style: const TextStyle(fontSize: 15),
-            decoration: const InputDecoration(
-                suffixIcon: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [Icon(Icons.attach_file_sharp), Icon(Icons.photo)],
-                ),
+            decoration: InputDecoration(
+                suffixIcon: IconButton(
+                    onPressed: () {
+                      showImagePicker(context);
+                    },
+                    icon: const Icon(Icons.photo, size: 30)),
                 isDense: true,
-                contentPadding: EdgeInsets.all(8),
+                contentPadding: const EdgeInsets.all(8),
                 filled: true,
-                fillColor: Color.fromARGB(97, 158, 158, 158),
+                fillColor: const Color.fromARGB(97, 158, 158, 158),
                 hintText: "메세지를 입력하세요",
-                hintStyle: TextStyle(fontSize: 15, color: Colors.grey),
-                border: OutlineInputBorder(
+                hintStyle: const TextStyle(fontSize: 15, color: Colors.grey),
+                border: const OutlineInputBorder(
                     borderSide: BorderSide.none,
                     borderRadius: BorderRadius.all(Radius.circular(20)))),
             maxLines: null,
